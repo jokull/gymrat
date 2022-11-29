@@ -1,0 +1,58 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "gymrat",
+  "title": "Gymrat",
+  "description": "Record and look up gym progress",
+  "icon": "command-icon.png",
+  "author": "jokull",
+  "categories": [
+    "Fun",
+    "Data"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "index",
+      "title": "Track gym progress",
+      "description": "Template for showing a static list and a detail view",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "username",
+      "title": "Gymrat Username",
+      "required": true,
+      "type": "textfield",
+      "description": "Any unique gymrat username, can be any non empty string - if you want your data to be secret choose an impossible to guess username"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.44.0",
+    "@raycast/utils": "^1.4.11",
+    "@trpc/client": "^10.4.2",
+    "@trpc/server": "^10.4.2",
+    "api": "workspace:../api",
+    "fuse.js": "^6.6.2",
+    "ky": "^0.32.2",
+    "superjson": "^1.11.0",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish"
+  }
+}

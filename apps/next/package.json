@@ -1,0 +1,44 @@
+{
+  "name": "next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "wrangler": "wrangler pages dev .vercel/output/static --compatibility-flags=streams_enable_constructors --port 3800 --d1=DB --local --persist",
+    "watch": "next-on-pages --watch",
+    "dev": "next dev --port 3800",
+    "build": "next build",
+    "start": "next start --port 3800",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@cloudflare/next-on-pages": "link:/Users/jokull/Code/next-on-pages/",
+    "@tanstack/react-query": "^4.19.0",
+    "@trpc/client": "^10.4.2",
+    "@trpc/next": "^10.4.2",
+    "@trpc/react-query": "^10.4.2",
+    "@trpc/server": "^10.4.2",
+    "@types/node": "18.11.10",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "^17.0.18",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.5",
+    "kysely": "^0.22.0",
+    "kysely-d1": "^0.0.6",
+    "next": "13.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "superjson": "^1.11.0",
+    "typescript": "4.9.3",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@cloudflare/d1": "^1.4.1",
+    "@cloudflare/workers-types": "^3.18.0",
+    "@miniflare/tre": "3.0.0-next.1",
+    "better-sqlite3": "^8.0.1",
+    "kysely-codegen": "^0.8.0",
+    "prisma": "^4.6.1",
+    "vercel": "^28.7.0",
+    "wrangler": "0.0.0-b7e5510d"
+  }
+}

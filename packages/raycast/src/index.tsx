@@ -1,4 +1,15 @@
-import { Action, ActionPanel, Form, getPreferenceValues, Icon, List, useNavigation } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Alert,
+  Color,
+  confirmAlert,
+  Form,
+  getPreferenceValues,
+  Icon,
+  List,
+  useNavigation,
+} from "@raycast/api";
 
 import Fuse from "fuse.js";
 import superjson from "superjson";
@@ -21,6 +32,29 @@ const workoutSchema = z.object({
 
 type Workout = z.infer<typeof workoutSchema>;
 type FormWorkout = Omit<Workout, "id">;
+
+function EditWorkoutForm({ workout, onSuccess }: { workout: Workout; onSuccess: (workout: FormWorkout) => void }) {
+  const { pop } = useNavigation();
+  return (
+    <Form
+      actions={
+        <ActionPanel>
+          <Action.SubmitForm
+            title="Update Workout"
+            onSubmit={(values) => {
+              onSuccess({ date: values.date, description: values.description, value: values.value });
+              pop();
+            }}
+          />
+        </ActionPanel>
+      }
+    >
+      <Form.DatePicker id="date" type={Form.DatePicker.Type.Date} title="Date" defaultValue={workout.date} />
+      <Form.TextField id="description" title="Workout / Lift" defaultValue={workout.description} />
+      <Form.TextField id="value" title="Value" defaultValue={workout.value} />
+    </Form>
+  );
+}
 
 function CreateWorkoutForm({ onCreate }: { onCreate: (workout: FormWorkout) => void }) {
   const { pop } = useNavigation();
@@ -62,12 +96,12 @@ interface Preferences {
 
 export default function Command() {
   const { username } = getPreferenceValues<Preferences>();
-  const client = createTRPCProxyClient<AppRouter>({
+  const api = createTRPCProxyClient<AppRouter>({
     transformer: superjson,
     links: [
       httpBatchLink({
-        // url: `http://127.0.0.1:8787/trpc`,
-        url: `https://gymrat-api.solberg.workers.dev/trpc`,
+        url: `http://127.0.0.1:8787/trpc`,
+        // url: `https://gymrat-api.solberg.workers.dev/trpc`,
         headers: { Authorization: username },
       }),
     ],
@@ -75,7 +109,7 @@ export default function Command() {
 
   const [searchText, setSearchText] = useState("");
   const { data, isLoading, revalidate } = useCachedPromise(async () => {
-    return await client.workouts.query();
+    return await api.workouts.query();
   }, []);
 
   const workouts = data ?? [];
@@ -92,7 +126,7 @@ export default function Command() {
       : workouts;
 
   function handleCreate(values: FormWorkout) {
-    client.createWorkout
+    api.createWorkout
       .mutate({
         value: values.value,
         description: values.description,
@@ -120,22 +154,46 @@ export default function Command() {
         <List.Item
           key={workout.id}
           title={workout.description}
-          subtitle={`${workout.value} at ${workout.date.toLocaleDateString()}`}
+          subtitle={`${workout.value} at ${workout.date.toLocaleDateString(undefined, { dateStyle: "full" })}`}
           id={workout.id}
+          icon={workout.numberValue === workout.topScore ? { source: Icon.Star, tintColor: Color.Yellow } : undefined}
           actions={
             <ActionPanel>
               <ActionPanel.Section>
                 <CreateWorkoutAction onCreate={handleCreate} />
               </ActionPanel.Section>
               <ActionPanel.Section>
+                <Action.Push
+                  icon={Icon.Pencil}
+                  title="Edit Workout"
+                  shortcut={{ modifiers: ["cmd"], key: "enter" }}
+                  target={
+                    <EditWorkoutForm
+                      workout={workout}
+                      onSuccess={(fields) => {
+                        api.updateWorkout.mutate({ id: workout.id, fields }).then(() => {
+                          revalidate();
+                        });
+                      }}
+                    />
+                  }
+                />
                 <Action
                   icon={Icon.Trash}
                   title="Delete Workout"
-                  shortcut={{ modifiers: ["ctrl"], key: "backspace" }}
-                  onAction={() => {
-                    client.deleteWorkout.mutate(workout.id).then(() => {
-                      revalidate();
-                    });
+                  shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+                  onAction={async () => {
+                    if (
+                      await confirmAlert({
+                        title: "Delete this workout?",
+                        icon: { source: Icon.Warning, tintColor: Color.Red },
+                        primaryAction: { title: "Delete", style: Alert.ActionStyle.Destructive },
+                      })
+                    ) {
+                      api.deleteWorkout.mutate(workout.id).then(() => {
+                        revalidate();
+                      });
+                    }
                   }}
                 />
               </ActionPanel.Section>

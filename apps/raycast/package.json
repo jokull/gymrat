@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "gymrat",
+  "name": "raycast",
   "title": "Gymrat",
   "description": "Record and look up gym progress",
   "icon": "command-icon.png",

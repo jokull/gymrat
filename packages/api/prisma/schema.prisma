@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DATABASE_URL")
 }
 
 model Workout {
@@ -15,6 +15,7 @@ model Workout {
   updatedAt   DateTime @updatedAt
   description String
   value       String
+  numberValue Int      @default(0)
   date        DateTime
   user        String
 }

@@ -20,11 +20,11 @@
   ],
   "preferences": [
     {
-      "name": "username",
-      "title": "Gymrat Username",
+      "name": "apiKey",
+      "title": "Gymrat API Key",
       "required": true,
       "type": "textfield",
-      "description": "Any unique gymrat username, can be any non empty string - if you want your data to be secret choose an impossible to guess username"
+      "description": "Gymrat API key, find it under settings on gymrat.com"
     }
   ],
   "dependencies": {
@@ -32,7 +32,7 @@
     "@raycast/utils": "^1.4.11",
     "@trpc/client": "^10.4.2",
     "@trpc/server": "^10.4.2",
-    "api": "workspace:../api",
+    "api": "workspace:*",
     "fuse.js": "^6.6.2",
     "ky": "^0.32.2",
     "superjson": "^1.11.0",

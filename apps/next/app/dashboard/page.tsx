@@ -23,17 +23,19 @@ const api = createTRPCProxyClient<AppRouter>({
 
 export default async function Page() {
   const workouts = await api.workouts.query();
-  const user = await currentUser();
+  const clerkUser = await currentUser();
+  const user = await api.user.query();
   return (
-    <div>
+    <div className="my-8 mx-auto max-w-md">
       <h1>Workouts</h1>
       <p>
-        {user
-          ? user.emailAddresses.find(
-              (email) => email.id === user.primaryEmailAddressId
+        {clerkUser
+          ? clerkUser.emailAddresses.find(
+              (email) => email.id === clerkUser.primaryEmailAddressId
             )?.emailAddress
           : null}
       </p>
+      <p>Token: {user.apiKey}</p>
       {workouts.map((workout) => (
         <div key={workout.id}>{workout.date.toLocaleDateString()}</div>
       ))}

@@ -54,7 +54,7 @@ importers:
       '@types/react': 18.0.9
       '@typescript-eslint/eslint-plugin': ^5.0.0
       '@typescript-eslint/parser': ^5.0.0
-      api: workspace:../api
+      api: workspace:*
       eslint: ^7.32.0
       eslint-config-prettier: ^8.3.0
       fuse.js: ^6.6.2
@@ -68,7 +68,7 @@ importers:
       '@raycast/utils': 1.4.11_@raycast+api@1.44.0
       '@trpc/client': 10.4.2_@trpc+server@10.4.2
       '@trpc/server': 10.4.2
-      api: link:../api
+      api: link:../../packages/api
       fuse.js: 6.6.2
       ky: 0.32.2
       superjson: 1.11.0
@@ -89,11 +89,12 @@ importers:
       '@cloudflare/workers-types': ^3.14.1
       '@miniflare/tre': 3.0.0-next.1
       '@peculiar/webcrypto': ^1.4.1
-      '@prisma/client': ^4.6.1
+      '@prisma/client': ^4.7.1
       '@trpc/server': ^10.4.2
       '@tsndr/cloudflare-worker-jwt': ^2.1.3
       '@types/cookie': ^0.5.1
       '@types/node': ^18.11.9
+      '@types/uuid': ^9.0.0
       better-sqlite3: ^8.0.0
       cookie: ^0.5.0
       hono: ^2.0.2
@@ -101,15 +102,16 @@ importers:
       kysely: ^0.22.0
       kysely-codegen: ^0.8.0
       kysely-d1: ^0.0.6
-      prisma: ^4.6.1
+      prisma: ^4.7.1
       superjson: ^1.11.0
       ts-node: ^10.9.1
       typescript: ^4.9.3
+      uuid: ^9.0.0
       wrangler: 2.5.0
       zod: ^3.19.1
     dependencies:
       '@peculiar/webcrypto': 1.4.1
-      '@prisma/client': 4.7.0_prisma@4.7.0
+      '@prisma/client': 4.7.1_prisma@4.7.1
       '@trpc/server': 10.4.2
       '@tsndr/cloudflare-worker-jwt': 2.1.3
       cookie: 0.5.0
@@ -117,6 +119,7 @@ importers:
       kysely: 0.22.0
       kysely-d1: 0.0.6_kysely@0.22.0
       superjson: 1.11.0
+      uuid: 9.0.0
       zod: 3.19.1
     devDependencies:
       '@cloudflare/d1': 1.4.1
@@ -124,10 +127,11 @@ importers:
       '@miniflare/tre': 3.0.0-next.1
       '@types/cookie': 0.5.1
       '@types/node': 18.11.9
+      '@types/uuid': 9.0.0
       better-sqlite3: 8.0.0
       itty-router: 2.6.6
       kysely-codegen: 0.8.0_a2a3ztlt4fr5pd6in3xjocp4mq
-      prisma: 4.7.0
+      prisma: 4.7.1
       ts-node: 10.9.1_wup25etrarvlqkprac7h35hj7u
       typescript: 4.9.3
       wrangler: 2.5.0
@@ -820,8 +824,8 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /@prisma/client/4.7.0_prisma@4.7.0:
-    resolution: {integrity: sha512-keXMa0oJWJGOzMEFKp+CEgzJPwnOtGSrnTWw6qMYxnypYrRFdNxqyA06EzELZexBhgM4oLooZ1jDJ3iy46wExA==}
+  /@prisma/client/4.7.1_prisma@4.7.1:
+    resolution: {integrity: sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
@@ -830,16 +834,16 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 4.7.0-74.39190b250ebc338586e25e6da45e5e783bc8a635
-      prisma: 4.7.0
+      '@prisma/engines-version': 4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c
+      prisma: 4.7.1
     dev: false
 
-  /@prisma/engines-version/4.7.0-74.39190b250ebc338586e25e6da45e5e783bc8a635:
-    resolution: {integrity: sha512-ImczGEQ8NS1OUApEeyAGxC4uLTtQp0wI1+2wM4MeQLVwIQbyMHk1vOhWWE8Pwbi3rnzLcPvsIrd9sm6oNXhERw==}
+  /@prisma/engines-version/4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c:
+    resolution: {integrity: sha512-Bd4LZ+WAnUHOq31e9X/ihi5zPlr4SzTRwUZZYxvWOxlerIZ7HJlVa9zXpuKTKLpI9O1l8Ec4OYCKsivWCs5a3Q==}
     dev: false
 
-  /@prisma/engines/4.7.0:
-    resolution: {integrity: sha512-afKrVFktaZ1pOK12/uFl2hRsBWIJZuC5FdDtacuKk5x/mR+rC5AbA+PlN3ZCZbmYTaeiBMHjcU5wbT5z2N3nSQ==}
+  /@prisma/engines/4.7.1:
+    resolution: {integrity: sha512-zWabHosTdLpXXlMefHmnouhXMoTB1+SCbUU3t4FCmdrtIOZcarPKU3Alto7gm/pZ9vHlGOXHCfVZ1G7OIrSbog==}
     requiresBuild: true
 
   /@raycast/api/1.44.0_2cx2ipqrn5f7svdjipmu7pbevq:
@@ -1051,6 +1055,10 @@ packages:
 
   /@types/stack-trace/0.0.29:
     resolution: {integrity: sha512-TgfOX+mGY/NyNxJLIbDWrO9DjGoVSW9+aB8H2yy1fy32jsvxijhmyJI9fDFgvz3YP4lvJaq9DzdR/M1bOgVc9g==}
+    dev: true
+
+  /@types/uuid/9.0.0:
+    resolution: {integrity: sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.45.0_bq23d4eyosgl3prll2fwsiqj2m:
@@ -3868,13 +3876,13 @@ packages:
     hasBin: true
     dev: true
 
-  /prisma/4.7.0:
-    resolution: {integrity: sha512-VsecNo0Ca3+bDTzSpJqIpdupKVhhQ8aOYeWc09JlUM89knqvhSrlMrg0U8BiOD4tFrY1OPaCcraK8leDBxKMBg==}
+  /prisma/4.7.1:
+    resolution: {integrity: sha512-CCQP+m+1qZOGIZlvnL6T3ZwaU0LAleIHYFPN9tFSzjs/KL6vH9rlYbGOkTuG9Q1s6Ki5D0LJlYlW18Z9EBUpGg==}
     engines: {node: '>=14.17'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 4.7.0
+      '@prisma/engines': 4.7.1
 
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
@@ -4658,6 +4666,11 @@ packages:
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
+    dev: false
 
   /v8-compile-cache-lib/3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

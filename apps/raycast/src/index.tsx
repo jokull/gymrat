@@ -19,7 +19,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "api/src/router";
+import type { AppRouter } from "api/router";
 
 const workoutSchema = z.object({
   id: z.string(),
@@ -91,18 +91,18 @@ function CreateWorkoutAction({ onCreate }: { onCreate: (workout: FormWorkout) =>
 }
 
 interface Preferences {
-  username: string;
+  apiKey: string;
 }
 
 export default function Command() {
-  const { username } = getPreferenceValues<Preferences>();
+  const { apiKey } = getPreferenceValues<Preferences>();
   const api = createTRPCProxyClient<AppRouter>({
     transformer: superjson,
     links: [
       httpBatchLink({
         url: `http://127.0.0.1:8787/trpc`,
         // url: `https://gymrat-api.solberg.workers.dev/trpc`,
-        headers: { Authorization: username },
+        headers: { Authorization: apiKey },
       }),
     ],
   });

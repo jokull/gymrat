@@ -17,11 +17,7 @@ export interface Env {
   DB: D1Database;
 }
 
-function createContext(req: Request, d1: D1Database) {
-  const user =
-    req.headers.get("authorization")?.trim() ??
-    new URL(req.url).searchParams.get("user")?.trim() ??
-    null;
+function createContext(req: Request, d1: D1Database, user: string) {
   if (!user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -31,9 +27,9 @@ function createContext(req: Request, d1: D1Database) {
   return { req, user, db };
 }
 
-export function createContextFactory(DB: D1Database) {
+export function createContextFactory(DB: D1Database, user: string) {
   return ({ req }: FetchCreateContextFnOptions) => {
-    return createContext(req, DB);
+    return createContext(req, DB, user);
   };
 }
 

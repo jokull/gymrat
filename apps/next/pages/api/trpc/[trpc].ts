@@ -1,25 +1,18 @@
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "../../../server/trpc";
-
 import { type NextRequest } from "next/server";
 
-export interface Env {
-  DB: D1Database;
-}
+export default async function handler(req: NextRequest) {
+  const url = new URL(req.url.replace("/api/trpc", "/trpc"));
 
-export default function handler(
-  req: NextRequest & { env: Env },
-  ctx: ExecutionContext,
-  env: Env
-) {
-  console.log(JSON.stringify(req.env));
-  return fetchRequestHandler({
-    endpoint: "/api/trpc",
-    router: appRouter,
-    req: req,
-    createContext: () => {
-      return {};
-    },
+  const apiUrl = new URL(
+    `${process.env.API_ENDPOINT ?? ""}${
+      url.pathname
+    }?${url.searchParams.toString()}`
+  );
+
+  return await fetch(apiUrl.toString(), {
+    method: req.method,
+    headers: { cookie: req.headers.get("cookie") ?? "" }, // Should include the Clerk session
+    redirect: "manual",
   });
 }
 

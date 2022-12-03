@@ -2,10 +2,18 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    runtime: "experimental-edge",
   },
-  reactStrictMode: true,
-  swcMinify: true,
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/trpc:path*",
+  //       destination:
+  //         process.env.NODE_ENV === "development"
+  //           ? "http://localhost:3800/trpc:path*"
+  //           : "http://api.gymrat.com/trpc:path*",
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;

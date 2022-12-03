@@ -1,8 +1,0 @@
-name = "gymrat-api"
-main = "src/index.ts"
-compatibility_date = "2022-07-15"
-
-[[ d1_databases ]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "gymrat-api"
-database_id = "466056a0-a74e-4c53-b607-7b6fac736b02"

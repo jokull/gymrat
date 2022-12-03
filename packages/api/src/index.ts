@@ -1,5 +1,5 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import jwt from "@tsndr/cloudflare-worker-jwt";
+import jwt, { JwtPayload } from "@tsndr/cloudflare-worker-jwt";
 import { parse } from "cookie";
 
 import { appRouter, createContextFactory } from "./router";
@@ -9,7 +9,16 @@ export interface Env {
   CLERK_JWT_KEY: string;
 }
 
-async function getClerkAuth(request: Request, jwtKey: string) {
+export type JwtPayloadTemplate = JwtPayload & { email: string };
+
+async function getClerkAuth(
+  request: Request,
+  jwtKey: string
+): Promise<
+  | { status: "invalid" }
+  | { status: "unauthorized" }
+  | { status: "authorized"; jwt: JwtPayloadTemplate }
+> {
   const splitPem = jwtKey.match(/.{1,64}/g)!;
   const publicKey =
     "-----BEGIN PUBLIC KEY-----\n" +
@@ -24,20 +33,33 @@ async function getClerkAuth(request: Request, jwtKey: string) {
   }
 
   try {
-    // Replace with verify when Clerk supports CloudFlare Worker environment
-    // var decoded = await jwt.verify(sessToken, publicKey);
-    var decoded = await jwt.decode(sessToken);
+    const verified = await jwt.verify(sessToken, publicKey, {
+      algorithm: "RS256",
+    });
+    if (!verified) {
+      return { status: "invalid" };
+    }
+    var decoded = jwt.decode(sessToken);
   } catch (error) {
     return { status: "invalid" };
   }
 
-  return { status: "authorized", email: decoded.payload.email! };
+  // We have manually added email to the JWT template
+  const payload = {
+    ...decoded.payload,
+    email: decoded.payload.email as string,
+  };
+
+  return { status: "authorized", jwt: payload };
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const auth = await getClerkAuth(request, env.CLERK_JWT_KEY);
-    const user = (auth.status === "authorized" && auth.email) ?? null;
+    let user = null;
+    if (auth.status === "authorized") {
+      user = auth.jwt;
+    }
     return fetchRequestHandler({
       endpoint: "/trpc",
       req: request,

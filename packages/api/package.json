@@ -30,7 +30,7 @@
     "db-codegen": "kysely-codegen"
   },
   "dependencies": {
-    "@peculiar/webcrypto": "^1.4.0",
+    "@peculiar/webcrypto": "^1.4.1",
     "@prisma/client": "^4.6.1",
     "@trpc/server": "^10.4.2",
     "@tsndr/cloudflare-worker-jwt": "^2.1.3",

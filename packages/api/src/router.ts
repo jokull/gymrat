@@ -5,6 +5,7 @@ import { DB } from "kysely-codegen";
 import { D1Dialect } from "kysely-d1";
 import superjson from "superjson";
 import { z } from "zod";
+import { JwtPayloadTemplate } from ".";
 import { getNumberValue } from "./utils";
 
 const workoutFormSchema = z.object({
@@ -17,7 +18,11 @@ export interface Env {
   DB: D1Database;
 }
 
-function createContext(req: Request, d1: D1Database, user: string) {
+function createContext(
+  req: Request,
+  d1: D1Database,
+  user: JwtPayloadTemplate | null
+) {
   if (!user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -27,7 +32,10 @@ function createContext(req: Request, d1: D1Database, user: string) {
   return { req, user, db };
 }
 
-export function createContextFactory(DB: D1Database, user: string) {
+export function createContextFactory(
+  DB: D1Database,
+  user: JwtPayloadTemplate | null
+) {
   return ({ req }: FetchCreateContextFnOptions) => {
     return createContext(req, DB, user);
   };
@@ -37,7 +45,6 @@ export type Context = inferAsyncReturnType<typeof createContext>;
 
 export const t = initTRPC.context<Context>().create({
   transformer: superjson,
-  isDev: true,
 });
 
 export const appRouter = t.router({
@@ -74,10 +81,10 @@ export const appRouter = t.router({
                 "=",
                 sql`lower(${eb.ref("w.description")})`
               )
-              .where("tw.user", "=", ctx.user)
+              .where("tw.user", "=", ctx.user.email)
               .as("topScore"),
         ])
-        .where("w.user", "=", ctx.user)
+        .where("w.user", "=", ctx.user.email)
         .orderBy("w.date", "desc")
         .execute();
       const dbWorkouts = [...result.values()];
@@ -121,7 +128,7 @@ export const appRouter = t.router({
           numberValue: getNumberValue(input.value),
           description: input.description?.split(" ").filter(Boolean).join(" "),
           date: input.date.toISOString(),
-          user: ctx.user,
+          user: ctx.user.email,
         })
         .executeTakeFirst();
       return result;

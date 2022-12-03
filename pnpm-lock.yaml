@@ -88,7 +88,7 @@ importers:
       '@cloudflare/d1': ^1.4.1
       '@cloudflare/workers-types': ^3.14.1
       '@miniflare/tre': 3.0.0-next.1
-      '@peculiar/webcrypto': ^1.4.0
+      '@peculiar/webcrypto': ^1.4.1
       '@prisma/client': ^4.6.1
       '@trpc/server': ^10.4.2
       '@tsndr/cloudflare-worker-jwt': ^2.1.3

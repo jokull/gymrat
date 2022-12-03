@@ -10,6 +10,12 @@ datasource db {
   url      = env("PRISMA_DATABASE_URL")
 }
 
+model User {
+  id       String    @id
+  Workouts Workout[]
+  apiKey   String
+}
+
 model Workout {
   id          String   @id @default(uuid())
   updatedAt   DateTime @updatedAt
@@ -17,5 +23,6 @@ model Workout {
   value       String
   numberValue Int      @default(0)
   date        DateTime
-  user        String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 }

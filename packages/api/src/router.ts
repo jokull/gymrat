@@ -1,11 +1,10 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { Kysely, sql } from "kysely";
-import { DB } from "kysely-codegen";
-import { D1Dialect } from "kysely-d1";
+import { sql } from "kysely";
+import { User } from "kysely-codegen";
 import superjson from "superjson";
 import { z } from "zod";
-import { JwtPayloadTemplate } from ".";
+import { getQueryBuilder } from "./db";
 import { getNumberValue } from "./utils";
 
 const workoutFormSchema = z.object({
@@ -14,28 +13,15 @@ const workoutFormSchema = z.object({
   value: z.string(),
 });
 
-export interface Env {
-  DB: D1Database;
-}
-
-function createContext(
-  req: Request,
-  d1: D1Database,
-  user: JwtPayloadTemplate | null
-) {
+function createContext(req: Request, d1: D1Database, user: User | null) {
   if (!user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  const db = new Kysely<DB>({
-    dialect: new D1Dialect({ database: d1 }),
-  });
+  const db = getQueryBuilder(d1);
   return { req, user, db };
 }
 
-export function createContextFactory(
-  DB: D1Database,
-  user: JwtPayloadTemplate | null
-) {
+export function createContextFactory(DB: D1Database, user: User | null) {
   return ({ req }: FetchCreateContextFnOptions) => {
     return createContext(req, DB, user);
   };
@@ -81,10 +67,10 @@ export const appRouter = t.router({
                 "=",
                 sql`lower(${eb.ref("w.description")})`
               )
-              .where("tw.user", "=", ctx.user.email)
+              .where("tw.userId", "=", ctx.user.id)
               .as("topScore"),
         ])
-        .where("w.user", "=", ctx.user.email)
+        .where("w.userId", "=", ctx.user.id)
         .orderBy("w.date", "desc")
         .execute();
       const dbWorkouts = [...result.values()];
@@ -128,7 +114,7 @@ export const appRouter = t.router({
           numberValue: getNumberValue(input.value),
           description: input.description?.split(" ").filter(Boolean).join(" "),
           date: input.date.toISOString(),
-          user: ctx.user.email,
+          userId: ctx.user.id,
         })
         .executeTakeFirst();
       return result;

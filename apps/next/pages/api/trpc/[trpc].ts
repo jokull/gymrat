@@ -9,11 +9,16 @@ export default async function handler(req: NextRequest) {
     }?${url.searchParams.toString()}`
   );
 
-  return await fetch(apiUrl.toString(), {
-    method: req.method,
-    headers: { cookie: req.headers.get("cookie") ?? "" }, // Should include the Clerk session
-    redirect: "manual",
-  });
+  try {
+    return await fetch(apiUrl.toString(), {
+      method: req.method,
+      headers: { cookie: req.headers.get("cookie") ?? "" }, // Should include the Clerk session
+      redirect: "manual",
+    });
+  } catch (error) {
+    console.error(error);
+    return new Response("server error", { status: 500 });
+  }
 }
 
 export const config = {

@@ -4,6 +4,7 @@ import { sql } from "kysely";
 import { User } from "kysely-codegen";
 import superjson from "superjson";
 import { z } from "zod";
+import { ClerkJwtPayload } from ".";
 import { getQueryBuilder } from "./db";
 import { getNumberValue } from "./utils";
 
@@ -13,17 +14,26 @@ const workoutFormSchema = z.object({
   value: z.string(),
 });
 
-function createContext(req: Request, d1: D1Database, user: User | null) {
+function createContext(
+  req: Request,
+  d1: D1Database,
+  user: User | null,
+  clerkAuth: ClerkJwtPayload | null
+) {
   if (!user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   const db = getQueryBuilder(d1);
-  return { req, user, db };
+  return { req, user, db, clerkAuth };
 }
 
-export function createContextFactory(DB: D1Database, user: User | null) {
+export function createContextFactory(
+  DB: D1Database,
+  user: User | null,
+  clerkAuth: ClerkJwtPayload | null
+) {
   return ({ req }: FetchCreateContextFnOptions) => {
-    return createContext(req, DB, user);
+    return createContext(req, DB, user, clerkAuth);
   };
 }
 
@@ -35,7 +45,7 @@ export const t = initTRPC.context<Context>().create({
 
 export const appRouter = t.router({
   user: t.procedure.query(({ ctx }) => {
-    return ctx.user;
+    return { ...ctx.user, clerk: ctx.clerkAuth };
   }),
   workouts: t.procedure
     .output(
@@ -73,7 +83,7 @@ export const appRouter = t.router({
         .where("w.userId", "=", ctx.user.id)
         .orderBy("w.date", "desc")
         .execute();
-      const dbWorkouts = [...result.values()];
+      const dbWorkouts = Array.from(result.values());
       return dbWorkouts.map(({ date, ...props }) => ({
         ...props,
         topScore: props.topScore ?? 0,

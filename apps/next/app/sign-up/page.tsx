@@ -1,5 +1,5 @@
 import { SignUp } from "@clerk/nextjs/app-beta";
 
 export default function Page() {
-  return <SignUp />;
+  return <SignUp redirectUrl="/dashboard" />;
 }

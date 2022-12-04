@@ -2,7 +2,8 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    runtime: "experimental-edge",
+    // runtime: "experimental-edge",
+    transpilePackages: ["api"],
   },
 };
 

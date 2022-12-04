@@ -104,7 +104,7 @@ export default {
       endpoint: "/trpc",
       req: request,
       router: appRouter,
-      createContext: createContextFactory(env.DB, user),
+      createContext: createContextFactory(env.DB, user, jwt),
     });
   },
 };

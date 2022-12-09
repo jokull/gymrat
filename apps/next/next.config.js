@@ -4,6 +4,8 @@ const nextConfig = {
     appDir: true,
     // runtime: "experimental-edge",
     transpilePackages: ["api"],
+    allowMiddlewareResponseBody: true,
+    swcPlugins: [["next-superjson-plugin", {}]],
   },
 };
 

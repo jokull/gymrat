@@ -11,7 +11,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
   links: [
     loggerLink({ enabled: () => process.env.NODE_ENV === "development" }),
     httpLink({
-      url: `${process.env.HOST}/api/trpc`,
+      url: `https://${process.env.HOST}/trpc`,
       fetch(url, options) {
         return fetch(url, { ...options, credentials: "include" });
       },

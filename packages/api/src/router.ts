@@ -1,11 +1,10 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { sql } from "kysely";
 import { User } from "kysely-codegen";
 import superjson from "superjson";
 import { z } from "zod";
 import { ClerkJwtPayload } from ".";
-import { getQueryBuilder } from "./db";
+import { getQueryBuilder, hydrateWorkout, queryWorkouts } from "./db";
 import { getNumberValue } from "./utils";
 
 const workoutFormSchema = z.object({
@@ -60,35 +59,8 @@ export const appRouter = t.router({
       )
     )
     .query(async ({ ctx }) => {
-      const result = await ctx.db
-        .selectFrom("Workout as w")
-        .select([
-          "w.date",
-          "w.description",
-          "w.id",
-          "w.numberValue",
-          "w.value",
-          (eb) =>
-            eb
-              .selectFrom("Workout as tw")
-              .select((eb) => eb.fn.max("tw.numberValue").as("topScore"))
-              .where(
-                sql`lower(tw.description)`,
-                "=",
-                sql`lower(${eb.ref("w.description")})`
-              )
-              .where("tw.userId", "=", ctx.user.id)
-              .as("topScore"),
-        ])
-        .where("w.userId", "=", ctx.user.id)
-        .orderBy("w.date", "desc")
-        .execute();
-      const dbWorkouts = Array.from(result.values());
-      return dbWorkouts.map(({ date, ...props }) => ({
-        ...props,
-        topScore: props.topScore ?? 0,
-        date: new Date(date),
-      }));
+      const result = await queryWorkouts(ctx.db, ctx.user.id).execute();
+      return Array.from(result.values()).map(hydrateWorkout);
     }),
   updateWorkout: t.procedure
     .input(
@@ -115,7 +87,7 @@ export const appRouter = t.router({
   createWorkout: t.procedure
     .input(workoutFormSchema)
     .mutation(async ({ ctx, input }) => {
-      const result = await ctx.db
+      const insert = await ctx.db
         .insertInto("Workout")
         .values({
           id: crypto.randomUUID(),
@@ -126,8 +98,12 @@ export const appRouter = t.router({
           date: input.date.toISOString(),
           userId: ctx.user.id,
         })
+        .returning("id as id")
         .executeTakeFirst();
-      return result;
+      const workout = await queryWorkouts(ctx.db, ctx.user.id)
+        .where("id", "=", insert?.id ?? "")
+        .executeTakeFirstOrThrow();
+      return hydrateWorkout(workout);
     }),
   deleteWorkout: t.procedure
     .input(z.string().uuid())

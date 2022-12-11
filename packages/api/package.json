@@ -27,10 +27,9 @@
     }
   },
   "scripts": {
-    "start": "wrangler dev --local --persist",
+    "dev": "kysely-codegen && wrangler dev --local --persist",
     "deploy": "wrangler publish",
-    "generate": "prisma generate",
-    "db-codegen": "kysely-codegen"
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",

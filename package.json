@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "dev": "turbo run dev"
   },
   "keywords": [],
   "author": "Jökull Sólberg",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "turbo": "^1.6.3"
+  }
 }

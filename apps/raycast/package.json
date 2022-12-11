@@ -30,8 +30,8 @@
   "dependencies": {
     "@raycast/api": "^1.44.0",
     "@raycast/utils": "^1.4.11",
-    "@trpc/client": "^10.4.2",
-    "@trpc/server": "^10.4.2",
+    "@trpc/client": "^10.4.3",
+    "@trpc/server": "^10.4.3",
     "api": "workspace:*",
     "fuse.js": "^6.6.2",
     "ky": "^0.32.2",

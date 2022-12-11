@@ -1,6 +1,6 @@
 import { trpc } from "@/trpc/server";
-import { CreateWorkout } from "./components/CreateWorkout";
-import { Workouts } from "./components/Workouts";
+import { DataCreateWorkout } from "./components/CreateWorkout";
+import { DataWorkouts } from "./components/Workouts";
 
 export default async function Page() {
   const [workouts, user] = await Promise.all([
@@ -14,8 +14,8 @@ export default async function Page() {
         <p className="text-neutral-500">{user.clerk?.email}</p>
       </header>
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
-        <CreateWorkout workouts={workouts} data-superjson />
-        <Workouts initialData={workouts} data-superjson />
+        <DataCreateWorkout workouts={workouts} data-superjson />
+        <DataWorkouts initialData={workouts} data-superjson />
       </div>
       <footer>
         <p className="text-xs text-neutral-700">{user.apiKey}</p>

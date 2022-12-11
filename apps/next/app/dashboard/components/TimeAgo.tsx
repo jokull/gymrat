@@ -7,7 +7,13 @@ import { type Workout } from "api/db";
 const DAY_IN_MILLISECONDS = 86_400_000;
 const WEEK_IN_MILLISECONDS = DAY_IN_MILLISECONDS * 7;
 
-export function TimeAgo({ workout }: { workout: Workout }) {
+export function TimeAgo({
+  workout,
+  editable = true,
+}: {
+  workout: Workout;
+  editable?: boolean;
+}) {
   const utils = trpc.useContext();
   const updateWorkout = trpc.updateWorkout.useMutation({
     onSuccess: () => {
@@ -15,18 +21,22 @@ export function TimeAgo({ workout }: { workout: Workout }) {
     },
   });
   const diff = new Date().valueOf() - workout.date.valueOf();
-  return (
+  const label =
+    diff < DAY_IN_MILLISECONDS
+      ? "today"
+      : diff < WEEK_IN_MILLISECONDS
+      ? formatTimeAgo(workout.date)
+      : workout.date.toLocaleDateString("is-IS");
+  return editable ? (
     <DateInput
       initial={workout.date}
       onChange={(date) =>
         updateWorkout.mutateAsync({ id: workout.id, fields: { date } })
       }
     >
-      {diff < DAY_IN_MILLISECONDS
-        ? "today"
-        : diff < WEEK_IN_MILLISECONDS
-        ? formatTimeAgo(workout.date)
-        : workout.date.toLocaleDateString("is-IS")}
+      {label}
     </DateInput>
+  ) : (
+    <>{label}</>
   );
 }

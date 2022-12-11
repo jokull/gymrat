@@ -1,9 +1,12 @@
 import classNames from "classnames";
+import Link from "next/link";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
+
+type LinkProps = Parameters<typeof Link>[0];
 
 export const baseClassName = classNames(
   "font-medium text-sm inline-flex items-center justify-center",
@@ -35,21 +38,30 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
 
 Button.displayName = "Button";
 
+function getPrimaryClassNames(className?: string) {
+  return classNames(
+    baseClassName,
+    "py-2 px-3",
+    "bg-pink-500 hover:bg-pink-700 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-700/50",
+    "transition-shadow",
+    "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
+    className
+  );
+}
+
 export function Primary({ children, className, ...props }: Props) {
   return (
-    <button
-      className={classNames(
-        baseClassName,
-        "py-2 px-3",
-        "bg-pink-500 hover:bg-pink-700 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-700/50",
-        "transition-shadow",
-        "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
-        className
-      )}
-      {...props}
-    >
+    <button className={getPrimaryClassNames(className)} {...props}>
       {children}
     </button>
+  );
+}
+
+export function PrimaryLink({ children, className, ...props }: LinkProps) {
+  return (
+    <Link className={getPrimaryClassNames(className)} {...props}>
+      {children}
+    </Link>
   );
 }
 
@@ -75,20 +87,32 @@ export const Secondary = forwardRef<HTMLButtonElement, Props>(
 
 Secondary.displayName = "Secondary";
 
+function getGhostClassNames(className?: string) {
+  return classNames(
+    baseClassName,
+    "py-2 px-3",
+    "hover:bg-neutral-900 active:bg-neutral-800 text-white",
+    "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
+    className
+  );
+}
+
 export function Ghost({ children, className, disabled, ...props }: Props) {
   return (
     <button
       disabled={disabled}
-      className={classNames(
-        baseClassName,
-        "py-2 px-3",
-        "hover:bg-neutral-200 active:bg-neutral-300",
-        "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
-        className
-      )}
+      className={getGhostClassNames(className)}
       {...props}
     >
       {children}
     </button>
+  );
+}
+
+export function GhostLink({ children, className, ...props }: LinkProps) {
+  return (
+    <Link className={getGhostClassNames(className)} {...props}>
+      {children}
+    </Link>
   );
 }

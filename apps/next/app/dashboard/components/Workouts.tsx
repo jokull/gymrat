@@ -2,7 +2,6 @@
 
 import { trpc } from "@/trpc/client";
 import { RadioGroup } from "@headlessui/react";
-import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { inferRouterOutputs } from "@trpc/server";
 import { type Workout } from "api/db";
@@ -31,20 +30,37 @@ function TopScore({ workout }: { workout: Workout }) {
             damping: 5,
           }}
         >
-          <StarIcon className="w-4 h-4 text-yellow-500 hidden group-data-active:block" />
-          <OutlineStarIcon className="w-4 h-4 text-neutral-300 block group-data-active:hidden" />
+          <StarIcon className="w-4 h-4 text-neutral-400 group-data-active:text-yellow-500" />
         </motion.div>
       ) : null}
     </AnimatePresence>
   );
 }
 
-export function Workouts({ initialData }: Props) {
+export function DataWorkouts({ initialData }: Props) {
   const { data } = trpc.workouts.useQuery(undefined, {
     initialData: initialData,
   });
   const workouts = data ?? [];
-  const [workout, setWorkout] = useState(workouts[0]);
+  const [workout, setWorkout] = useState<Workout | undefined>(workouts[0]);
+  return (
+    <Workouts workouts={workouts} workout={workout} setWorkout={setWorkout} />
+  );
+}
+
+type WorkoutState = ReturnType<typeof useState<Workout>>;
+
+export function Workouts({
+  workouts,
+  workout,
+  setWorkout,
+  editable = true,
+}: {
+  workouts: Workout[];
+  workout: WorkoutState[0];
+  setWorkout: WorkoutState[1];
+  editable?: boolean;
+}) {
   return (
     <RadioGroup
       value={workout}
@@ -69,7 +85,7 @@ export function Workouts({ initialData }: Props) {
                   <div className="flex flex-col gap-1 grow min-w-0">
                     <div>{workout.description}</div>
                     <div className="text-neutral-500 whitespace-nowrap">
-                      <TimeAgo workout={workout} />
+                      <TimeAgo workout={workout} editable={editable} />
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
@@ -78,7 +94,7 @@ export function Workouts({ initialData }: Props) {
                       <span className="font-medium">{workout.value}</span>
                     </div>
                     <div className="items-center gap-2 shrink-0">
-                      <DeleteWorkout workout={workout} />
+                      {editable ? <DeleteWorkout workout={workout} /> : null}
                     </div>
                   </div>
                 </div>
@@ -94,9 +110,9 @@ export function Workouts({ initialData }: Props) {
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <div className="text-neutral-500 whitespace-nowrap">
-                        <TimeAgo workout={workout} />
+                        <TimeAgo workout={workout} editable={editable} />
                       </div>
-                      <DeleteWorkout workout={workout} />
+                      {editable ? <DeleteWorkout workout={workout} /> : null}
                     </div>
                   </div>
                 </div>

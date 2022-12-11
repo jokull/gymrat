@@ -30,7 +30,7 @@
     "dev": "wrangler dev --local --persist",
     "deploy": "wrangler publish",
     "generate": "prisma generate",
-    "postinstall": "kysely-codegen"
+    "db-codegen": "kysely-codegen --out-file ./db.d.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",

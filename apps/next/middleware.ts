@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 // Set the paths that don't require the user to be signed in
-const publicPaths = ["/", "/sign-in*", "/sign-up*", "/trpc*"];
+const publicPaths = ["/", "/sign-in*", "/sign-up*"];
 
 const isPublic = (path: string) => {
   return publicPaths.find((x) =>
@@ -12,6 +12,19 @@ const isPublic = (path: string) => {
 };
 
 export default withClerkMiddleware(async (request: NextRequest) => {
+  if (request.nextUrl.pathname.startsWith("/trpc")) {
+    return await fetch(
+      `https://${process.env.TRPC_HOST ?? ""}${request.nextUrl.pathname}?${
+        request.nextUrl.searchParams
+      }`,
+      {
+        headers: {
+          cookie: request.headers.get("cookie") ?? "",
+        },
+      }
+    );
+  }
+
   if (isPublic(request.nextUrl.pathname)) {
     return NextResponse.next();
   }

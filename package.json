@@ -7,9 +7,7 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "dev": "turbo run dev",
-    "tsc": "turbo run tsc",
-    "prebuild": "turbo prune --scope=next && cd ./out && pnpm --filter api remove wrangler @miniflare/tre @cloudflare/d1 && pnpm install -r && vercel build --yes --prod --cwd apps/next",
-    "vercel": "cd out/apps/next && vercel deploy --prebuilt --prod"
+    "tsc": "turbo run tsc"
   },
   "keywords": [],
   "author": "Jökull Sólberg",

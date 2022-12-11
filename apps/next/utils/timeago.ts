@@ -23,4 +23,5 @@ export function formatTimeAgo(date: Date) {
     }
     duration /= division.amount;
   }
+  return "";
 }

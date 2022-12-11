@@ -41,7 +41,8 @@ export function Primary({ children, className, ...props }: Props) {
       className={classNames(
         baseClassName,
         "py-2 px-3",
-        "bg-pink-500 hover:bg-pink-700 text-white",
+        "bg-pink-500 hover:bg-pink-700 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-700/50",
+        "transition-shadow",
         "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
         className
       )}

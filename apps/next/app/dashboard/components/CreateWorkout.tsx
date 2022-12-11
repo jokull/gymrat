@@ -2,6 +2,7 @@
 
 import { useField, useForm } from "@shopify/react-form";
 
+import { Primary } from "@/components/Button";
 import { trpc } from "@/trpc/client";
 import { inferRouterOutputs } from "@trpc/server";
 import { type AppRouter } from "api/router";
@@ -64,6 +65,7 @@ export function CreateWorkout({ workouts }: Props) {
         workout,
         ...(oldData ?? []),
       ]);
+      utils.workouts.invalidate();
       form.reset();
       return { status: "success" };
     },
@@ -72,31 +74,37 @@ export function CreateWorkout({ workouts }: Props) {
   return (
     <form onSubmit={submit}>
       <fieldset
-        className="flex gap-4 w-full items-end"
+        className="flex flex-wrap gap-4 w-full items-end"
         disabled={create.isLoading}
       >
-        <Autocomplete
-          items={items}
-          value={description.value}
-          onChange={(item) => description.onChange(item)}
-        />
-        <label className="inline-flex flex-col w-32">
-          <span className="block text-sm font-medium text-gray-500 text-left leading-6">
-            Value
-          </span>
-          <input
-            className="py-1 px-3 bg-neutral-900 border-2 border-neutral-400 focus:border-neutral-200 rounded-md shadow-sm outline-none placeholder:text-neutral-700"
-            value={value.value}
-            onChange={value.onChange}
-            placeholder="80 kg"
+        <div className="grow-[5] basis-[180px]">
+          <Autocomplete
+            items={items}
+            value={description.value}
+            onChange={(item) => description.onChange(item)}
           />
-        </label>
-        <button
-          type="submit"
-          className="py-1.5 px-3 font-bold bg-neutral-200 text-neutral-900 rounded-md shadow-sm"
-        >
-          Save
-        </button>
+        </div>
+        <div className="grow-[3] basis-[100px]">
+          <label className="inline-flex flex-col min-w-0">
+            <span className="block text-sm font-medium text-gray-400 text-left leading-6">
+              Value
+            </span>
+            <input
+              className="w-full py-1.5 px-3 border border-neutral-600 bg-transparent rounded-md placeholder:text-neutral-700"
+              value={value.value}
+              onChange={value.onChange}
+              placeholder="80 kg"
+            />
+          </label>
+        </div>
+        <div className="grow-[1] basis-[80px]">
+          <Primary type="submit" className="w-full">
+            <span className="font-bold @container">
+              <span className="@sm:hidden">Save</span>
+              <span className="hidden @sm:inline">Record New Workout</span>
+            </span>
+          </Primary>
+        </div>
       </fieldset>
     </form>
   );

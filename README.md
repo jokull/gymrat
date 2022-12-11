@@ -8,7 +8,7 @@ Goal is to be the simplest and fastest way to track your weight lifting progress
 - tRPC Backend
   - Using Cloudflare Workers (`fetchRequestHandler`)
   - D1 with type safe Kysely query building
-- Next.js web frontend (proxies `/api/trpc` to the backend `/trpc`) (WIP)
+- Next.js web frontend
 - Clerk auth and signup
 
 Since Vercel uses Cloudflare Worker behind the scenes for `experimental-edge` the proxying from

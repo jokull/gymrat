@@ -18,8 +18,7 @@ function Option({ item }: { item: Item }) {
       key={item.id}
       value={item}
       className={classNames(
-        "data-active:bg-neutral-600 data-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block",
-        item.id === null ? "sr-only" : ""
+        "data-active:bg-neutral-600 data-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block"
       )}
     >
       {item.description}
@@ -57,20 +56,21 @@ export default function Autocomplete({
       : items;
 
   return (
-    <div className="relative inline-flex flex-col grow">
+    <div className="relative inline-flex flex-col w-full">
       <Combobox
         value={value}
         onChange={onChange}
         as={Fragment}
         by={compareItems}
       >
-        <label className="block text-sm font-medium text-gray-500 text-left leading-6">
+        <label className="block text-sm font-medium text-gray-400 text-left leading-6">
           Workout / Lift
         </label>
         <Combobox.Input
-          className="px-3 py-1 inline-flex items-center rounded-md overflow-hidden shadow-sm border-2 bg-neutral-900 border-neutral-400 focus:border-neutral-200 outline-none"
+          className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(item: Item) => item.description}
+          autoFocus
         />
         <Combobox.Options className="w-full z-10 shadow-lg border-2 border-neutral-400 bg-neutral-900 p-1 rounded-md mt-2 absolute top-14">
           {query.length > 0 && (

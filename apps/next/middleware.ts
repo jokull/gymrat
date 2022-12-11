@@ -12,28 +12,6 @@ const isPublic = (path: string) => {
 };
 
 export default withClerkMiddleware(async (request: NextRequest) => {
-  // if (request.nextUrl.pathname.startsWith("/trpc")) {
-  //   const url = new URL(request.url);
-  //   url.host = process.env.TRPC_HOST ?? "";
-
-  //   try {
-  //     const response = await fetch(url.toString(), {
-  //       method: request.method,
-  //       headers: { cookie: request.headers.get("cookie") ?? "" }, // Should include the Clerk session
-  //       redirect: "manual",
-  //     });
-  //     if (response.status === 200) {
-  //       return new NextResponse(response.body, { headers: response.headers });
-  //     } else {
-  //       console.error(await response.text());
-  //       throw new Error();
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     return new NextResponse("server error", { status: 500 });
-  //   }
-  // }
-
   if (isPublic(request.nextUrl.pathname)) {
     return NextResponse.next();
   }

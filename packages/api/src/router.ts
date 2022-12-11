@@ -1,9 +1,9 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { User } from "kysely-codegen";
 import superjson from "superjson";
 import { z } from "zod";
 import { ClerkJwtPayload } from ".";
+import { type User } from "../db";
 import { getQueryBuilder, hydrateWorkout, queryWorkouts } from "./db";
 import { getNumberValue } from "./utils";
 

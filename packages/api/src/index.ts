@@ -1,7 +1,6 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import jwt, { JwtPayload } from "@tsndr/cloudflare-worker-jwt";
 import { parse } from "cookie";
-import { User } from "kysely-codegen";
 import { generateApiKey } from "./apiKeys";
 import { getQueryBuilder } from "./db";
 
@@ -56,7 +55,7 @@ async function getClerkAuth(
   return { status: "authorized", jwt: payload };
 }
 
-async function getUser(d1: Env["DB"], { id }: ClerkJwtPayload): Promise<User> {
+async function getUser(d1: Env["DB"], { id }: ClerkJwtPayload) {
   const db = getQueryBuilder(d1);
   let user = await db
     .selectFrom("User")
@@ -73,10 +72,7 @@ async function getUser(d1: Env["DB"], { id }: ClerkJwtPayload): Promise<User> {
   return user;
 }
 
-async function getUserFromApiKey(
-  request: Request,
-  d1: Env["DB"]
-): Promise<User | null> {
+async function getUserFromApiKey(request: Request, d1: Env["DB"]) {
   const authHeader = request.headers.get("authorization");
   const db = getQueryBuilder(d1);
   return (
@@ -91,11 +87,14 @@ async function getUserFromApiKey(
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const clerkAuth = await getClerkAuth(request, env.CLERK_JWT_KEY);
-    let jwt = null;
-    let user = null;
+    let jwt: ClerkJwtPayload | null;
+    let user: Awaited<ReturnType<typeof getUser>> | null;
     if (clerkAuth.status === "authorized") {
       jwt = clerkAuth.jwt;
       user = await getUser(env.DB, jwt);
+    } else {
+      jwt = null;
+      user = null;
     }
 
     user = user ?? (await getUserFromApiKey(request, env.DB));

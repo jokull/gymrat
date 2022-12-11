@@ -8,8 +8,11 @@
     "lint": {
       "outputs": []
     },
+    "tsc": {
+      "outputs": []
+    },
     "deploy": {
-      "dependsOn": ["build", "test", "lint"],
+      "dependsOn": ["build", "test", "lint", "tsc"],
       "outputs": []
     }
   }

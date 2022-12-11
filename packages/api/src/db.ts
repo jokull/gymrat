@@ -1,6 +1,6 @@
 import { Kysely, sql } from "kysely";
-import { DB } from "kysely-codegen";
 import { D1Dialect } from "kysely-d1";
+import { DB } from "../db";
 
 export interface Env {
   DB: D1Database;

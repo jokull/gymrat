@@ -6,7 +6,8 @@
     "dev": "next dev --port 3800",
     "build": "next build",
     "start": "next start --port 3800",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tsc": "tsc --pretty --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.6.7",

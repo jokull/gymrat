@@ -15,7 +15,7 @@ export default function RootLayout({
           <head>
             <title>Gymrat</title>
           </head>
-          <body className="bg-[rgb(5,1,13)]">{children}</body>
+          <body className="bg-[rgb(5,1,13)] px-4">{children}</body>
         </html>
       </ClientProvider>
     </ClerkProvider>

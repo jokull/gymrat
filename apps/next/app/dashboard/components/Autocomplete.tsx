@@ -18,7 +18,7 @@ function Option({ item }: { item: Item }) {
       key={item.id}
       value={item}
       className={classNames(
-        "data-active:bg-neutral-600 data-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block"
+        "data-active:bg-neutral-600 data-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block cursor-pointer"
       )}
     >
       {item.description}

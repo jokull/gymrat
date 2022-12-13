@@ -102,8 +102,6 @@ export function Promo() {
     },
   });
 
-  console.log({ description });
-
   return (
     <div>
       <form

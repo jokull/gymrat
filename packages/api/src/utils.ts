@@ -18,14 +18,15 @@ export function parseTime(time: string): number {
 
   // If we have 2 parts, then the first part is the minutes and the second part is the seconds
   if (parts.length === 2) {
-    minutes = parseInt(parts[0], 10);
-    seconds = parseInt(parts[1], 10);
+    const [part1, part2] = parts as [string, string];
+    minutes = parseInt(part1, 10);
+    seconds = parseInt(part2, 10);
   } else {
     // If we only have one part, then we need to check if it contains "min" or "sec" to determine whether it's the minutes or seconds
     if (time.includes("min")) {
-      minutes = parseInt(parts[0], 10);
+      minutes = parseInt(time, 10);
     } else if (time.includes("sec")) {
-      seconds = parseInt(parts[0], 10);
+      seconds = parseInt(time, 10);
     }
   }
 

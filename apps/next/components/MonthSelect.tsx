@@ -17,10 +17,8 @@ export function MonthSelect({
   const [direction, setDirection] = useState<-1 | 1 | 0>(0);
 
   useEffect(() => {
-    if (ref.current) {
-      const direction = isAfter(ref.current ?? value, value) ? -1 : 1;
-      setDirection(() => direction);
-    }
+    const direction = isAfter(ref.current, value) ? -1 : 1;
+    setDirection(() => direction);
     ref.current = value;
   }, [value]);
 

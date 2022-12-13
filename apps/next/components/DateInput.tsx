@@ -1,3 +1,4 @@
+import { Popover } from "@headlessui/react";
 import { Float } from "@headlessui-float/react";
 import classNames from "classnames";
 import {
@@ -9,11 +10,10 @@ import {
   isToday,
   startOfMonth,
 } from "date-fns";
+import { ReactNode } from "react";
 
 import { useCalendar } from "@/utils/use-calendar";
-import { Popover } from "@headlessui/react";
-import {} from "date-fns";
-import { ReactNode } from "react";
+
 import { MonthSelect } from "./MonthSelect";
 
 export function DayGrid({
@@ -46,7 +46,7 @@ export function DayGrid({
       <div className="flex flex-col gap-1" aria-label="Calendar grid">
         {calendar.map((week) => (
           <div
-            key={week[0].toString()}
+            key={week[0]!.toString()}
             className="grid grid-cols-7 gap-1 justify-between"
           >
             {week.map((day) => {
@@ -55,17 +55,17 @@ export function DayGrid({
               };
 
               const rangeSelected = selected.length > 1;
+              const firstSelected = selected[0]!;
+              const lastSelected = selected[selected.length - 1]!;
               const isStart =
-                rangeSelected && isSelected(day) && isEqual(day, selected[0]);
+                rangeSelected && isSelected(day) && isEqual(day, firstSelected);
               const isEnd =
-                rangeSelected &&
-                isSelected(day) &&
-                isEqual(day, selected[selected.length - 1]);
+                rangeSelected && isSelected(day) && isEqual(day, lastSelected);
               const isWithinRange =
                 rangeSelected &&
                 isSelected(day) &&
-                !isEqual(day, selected[0]) &&
-                !isEqual(day, selected[selected.length - 1]);
+                !isEqual(day, firstSelected) &&
+                !isEqual(day, lastSelected);
 
               return (
                 <div
@@ -96,7 +96,7 @@ export function DayGrid({
                     tabIndex={0}
                     className={classNames(
                       "z-30 transform-gpu transition-colors translate-x-0 w-7 h-7",
-                      "rounded flex items-center justify-center text-sm",
+                      "rounded-sm flex items-center justify-center text-sm",
                       "disabled:line-through border",
                       isSelected(day)
                         ? "text-white bg-pink-500 hover:bg-pink-600"
@@ -141,7 +141,7 @@ export default function DateInput({
     viewPreviousMonth,
     setViewing,
   } = useCalendar({
-    selected: initial ? [initial] : [],
+    selected: [initial],
     viewing: initial ?? undefined,
   });
 

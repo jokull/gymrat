@@ -109,8 +109,11 @@ export function CreateWorkout({
       <div className="grow-[5] basis-[180px]">
         <Autocomplete
           items={items}
-          value={description.value}
-          onChange={(item) => description.onChange(item)}
+          // Shouldn't be necessary but in production builds `value` is undefined
+          value={description.value ?? description.defaultValue}
+          onChange={(item) => {
+            description.onChange(item);
+          }}
         />
       </div>
       <div className="grow-[3] basis-[100px]">
@@ -127,8 +130,12 @@ export function CreateWorkout({
         </label>
       </div>
       <div className="grow-[1] basis-[80px] relative">
-        <div className="absolute z-10 -top-[5px] -right-[5px] w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
-        <div className="absolute z-20 -top-1 -right-1 w-2 h-2 rounded-full bg-white" />
+        {isPromo ? (
+          <>
+            <div className="absolute z-10 -top-[5px] -right-[5px] w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
+            <div className="absolute z-20 -top-1 -right-1 w-2 h-2 rounded-full bg-white" />
+          </>
+        ) : null}
         <Primary type="submit" className="w-full z-30">
           <span className="font-bold @container">
             <span className="@sm:hidden">Save</span>

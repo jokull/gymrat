@@ -73,9 +73,12 @@ export function Promo() {
   } = useForm({
     fields: {
       description: useField({
-        description: "Back Squat 3x",
-        id: null,
-        topScore: 110,
+        value: {
+          description: "Back Squat 3x",
+          id: null,
+          topScore: 110,
+        },
+        validates: [],
       }),
       value: useField("110 kg"),
     },
@@ -98,6 +101,8 @@ export function Promo() {
       return { status: "success" };
     },
   });
+
+  console.log({ description });
 
   return (
     <div>

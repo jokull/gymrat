@@ -69,7 +69,7 @@ export default function Autocomplete({
         <Combobox.Input
           className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
           onChange={(event) => setQuery(event.target.value)}
-          displayValue={(item: Item) => item.description}
+          displayValue={(item: Item | undefined) => item?.description ?? ""}
           autoFocus
         />
         <Combobox.Options className="w-full z-10 shadow-lg border-2 border-neutral-400 bg-neutral-900 p-1 rounded-md mt-2 absolute top-14">

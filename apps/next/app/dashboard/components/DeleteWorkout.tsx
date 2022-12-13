@@ -1,8 +1,8 @@
 "use client";
 import { trpc } from "@/trpc/client";
+import { type Workout } from "@gymrat/api";
 import { FocusTrap } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { type Workout } from "api/db";
 import { KeyboardEvent, useCallback, useState } from "react";
 
 export function DeleteWorkout({ workout }: { workout: Workout }) {

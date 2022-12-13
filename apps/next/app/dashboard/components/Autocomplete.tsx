@@ -1,8 +1,8 @@
 import { Combobox } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
+import { type AppRouter } from "@gymrat/api";
 import { inferRouterOutputs } from "@trpc/server";
-import { type AppRouter } from "api/router";
 import classNames from "classnames";
 type RouterOutput = inferRouterOutputs<AppRouter>;
 

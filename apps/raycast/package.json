@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "raycast",
+  "name": "gymrat",
   "title": "Gymrat",
   "description": "Record and look up gym progress",
   "icon": "command-icon.png",
@@ -9,6 +9,7 @@
     "Fun",
     "Data"
   ],
+  "private": true,
   "license": "MIT",
   "commands": [
     {
@@ -32,7 +33,7 @@
     "@raycast/utils": "^1.4.11",
     "@trpc/client": "^10.4.3",
     "@trpc/server": "^10.4.3",
-    "api": "workspace:*",
+    "@gymrat/api": "*",
     "fuse.js": "^6.6.2",
     "ky": "^0.32.2",
     "superjson": "^1.11.0",

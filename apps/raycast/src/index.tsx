@@ -18,8 +18,8 @@ import { useCachedPromise } from "@raycast/utils";
 import { useState } from "react";
 import { z } from "zod";
 
+import type { AppRouter } from "@gymrat/api";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "api/router";
 
 const workoutSchema = z.object({
   id: z.string(),

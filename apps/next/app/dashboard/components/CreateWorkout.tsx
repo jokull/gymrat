@@ -4,9 +4,8 @@ import { useField, useForm } from "@shopify/react-form";
 
 import { Primary } from "@/components/Button";
 import { trpc } from "@/trpc/client";
+import { type AppRouter, type Workout } from "@gymrat/api";
 import { inferRouterOutputs } from "@trpc/server";
-import { type Workout } from "api/db";
-import { type AppRouter } from "api/router";
 import Autocomplete, { Item } from "./Autocomplete";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;

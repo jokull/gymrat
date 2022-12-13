@@ -1,6 +1,6 @@
+import type { AppRouter } from "@gymrat/api";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import type { AppRouter } from "api/router";
 import superjson from "superjson";
 
 function getBaseUrl() {

@@ -10,7 +10,9 @@ importers:
 
   apps/next:
     specifiers:
+      '@clerk/clerk-react': ^4.6.3
       '@clerk/nextjs': ^4.6.7
+      '@gymrat/api': '*'
       '@headlessui-float/react': ^0.10.1
       '@headlessui/react': ^1.7.4
       '@heroicons/react': ^2.0.13
@@ -24,7 +26,7 @@ importers:
       '@types/node': 18.11.10
       '@types/react': 18.0.9
       '@types/react-dom': 18.0.9
-      api: workspace:*
+      add: ^2.0.6
       autoprefixer: ^10.4.13
       classnames: ^2.3.2
       date-fns: ^2.29.3
@@ -42,7 +44,9 @@ importers:
       tailwindcss: ^3.2.4
       typescript: 4.9.3
     dependencies:
+      '@clerk/clerk-react': 4.6.3_biqbaboplfbrettd7655fr4n2y
       '@clerk/nextjs': 4.6.7_cn2wvw6rkm76gy2h2qfs2itv2u
+      '@gymrat/api': link:../../packages/api
       '@headlessui-float/react': 0.10.1_5g5gz4xukyofdqir2y4cxbf2g4
       '@headlessui/react': 1.7.4_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 2.0.13_react@18.2.0
@@ -52,7 +56,7 @@ importers:
       '@trpc/next': 10.4.3_6vfw7ziuwyxddb6326h5l3d2f4
       '@trpc/react-query': 10.4.3_x72ucuwg27nhluiflrpycjcdya
       '@trpc/server': 10.4.3
-      api: link:../../packages/api
+      add: 2.0.6
       classnames: 2.3.2
       date-fns: 2.29.3
       framer-motion: 7.6.19_biqbaboplfbrettd7655fr4n2y
@@ -77,6 +81,7 @@ importers:
 
   apps/raycast:
     specifiers:
+      '@gymrat/api': '*'
       '@raycast/api': ^1.44.0
       '@raycast/utils': ^1.4.11
       '@trpc/client': ^10.4.3
@@ -85,7 +90,6 @@ importers:
       '@types/react': 18.0.9
       '@typescript-eslint/eslint-plugin': ^5.0.0
       '@typescript-eslint/parser': ^5.0.0
-      api: workspace:*
       eslint: ^7.32.0
       eslint-config-prettier: ^8.3.0
       fuse.js: ^6.6.2
@@ -95,11 +99,11 @@ importers:
       typescript: ^4.4.3
       zod: ^3.19.1
     dependencies:
+      '@gymrat/api': link:../../packages/api
       '@raycast/api': 1.44.0_2cx2ipqrn5f7svdjipmu7pbevq
       '@raycast/utils': 1.4.11_@raycast+api@1.44.0
       '@trpc/client': 10.4.3_@trpc+server@10.4.3
       '@trpc/server': 10.4.3
-      api: link:../../packages/api
       fuse.js: 6.6.2
       ky: 0.32.2
       superjson: 1.11.0
@@ -222,15 +226,15 @@ packages:
       - encoding
     dev: false
 
-  /@clerk/clerk-react/4.5.5_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-UfoJg2dygCd3dV3m2eja07PmC7+dVYIGDx6gG13I493iPIci8jrJdo9raGd/Wmkuw+PbIKqbFZmdn2NVA8lyMQ==}
+  /@clerk/clerk-react/4.6.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-4a6tXYvqWHmGsI2m+G5PPo4I7Wzd8Z9RgnN/8j+juriK5ozdUobyov8W27NTXCkucYViUO1F0Ix/oa7VVIrKGg==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@clerk/shared': 0.7.0_biqbaboplfbrettd7655fr4n2y
-      '@clerk/types': 3.20.0
+      '@clerk/shared': 0.8.1_biqbaboplfbrettd7655fr4n2y
+      '@clerk/types': 3.22.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       swr: 1.3.0_react@18.2.0
@@ -284,7 +288,7 @@ packages:
     peerDependencies:
       next: '>=10'
     dependencies:
-      '@clerk/clerk-react': 4.5.5_biqbaboplfbrettd7655fr4n2y
+      '@clerk/clerk-react': 4.6.3_biqbaboplfbrettd7655fr4n2y
       '@clerk/clerk-sdk-node': 4.5.8
       '@clerk/edge': 1.12.16_next@13.0.7-canary.4
       '@clerk/types': 3.20.0
@@ -298,8 +302,8 @@ packages:
       - supports-color
     dev: false
 
-  /@clerk/shared/0.7.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-BzC1iCoRQ6C+ETaO8YvqN/cMIa5perxl9E/fJQk+IcS6AEjyO8xdMfT2nB5SuKquCbGCLf+wi1s56nBLhsTr7Q==}
+  /@clerk/shared/0.8.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-AaPKnAF+j252TFx4SjATu7ZMGyyA03OUPi40KDX2u4p73WOM87qWeEI4RWd/whAY4e/60/aQG54xNHqtFS6kog==}
     peerDependencies:
       react: 18.2.0
       react-dom: 18.2.0
@@ -311,6 +315,13 @@ packages:
 
   /@clerk/types/3.20.0:
     resolution: {integrity: sha512-/5hC5hiJHWj43KqqTBnPCy5HTGL79BwEY9PiOfSRYmSpRqBIhl9ph0B5I1ns/A5rI6AvYZ9J4Mxcj9aCyR3L0Q==}
+    engines: {node: '>=14'}
+    dependencies:
+      csstype: 3.1.1
+    dev: false
+
+  /@clerk/types/3.22.1:
+    resolution: {integrity: sha512-KrSzgPGarCAJ7Gk5l5x5TeahkAWN/SQl069J+80n46CF5a88/d3U1eDXDigYBdOwSp5JVeiw0aSmUxJozDcB/Q==}
     engines: {node: '>=14'}
     dependencies:
       csstype: 3.1.1
@@ -1511,6 +1522,10 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
+
+  /add/2.0.6:
+    resolution: {integrity: sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==}
+    dev: false
 
   /ajv/6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}

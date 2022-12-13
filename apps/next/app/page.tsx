@@ -1,20 +1,15 @@
-import { GhostLink, PrimaryLink } from "@/components/Button";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import Header from "./components/Header";
 import { Promo } from "./components/Promo";
 
 export default async function Home() {
   return (
-    <div className="py-4 sm:py-8 mx-auto max-w-lg text-gray-300 flex flex-col h-screen">
-      <header className="flex justify-between items-center">
-        <h1 className="font-extrabold uppercase">Gymrat</h1>
-        <div className="flex gap-2">
-          <GhostLink href="/sign-in">Sign In</GhostLink>
-          <PrimaryLink href="/sign-up">Sign Up</PrimaryLink>
-        </div>
-      </header>
+    <div className="flex flex-col h-screen">
+      {/* @ts-expect-error github.com/microsoft/TypeScript/pull/51328 */}
+      <Header page="index" />
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
-        <div className="text-4xl font-bold text-center leading-tight my-8">
+        <div className="text-xl sm:text-4xl font-bold text-center leading-tight my-8">
           The simple way to track your progress in the gym
         </div>
         <div className="min-h-[340px]">

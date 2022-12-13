@@ -9,3 +9,26 @@ export function getNumberValue(value: string) {
 
   return numberValue;
 }
+
+export function parseTime(time: string): number {
+  // Split the string on ":" to handle the MM:SS format
+  const parts = time.split(":");
+  let minutes = 0;
+  let seconds = 0;
+
+  // If we have 2 parts, then the first part is the minutes and the second part is the seconds
+  if (parts.length === 2) {
+    minutes = parseInt(parts[0], 10);
+    seconds = parseInt(parts[1], 10);
+  } else {
+    // If we only have one part, then we need to check if it contains "min" or "sec" to determine whether it's the minutes or seconds
+    if (time.includes("min")) {
+      minutes = parseInt(parts[0], 10);
+    } else if (time.includes("sec")) {
+      seconds = parseInt(parts[0], 10);
+    }
+  }
+
+  // Return the total number of seconds
+  return minutes * 60 + seconds;
+}

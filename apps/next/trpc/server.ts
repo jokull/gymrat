@@ -3,7 +3,7 @@ import "server-only";
 import { createTRPCProxyClient, httpLink, loggerLink } from "@trpc/client";
 import { headers } from "next/headers";
 
-import { type AppRouter } from "api/router";
+import { type AppRouter } from "@gymrat/api";
 import superjson from "superjson";
 
 export const trpc = createTRPCProxyClient<AppRouter>({

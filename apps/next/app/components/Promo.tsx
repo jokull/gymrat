@@ -1,12 +1,12 @@
 "use client";
 
+import { getNumberValue, type Workout } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
-import { type Workout } from "api/db";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CreateWorkout } from "../dashboard/components/CreateWorkout";
-import { Workouts } from "../dashboard/components/Workouts";
+import { WorkoutRow } from "../dashboard/components/Workouts";
 
 type PromoWorkout = Omit<Workout, "topScore">;
 
@@ -57,11 +57,11 @@ export function Promo() {
       const workout = input.shift();
       if (workout) {
         setTopScore(workout.numberValue);
-        setOutput((workouts) => [...workouts, workout]);
+        setOutput((workouts) => [workout, ...workouts]);
       } else {
         clearInterval(interval);
       }
-    }, 230);
+    }, 430);
     return () => clearInterval(interval);
   });
 
@@ -72,16 +72,24 @@ export function Promo() {
     fields: { description, value },
   } = useForm({
     fields: {
-      description: useField({ description: "", id: null, topScore: 0 }),
-      value: useField(""),
+      description: useField({
+        description: "Back Squat 3x",
+        id: null,
+        topScore: 110,
+      }),
+      value: useField("110 kg"),
     },
     async onSubmit(values) {
       setHasInteracted(true);
+      setTopScore((oldTopScore) => {
+        const newTopScore = getNumberValue(values.value) ?? 0;
+        return newTopScore > oldTopScore ? newTopScore : oldTopScore;
+      });
       setOutput((workouts) => [
         {
           id: Math.random().toString(),
           value: values.value,
-          numberValue: 0,
+          numberValue: getNumberValue(values.value),
           date: new Date(),
           description: values.description.description,
         },
@@ -107,12 +115,19 @@ export function Promo() {
           value={value}
         />
       </form>
-      <Workouts
-        workout={workouts[-1]}
-        setWorkout={() => undefined}
-        workouts={workouts}
-        editable={false}
-      />
+      {workouts.length > 0 ? (
+        <div className="flex flex-col gap-1 py-4">
+          {workouts.map((workout, i) => (
+            <div
+              key={workout.id}
+              className="data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
+              data-headlessui-state={i === 0 ? "active" : ""}
+            >
+              <WorkoutRow workout={workout} editable={false} />
+            </div>
+          ))}
+        </div>
+      ) : null}
       <AnimatePresence>
         {hasInteracted && (
           <motion.div

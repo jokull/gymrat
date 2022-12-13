@@ -1,5 +1,5 @@
 {
-  "name": "next",
+  "name": "@gymrat/next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,9 @@
     "tsc": "tsc --pretty --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^4.6.3",
     "@clerk/nextjs": "^4.6.7",
+    "@gymrat/api": "*",
     "@headlessui-float/react": "^0.10.1",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
@@ -20,17 +22,17 @@
     "@trpc/next": "^10.4.3",
     "@trpc/react-query": "^10.4.3",
     "@trpc/server": "^10.4.3",
-    "api": "workspace:*",
+    "add": "^2.0.6",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
     "framer-motion": "^7.6.19",
     "fuse.js": "^6.6.2",
     "next": "13.0.7-canary.4",
+    "next-superjson-plugin": "^0.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "server-only": "^0.0.1",
-    "superjson": "^1.11.0",
-    "next-superjson-plugin": "^0.5.2"
+    "superjson": "^1.11.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

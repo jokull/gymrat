@@ -2,7 +2,7 @@
 import DateInput from "@/components/DateInput";
 import { trpc } from "@/trpc/client";
 import { formatTimeAgo } from "@/utils/timeago";
-import { type Workout } from "api/db";
+import { type Workout } from "@gymrat/api";
 
 const DAY_IN_MILLISECONDS = 86_400_000;
 const WEEK_IN_MILLISECONDS = DAY_IN_MILLISECONDS * 7;

@@ -1,7 +1,7 @@
 import { httpBatchLink } from "@trpc/client";
 
+import { type AppRouter } from "@gymrat/api";
 import { createTRPCReact } from "@trpc/react-query";
-import { type AppRouter } from "api/router";
 import superjson from "superjson";
 
 export const trpc = createTRPCReact<AppRouter>();

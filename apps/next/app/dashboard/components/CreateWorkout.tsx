@@ -94,7 +94,12 @@ export function CreateWorkout({
   description,
   value,
   isLoading,
-}: { workouts: Workout[]; isLoading: boolean } & WorkoutFields) {
+  isPromo = false,
+}: {
+  workouts: Workout[];
+  isLoading: boolean;
+  isPromo?: boolean;
+} & WorkoutFields) {
   const items = getDescriptionItems(workouts);
   return (
     <fieldset
@@ -121,8 +126,10 @@ export function CreateWorkout({
           />
         </label>
       </div>
-      <div className="grow-[1] basis-[80px]">
-        <Primary type="submit" className="w-full">
+      <div className="grow-[1] basis-[80px] relative">
+        <div className="absolute z-10 -top-[5px] -right-[5px] w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
+        <div className="absolute z-20 -top-1 -right-1 w-2 h-2 rounded-full bg-white" />
+        <Primary type="submit" className="w-full z-30">
           <span className="font-bold @container">
             <span className="@sm:hidden">Save</span>
             <span className="hidden @sm:inline">Record New Workout</span>

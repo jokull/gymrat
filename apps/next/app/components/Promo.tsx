@@ -102,7 +102,7 @@ export function Promo() {
   return (
     <div>
       <form
-        className="mb-4"
+        className="mb-4 relative"
         onSubmit={(event) => {
           event.preventDefault();
           submit();
@@ -113,6 +113,7 @@ export function Promo() {
           isLoading={false}
           description={description}
           value={value}
+          isPromo={true}
         />
       </form>
       {workouts.length > 0 ? (

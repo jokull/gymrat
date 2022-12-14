@@ -24,6 +24,7 @@ export interface Workout {
   date: string;
   description: string;
   id: string;
+  isTime: Generated<string>;
   numberValue: Generated<number>;
   updatedAt: string;
   userId: string;

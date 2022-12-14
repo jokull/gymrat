@@ -150,57 +150,60 @@ export default function Command() {
         </ActionPanel>
       }
     >
-      {filteredWorkouts.map((workout) => (
-        <List.Item
-          key={workout.id}
-          title={workout.description}
-          subtitle={`${workout.value} at ${workout.date.toLocaleDateString(undefined, { dateStyle: "full" })}`}
-          id={workout.id}
-          icon={workout.numberValue === workout.topScore ? { source: Icon.Star, tintColor: Color.Yellow } : undefined}
-          actions={
-            <ActionPanel>
-              <ActionPanel.Section>
-                <CreateWorkoutAction onCreate={handleCreate} />
-              </ActionPanel.Section>
-              <ActionPanel.Section>
-                <Action.Push
-                  icon={Icon.Pencil}
-                  title="Edit Workout"
-                  shortcut={{ modifiers: ["cmd"], key: "enter" }}
-                  target={
-                    <EditWorkoutForm
-                      workout={workout}
-                      onSuccess={(fields) => {
-                        api.updateWorkout.mutate({ id: workout.id, fields }).then(() => {
+      {filteredWorkouts.map((workout) => {
+        const score = workout.isTime ? workout.minScore : workout.maxScore;
+        return (
+          <List.Item
+            key={workout.id}
+            title={workout.description}
+            subtitle={`${workout.value} at ${workout.date.toLocaleDateString(undefined, { dateStyle: "full" })}`}
+            id={workout.id}
+            icon={workout.numberValue === score ? { source: Icon.Star, tintColor: Color.Yellow } : undefined}
+            actions={
+              <ActionPanel>
+                <ActionPanel.Section>
+                  <CreateWorkoutAction onCreate={handleCreate} />
+                </ActionPanel.Section>
+                <ActionPanel.Section>
+                  <Action.Push
+                    icon={Icon.Pencil}
+                    title="Edit Workout"
+                    shortcut={{ modifiers: ["cmd"], key: "enter" }}
+                    target={
+                      <EditWorkoutForm
+                        workout={workout}
+                        onSuccess={(fields) => {
+                          api.updateWorkout.mutate({ id: workout.id, fields }).then(() => {
+                            revalidate();
+                          });
+                        }}
+                      />
+                    }
+                  />
+                  <Action
+                    icon={Icon.Trash}
+                    title="Delete Workout"
+                    shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+                    onAction={async () => {
+                      if (
+                        await confirmAlert({
+                          title: "Delete this workout?",
+                          icon: { source: Icon.Warning, tintColor: Color.Red },
+                          primaryAction: { title: "Delete", style: Alert.ActionStyle.Destructive },
+                        })
+                      ) {
+                        api.deleteWorkout.mutate(workout.id).then(() => {
                           revalidate();
                         });
-                      }}
-                    />
-                  }
-                />
-                <Action
-                  icon={Icon.Trash}
-                  title="Delete Workout"
-                  shortcut={{ modifiers: ["cmd"], key: "backspace" }}
-                  onAction={async () => {
-                    if (
-                      await confirmAlert({
-                        title: "Delete this workout?",
-                        icon: { source: Icon.Warning, tintColor: Color.Red },
-                        primaryAction: { title: "Delete", style: Alert.ActionStyle.Destructive },
-                      })
-                    ) {
-                      api.deleteWorkout.mutate(workout.id).then(() => {
-                        revalidate();
-                      });
-                    }
-                  }}
-                />
-              </ActionPanel.Section>
-            </ActionPanel>
-          }
-        />
-      ))}
+                      }
+                    }}
+                  />
+                </ActionPanel.Section>
+              </ActionPanel>
+            }
+          />
+        );
+      })}
     </List>
   );
 }

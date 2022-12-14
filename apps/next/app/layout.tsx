@@ -16,7 +16,7 @@ export default function RootLayout({
             <title>Gymrat</title>
           </head>
           <body className="bg-[rgb(5,1,13)] px-4">
-            <div className="py-4 sm:py-8 mx-auto max-w-lg text-white">
+            <div className="py-4 sm:py-8 mx-auto max-w-lg text-white h-full">
               {children}
             </div>
           </body>

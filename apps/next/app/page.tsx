@@ -5,13 +5,23 @@ import { Promo } from "./components/Promo";
 
 export default async function Home() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       {/* @ts-expect-error github.com/microsoft/TypeScript/pull/51328 */}
       <Header page="index" />
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
-        <div className="text-xl sm:text-4xl font-bold text-center leading-tight my-8">
-          The simple way to track your progress in the gym
+        <div
+          className="text-3xl sm:text-4xl md:text-6xl md:-mx-12 font-black text-center leading-tight my-8 bg-no-repeat bg-clip-text text-transparent bg-[rgb(255,1,184)]"
+          style={{
+            backgroundImage: "url(/background.svg)",
+            backgroundSize: "cover",
+            backgroundPosition: "50% 50%",
+          }}
+        >
+          The dead simple way to track your progress in the gym
         </div>
+        <p className="font-medium text-sm text-center text-neutral-200">
+          Try out a demo of the UI below
+        </p>
         <div className="min-h-[340px]">
           <Promo />
         </div>

@@ -1,7 +1,7 @@
 import { GhostLink, PrimaryLink } from "@/components/Button";
 import { trpc } from "@/trpc/server";
 import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import SignOut from "./SignOut";
 
@@ -21,7 +21,8 @@ export default async function Header({
 }) {
   return (
     <header className="flex justify-between items-center">
-      <Link href="/">
+      <Link href="/" className="flex items-center gap-1">
+        <StarIcon className="w-4 h-4 -mt-1" />
         <h1 className="font-extrabold uppercase">Gymrat</h1>
       </Link>
       <div>

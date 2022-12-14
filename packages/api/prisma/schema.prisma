@@ -22,6 +22,7 @@ model Workout {
   description String
   value       String
   numberValue Int      @default(0)
+  isTime      Boolean  @default(false)
   date        DateTime
   userId      String
   user        User     @relation(fields: [userId], references: [id])

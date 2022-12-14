@@ -14,9 +14,10 @@ import { TimeAgo } from "./TimeAgo";
 export type RouterOutput = inferRouterOutputs<AppRouter>;
 
 function TopScore({ workout }: { workout: Workout }) {
+  const score = workout.isTime ? workout.minScore : workout.maxScore;
   return (
     <AnimatePresence>
-      {workout.topScore === workout.numberValue ? (
+      {score === workout.numberValue ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           exit={{ opacity: 0, scale: 0.9 }}

@@ -5,7 +5,7 @@ import Header from "../components/Header";
 export default async function Layout({ children }: { children: ReactNode }) {
   const user = await trpc.user.query();
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       {/* @ts-expect-error github.com/microsoft/TypeScript/pull/51328 */}
       <Header page="dashboard" />
       {children}

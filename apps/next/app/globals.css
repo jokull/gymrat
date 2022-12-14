@@ -15,9 +15,8 @@ body {
 }
 
 html,
-body,
-body div[data-nextjs-scroll-focus-boundary] {
-  height: 100vh;
+body {
+  height: 100%;
 }
 
 input::-webkit-search-cancel-button,

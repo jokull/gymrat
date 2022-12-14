@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 import { CreateWorkout } from "../dashboard/components/CreateWorkout";
 import { WorkoutRow } from "../dashboard/components/Workouts";
 
-type PromoWorkout = Omit<Workout, "topScore">;
+type PromoWorkout = Omit<Workout, "minScore" | "maxScore" | "isTime">;
 
 export function Promo() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [output, setOutput] = useState<PromoWorkout[]>([]);
-  const [topScore, setTopScore] = useState<number>(90);
+  const [maxScore, setMaxScore] = useState<number>(90);
   const [today] = useState(new Date());
   const [input] = useState([
     {
@@ -56,7 +56,7 @@ export function Promo() {
     const interval = setInterval(() => {
       const workout = input.shift();
       if (workout) {
-        setTopScore(workout.numberValue);
+        setMaxScore(workout.numberValue);
         setOutput((workouts) => [workout, ...workouts]);
       } else {
         clearInterval(interval);
@@ -65,7 +65,12 @@ export function Promo() {
     return () => clearInterval(interval);
   });
 
-  const workouts = output.map((workout) => ({ ...workout, topScore }));
+  const workouts: Workout[] = output.map((workout) => ({
+    ...workout,
+    maxScore,
+    minScore: -1,
+    isTime: false,
+  }));
 
   const {
     submit,
@@ -76,7 +81,8 @@ export function Promo() {
         value: {
           description: "Back Squat 3x",
           id: null,
-          topScore: 110,
+          maxScore: 110,
+          minScore: 110,
         },
         validates: [],
       }),
@@ -84,15 +90,16 @@ export function Promo() {
     },
     async onSubmit(values) {
       setHasInteracted(true);
-      setTopScore((oldTopScore) => {
-        const newTopScore = getNumberValue(values.value) ?? 0;
-        return newTopScore > oldTopScore ? newTopScore : oldTopScore;
+      setMaxScore((oldMaxScore) => {
+        const newMaxScore = getNumberValue(values.value)?.value ?? 0;
+        return newMaxScore > oldMaxScore ? newMaxScore : oldMaxScore;
       });
       setOutput((workouts) => [
         {
           id: Math.random().toString(),
           value: values.value,
-          numberValue: getNumberValue(values.value),
+          numberValue: getNumberValue(values.value).value,
+          isTime: false,
           date: new Date(),
           description: values.description.description,
         },
@@ -121,15 +128,40 @@ export function Promo() {
       </form>
       {workouts.length > 0 ? (
         <div className="flex flex-col gap-1 py-4">
-          {workouts.map((workout, i) => (
-            <div
-              key={workout.id}
-              className="data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
-              data-headlessui-state={i === 0 ? "active" : ""}
-            >
-              <WorkoutRow workout={workout} editable={false} />
-            </div>
-          ))}
+          <>
+            {workouts.map((workout, i) => (
+              <div
+                key={workout.id}
+                className="data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
+                data-headlessui-state={i === 0 ? "active" : ""}
+              >
+                <WorkoutRow workout={workout} editable={false} />
+              </div>
+            ))}
+            {workouts.length < 5
+              ? Array.from(Array(5 - workouts.length).keys()).map((i) => (
+                  <div
+                    key={`empty-${i}`}
+                    className="-mx-2 p-2 rounded-md group invisible"
+                    data-headlessui-state={i === 0 ? "active" : ""}
+                  >
+                    <WorkoutRow
+                      workout={{
+                        date: new Date(),
+                        description: "",
+                        id: "",
+                        numberValue: 0,
+                        value: "",
+                        isTime: false,
+                        maxScore: -1,
+                        minScore: -1,
+                      }}
+                      editable={false}
+                    />
+                  </div>
+                ))
+              : null}
+          </>
         </div>
       ) : null}
       <AnimatePresence>
@@ -140,7 +172,8 @@ export function Promo() {
             initial={{ opacity: 0, y: -10 }}
             className="text-center py-2 px-3  bg-teal-600/20 text-teal-600 font-medium my-8 rounded-md"
           >
-            This is only a demo - Sign up to save your workouts
+            <p>This is only a demo - Sign up to save your workouts</p>
+            <p className="text-xs mt-1">Gymrat is 100% free!</p>
           </motion.div>
         )}
       </AnimatePresence>

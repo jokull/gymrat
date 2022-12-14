@@ -23,6 +23,7 @@
     "dev": "wrangler dev --local --persist",
     "deploy": "wrangler publish",
     "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
     "lint": "eslint . --ext .ts,.tsx",
     "db-codegen": "kysely-codegen --out-file ./db.d.ts",
     "tsc": "tsc --pretty --project ./tsconfig.json --noEmit"

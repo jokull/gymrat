@@ -23,17 +23,29 @@ export function queryWorkouts(
       "w.id",
       "w.numberValue",
       "w.value",
+      "w.isTime",
       (eb) =>
         eb
           .selectFrom("Workout as tw")
-          .select((eb) => eb.fn.max("tw.numberValue").as("topScore"))
+          .select((eb) => eb.fn.max("tw.numberValue").as("maxScore"))
           .where(
             sql`lower(tw.description)`,
             "=",
             sql`lower(${eb.ref("w.description")})`
           )
           .where("tw.userId", "=", userId)
-          .as("topScore"),
+          .as("maxScore"),
+      (eb) =>
+        eb
+          .selectFrom("Workout as tw")
+          .select((eb) => eb.fn.min("tw.numberValue").as("minScore"))
+          .where(
+            sql`lower(tw.description)`,
+            "=",
+            sql`lower(${eb.ref("w.description")})`
+          )
+          .where("tw.userId", "=", userId)
+          .as("minScore"),
     ])
     .where("w.userId", "=", userId)
     .orderBy("w.date", "desc");
@@ -42,7 +54,9 @@ export function queryWorkouts(
 export function hydrateWorkout(workout: DBWorkout) {
   return {
     ...workout,
-    topScore: workout.topScore ?? 0,
+    maxScore: workout.maxScore ?? 0,
+    minScore: workout.minScore ?? 0,
+    isTime: ["1", "true"].includes(workout.isTime),
     date: new Date(workout.date),
   };
 }

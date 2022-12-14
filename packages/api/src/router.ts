@@ -52,7 +52,9 @@ export const appRouter = t.router({
         z
           .object({
             id: z.string().uuid(),
-            topScore: z.number(),
+            maxScore: z.number(),
+            minScore: z.number(),
+            isTime: z.boolean(),
             numberValue: z.number(),
           })
           .merge(workoutFormSchema)
@@ -67,6 +69,9 @@ export const appRouter = t.router({
       z.object({ id: z.string().uuid(), fields: workoutFormSchema.partial() })
     )
     .mutation(async ({ ctx, input }) => {
+      const numberValue = input.fields.value
+        ? getNumberValue(input.fields.value)
+        : undefined;
       const result = await ctx.db
         .updateTable("Workout")
         .set({
@@ -75,9 +80,8 @@ export const appRouter = t.router({
             ?.split(" ")
             .filter(Boolean)
             .join(" "),
-          numberValue: input.fields.value
-            ? getNumberValue(input.fields.value)
-            : undefined,
+          numberValue: numberValue?.value,
+          isTime: numberValue?.isTime ? "true" : "false",
           date: input.fields.date ? input.fields.date.toISOString() : undefined,
         })
         .where("Workout.id", "=", input.id)
@@ -87,13 +91,15 @@ export const appRouter = t.router({
   createWorkout: t.procedure
     .input(workoutFormSchema)
     .mutation(async ({ ctx, input }) => {
+      const numberValue = getNumberValue(input.value);
       const insert = await ctx.db
         .insertInto("Workout")
         .values({
           id: crypto.randomUUID(),
           updatedAt: new Date().toISOString(),
           value: input.value,
-          numberValue: getNumberValue(input.value),
+          numberValue: numberValue.value,
+          isTime: numberValue.isTime ? "true" : "false",
           description: input.description?.split(" ").filter(Boolean).join(" "),
           date: input.date.toISOString(),
           userId: ctx.user.id,

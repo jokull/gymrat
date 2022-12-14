@@ -1,7 +1,7 @@
 import { Combobox } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-import { type AppRouter } from "@gymrat/api";
+import { type AppRouter, type Workout } from "@gymrat/api";
 import { inferRouterOutputs } from "@trpc/server";
 import classNames from "classnames";
 type RouterOutput = inferRouterOutputs<AppRouter>;
@@ -10,7 +10,7 @@ import Fuse from "fuse.js";
 
 export type Item = {
   id: string | null;
-} & Pick<RouterOutput["workouts"][0], "description" | "topScore">;
+} & Pick<Workout, "description" | "minScore" | "maxScore">;
 
 function Option({ item }: { item: Item }) {
   return (
@@ -76,7 +76,12 @@ export default function Autocomplete({
           {query.length > 0 && (
             <Option
               key={"new"}
-              item={{ id: null, description: query, topScore: 0 }}
+              item={{
+                id: null,
+                description: query,
+                minScore: -1,
+                maxScore: -1,
+              }}
             />
           )}
           {filteredItems.map((item) => (

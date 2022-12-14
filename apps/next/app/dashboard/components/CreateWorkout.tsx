@@ -15,7 +15,7 @@ function getDescriptionItems(
   workouts: RouterOutput["workouts"]
 ): readonly Item[] {
   let choices: Item[] = [];
-  workouts.forEach(({ description, topScore }) => {
+  workouts.forEach(({ description, maxScore, minScore }) => {
     if (
       !choices.find(
         (name) => name.id === description.toLocaleLowerCase().trim()
@@ -24,7 +24,8 @@ function getDescriptionItems(
       choices.push({
         id: description.toLocaleLowerCase(),
         description: description,
-        topScore,
+        maxScore,
+        minScore,
       });
     }
   });
@@ -37,7 +38,7 @@ function useWorkoutForm() {
   const form = useForm({
     fields: {
       description: useField<Item>({
-        value: { description: "", id: null, topScore: 0 },
+        value: { description: "", id: null, minScore: -1, maxScore: -1 },
         validates: (value) =>
           value.description.trim() === ""
             ? "Name of workout or lift is required"
@@ -110,7 +111,7 @@ export function CreateWorkout({
         <Autocomplete
           items={items}
           // Shouldn't be necessary but in production builds `value` is undefined
-          value={description.value ?? description.defaultValue}
+          value={description.value}
           onChange={(item) => {
             description.onChange(item);
           }}

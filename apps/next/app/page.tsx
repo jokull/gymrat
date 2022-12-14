@@ -41,7 +41,7 @@ export default async function Home() {
           different use cases into this simple and intelligent scratchpad.
         </div>
       </div>
-      <footer className="mb-12">
+      <footer className="pb-12">
         <p className="text-xs text-neutral-700 text-center">
           <Link href="https://github.com/jokull/gymrat">GitHub</Link>
         </p>

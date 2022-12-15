@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3800",
     "build": "next build",
+    "vercel": "vercel build",
     "start": "next start --port 3800",
     "lint": "next lint",
     "tsc": "tsc --pretty --project ./tsconfig.json --noEmit"

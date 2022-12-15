@@ -31,7 +31,8 @@
       ]
     },
     "patchedDependencies": {
-      "@shopify/react-form@2.4.1": "patches/@shopify__react-form@2.4.1.patch"
+      "@shopify/react-form@2.4.1": "patches/@shopify__react-form@2.4.1.patch",
+      "@clerk/nextjs@4.6.13": "patches/@clerk__nextjs@4.6.13.patch"
     }
   },
   "dependencies": {

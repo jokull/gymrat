@@ -10,7 +10,7 @@ import SignOut from "./SignOut";
 async function User() {
   const user = await trpc.user.query();
   return (
-    <Link href="/dashboard" className="text-neutral-500">
+    <Link href="/dashboard" className="text-neutral-500" prefetch={false}>
       {user.clerk?.email}
     </Link>
   );
@@ -19,7 +19,7 @@ async function User() {
 export default function Header({ page }: { page: "dashboard" | "index" }) {
   return (
     <header className="flex justify-between items-center">
-      <Link href="/" className="flex items-center gap-1">
+      <Link href="/" className="flex items-center gap-1" prefetch={false}>
         <StarIcon className="w-4 h-4 -mt-1" />
         <h1 className="font-extrabold uppercase">Gymrat</h1>
       </Link>

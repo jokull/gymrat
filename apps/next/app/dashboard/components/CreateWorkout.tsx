@@ -1,20 +1,23 @@
 "use client";
 
+import { type AppRouter, type Workout } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
+import { inferRouterOutputs } from "@trpc/server";
 
 import { Primary } from "@/components/Button";
 import { trpc } from "@/trpc/client";
-import { type AppRouter, type Workout } from "@gymrat/api";
-import { inferRouterOutputs } from "@trpc/server";
+
 import Autocomplete, { Item } from "./Autocomplete";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-type Props = { workouts: RouterOutput["workouts"] };
+interface Props {
+  workouts: RouterOutput["workouts"];
+}
 
 function getDescriptionItems(
   workouts: RouterOutput["workouts"]
 ): readonly Item[] {
-  let choices: Item[] = [];
+  const choices: Item[] = [];
   workouts.forEach(({ description, maxScore, minScore }) => {
     if (
       !choices.find(
@@ -60,7 +63,7 @@ function useWorkoutForm() {
         workout,
         ...(oldData ?? []),
       ]);
-      utils.workouts.invalidate();
+      void utils.workouts.invalidate();
       form.reset();
       return { status: "success" };
     },
@@ -77,7 +80,12 @@ export function DataCreateWorkout({ workouts }: Props) {
     create: { isLoading },
   } = useWorkoutForm();
   return (
-    <form onSubmit={submit}>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void submit();
+      }}
+    >
       <CreateWorkout
         workouts={workouts}
         isLoading={isLoading}

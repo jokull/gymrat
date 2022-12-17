@@ -1,8 +1,9 @@
 "use client";
 
-import { Ghost } from "@/components/Button";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
+
+import { Ghost } from "@/components/Button";
 
 function Inner() {
   const { signOut } = useClerk();
@@ -10,7 +11,7 @@ function Inner() {
   return (
     <Ghost
       onClick={() =>
-        signOut().then(() => {
+        void signOut().then(() => {
           router.push("/");
         })
       }

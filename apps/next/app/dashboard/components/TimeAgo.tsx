@@ -1,8 +1,9 @@
 "use client";
+import { type Workout } from "@gymrat/api";
+
 import DateInput from "@/components/DateInput";
 import { trpc } from "@/trpc/client";
 import { formatTimeAgo } from "@/utils/timeago";
-import { type Workout } from "@gymrat/api";
 
 const DAY_IN_MILLISECONDS = 86_400_000;
 const WEEK_IN_MILLISECONDS = DAY_IN_MILLISECONDS * 7;
@@ -17,7 +18,7 @@ export function TimeAgo({
   const utils = trpc.useContext();
   const updateWorkout = trpc.updateWorkout.useMutation({
     onSuccess: () => {
-      utils.workouts.refetch();
+      void utils.workouts.refetch();
     },
   });
   const diff = new Date().valueOf() - workout.date.valueOf();
@@ -31,7 +32,7 @@ export function TimeAgo({
     <DateInput
       initial={workout.date}
       onChange={(date) =>
-        updateWorkout.mutateAsync({ id: workout.id, fields: { date } })
+        void updateWorkout.mutateAsync({ id: workout.id, fields: { date } })
       }
     >
       {label}

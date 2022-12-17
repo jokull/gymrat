@@ -1,7 +1,9 @@
+import "./globals.css";
+
 import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import React from "react";
+
 import { ClientProvider } from "../components/ClientProvider";
-import "./globals.css";
 
 export default function RootLayout({
   children,

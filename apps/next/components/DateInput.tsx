@@ -10,7 +10,7 @@ import {
   isToday,
   startOfMonth,
 } from "date-fns";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { useCalendar } from "@/utils/use-calendar";
 
@@ -46,7 +46,7 @@ export function DayGrid({
       <div className="flex flex-col gap-1" aria-label="Calendar grid">
         {calendar.map((week) => (
           <div
-            key={week[0]!.toString()}
+            key={week[0]?.toString()}
             className="grid grid-cols-7 gap-1 justify-between"
           >
             {week.map((day) => {
@@ -55,7 +55,9 @@ export function DayGrid({
               };
 
               const rangeSelected = selected.length > 1;
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const firstSelected = selected[0]!;
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const lastSelected = selected[selected.length - 1]!;
               const isStart =
                 rangeSelected && isSelected(day) && isEqual(day, firstSelected);
@@ -142,7 +144,7 @@ export default function DateInput({
     setViewing,
   } = useCalendar({
     selected: [initial],
-    viewing: initial ?? undefined,
+    viewing: initial,
   });
 
   const onSelect = (day: Date) => {
@@ -150,6 +152,16 @@ export default function DateInput({
     setViewing(day);
     onChange(day);
   };
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Only mount on client side - these libraries are not ready for `/app` it seems
+    return <>{children}</>;
+  }
 
   return (
     <Popover>

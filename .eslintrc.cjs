@@ -10,19 +10,11 @@ module.exports = {
       "./packages/*/tsconfig.json",
     ],
   },
-  plugins: [
-    "unused-imports",
-    "simple-import-sort",
-    "@typescript-eslint",
-    "react",
-    "jsx-expressions",
-  ],
+  plugins: ["unused-imports", "simple-import-sort", "@typescript-eslint"],
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/strict",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
     "prettier",
   ],
   rules: {
@@ -39,6 +31,5 @@ module.exports = {
         "ts-ignore": "allow-with-description",
       },
     ],
-    "jsx-expressions/strict-logical-expressions": "error",
   },
 };

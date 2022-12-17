@@ -1,10 +1,11 @@
 "use client";
 
-import { getNumberValue, type Workout } from "@gymrat/api";
+import { type Workout, getNumberValue } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import { CreateWorkout } from "../dashboard/components/CreateWorkout";
 import { WorkoutRow } from "../dashboard/components/Workouts";
 
@@ -62,7 +63,9 @@ export function Promo() {
         clearInterval(interval);
       }
     }, 430);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   });
 
   const workouts: Workout[] = output.map((workout) => ({
@@ -88,10 +91,11 @@ export function Promo() {
       }),
       value: useField("110 kg"),
     },
+    // eslint-disable-next-line @typescript-eslint/require-await
     async onSubmit(values) {
       setHasInteracted(true);
       setMaxScore((oldMaxScore) => {
-        const newMaxScore = getNumberValue(values.value)?.value ?? 0;
+        const newMaxScore = getNumberValue(values.value).value;
         return newMaxScore > oldMaxScore ? newMaxScore : oldMaxScore;
       });
       setOutput((workouts) => [
@@ -115,7 +119,7 @@ export function Promo() {
         className="mb-4 relative"
         onSubmit={(event) => {
           event.preventDefault();
-          submit();
+          void submit();
         }}
       >
         <CreateWorkout
@@ -148,7 +152,7 @@ export function Promo() {
                     <WorkoutRow
                       workout={{
                         date: new Date(),
-                        description: "",
+                        description: "-",
                         id: "",
                         numberValue: 0,
                         value: "",

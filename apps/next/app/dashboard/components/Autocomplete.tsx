@@ -1,12 +1,8 @@
+import { type Workout } from "@gymrat/api";
 import { Combobox } from "@headlessui/react";
-import { Fragment, useState } from "react";
-
-import { type AppRouter, type Workout } from "@gymrat/api";
-import { inferRouterOutputs } from "@trpc/server";
 import classNames from "classnames";
-type RouterOutput = inferRouterOutputs<AppRouter>;
-
 import Fuse from "fuse.js";
+import { Fragment, useState } from "react";
 
 export type Item = {
   id: string | null;
@@ -68,7 +64,9 @@ export default function Autocomplete({
         </label>
         <Combobox.Input
           className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => {
+            setQuery(event.target.value);
+          }}
           displayValue={(item: Item | undefined) => item?.description ?? ""}
           autoFocus
         />

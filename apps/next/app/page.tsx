@@ -1,12 +1,13 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+
 import Header from "./components/Header";
 import { Promo } from "./components/Promo";
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export default async function Home() {
   return (
     <div className="flex flex-col h-full">
-      {/* @ts-expect-error github.com/microsoft/TypeScript/pull/51328 */}
       <Header page="index" />
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
         <div
@@ -36,7 +37,7 @@ export default async function Home() {
           for the lowest interpreted value for that workout.
           <br />
           <br />
-          With this simple parsing method you'll fit your own workout routine
+          With this simple parsing method you’ll fit your own workout routine
           and workouts, CrossFit, weightlifting, oly or even completely
           different use cases into this simple and intelligent scratchpad.
         </div>

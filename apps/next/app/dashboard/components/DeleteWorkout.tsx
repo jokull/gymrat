@@ -1,9 +1,10 @@
 "use client";
-import { trpc } from "@/trpc/client";
 import { type Workout } from "@gymrat/api";
 import { FocusTrap } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { KeyboardEvent, useCallback, useState } from "react";
+
+import { trpc } from "@/trpc/client";
 
 export function DeleteWorkout({ workout }: { workout: Workout }) {
   const utils = trpc.useContext();
@@ -36,9 +37,9 @@ export function DeleteWorkout({ workout }: { workout: Workout }) {
                 oldData?.filter(({ id }) => id !== workout.id)
               );
               // Mutation
-              deleteWorkout.mutateAsync(workout.id).then(() => {
+              void deleteWorkout.mutateAsync(workout.id).then(() => {
                 // And the refetch
-                utils.workouts.refetch();
+                void utils.workouts.refetch();
               });
             }}
             onKeyDown={onKeyDown}

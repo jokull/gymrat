@@ -1,24 +1,22 @@
-import { GhostLink, PrimaryLink } from "@/components/Button";
-import { trpc } from "@/trpc/server";
 import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
 import { ArrowRightIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+
+import { GhostLink, PrimaryLink } from "@/components/Button";
+import { trpc } from "@/trpc/server";
+
 import SignOut from "./SignOut";
 
 async function User() {
   const user = await trpc.user.query();
   return (
     <Link href="/dashboard" className="text-neutral-500">
-      {user?.clerk?.email}
+      {user.clerk?.email}
     </Link>
   );
 }
 
-export default async function Header({
-  page,
-}: {
-  page: "dashboard" | "index";
-}) {
+export default function Header({ page }: { page: "dashboard" | "index" }) {
   return (
     <header className="flex justify-between items-center">
       <Link href="/" className="flex items-center gap-1">

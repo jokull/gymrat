@@ -39,7 +39,7 @@ export function MonthSelect({
             key={ref.current.getMonth()}
             initial={{
               opacity: direction === 0 ? 1 : 0,
-              x: 60 * (direction ?? -1),
+              x: 60 * direction,
             }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ ease: "anticipate" }}

@@ -1,3 +1,15 @@
 {
-  "eslint.packageManager": "pnpm"
+  "eslint.packageManager": "pnpm",
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": false
+    }
+  },
+  "[typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": false
+    }
+  }
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { trpc } from "@/trpc/client";
 import { type AppRouter, type Workout } from "@gymrat/api";
 import { RadioGroup } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -8,6 +7,9 @@ import { inferRouterOutputs } from "@trpc/server";
 import classNames from "classnames";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useState } from "react";
+
+import { trpc } from "@/trpc/client";
+
 import { DeleteWorkout } from "./DeleteWorkout";
 import { TimeAgo } from "./TimeAgo";
 
@@ -108,7 +110,7 @@ export function Workouts({
       className="flex flex-col gap-1"
     >
       <LayoutGroup>
-        {workouts?.map((workout) => (
+        {workouts.map((workout) => (
           <RadioGroup.Option
             value={workout}
             key={workout.id}

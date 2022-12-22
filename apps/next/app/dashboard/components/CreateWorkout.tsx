@@ -1,7 +1,7 @@
 "use client";
 
 import { type AppRouter, type Workout, getNumberValue } from "@gymrat/api";
-import { useField, useForm } from "@shopify/react-form";
+import { useField, useForm } from "@gymrat/react-form";
 import { inferRouterOutputs } from "@trpc/server";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDebounce } from "usehooks-ts";

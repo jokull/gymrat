@@ -28,12 +28,6 @@
       "ignoreMissing": [
         "react"
       ]
-    },
-    "patchedDependencies": {
-      "@shopify/react-form@2.4.1": "patches/@shopify__react-form@2.4.1.patch"
     }
-  },
-  "dependencies": {
-    "@shopify/react-form": "^2.4.1"
   }
 }

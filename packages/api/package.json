@@ -1,24 +1,6 @@
 {
   "name": "@gymrat/api",
   "version": "0.0.0",
-  "devDependencies": {
-    "@cloudflare/d1": "^1.4.1",
-    "@cloudflare/workers-types": "^3.14.1",
-    "@databases/split-sql-query": "1.0.3",
-    "@databases/sql": "3.2.0",
-    "@miniflare/tre": "3.0.0-next.1",
-    "@types/bcryptjs": "^2.4.2",
-    "@types/cookie": "^0.5.1",
-    "@types/node": "^18.11.9",
-    "@types/uuid": "^9.0.0",
-    "better-sqlite3": "^8.0.0",
-    "itty-router": "^2.6.6",
-    "kysely-codegen": "^0.8.0",
-    "prisma": "^4.7.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.3",
-    "wrangler": "^2.6.2"
-  },
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
@@ -45,5 +27,23 @@
     "ulid": "^2.3.0",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@cloudflare/d1": "^1.4.1",
+    "@cloudflare/workers-types": "^3.14.1",
+    "@databases/split-sql-query": "1.0.3",
+    "@databases/sql": "3.2.0",
+    "@miniflare/tre": "3.0.0-next.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie": "^0.5.1",
+    "@types/node": "^18.11.9",
+    "@types/uuid": "^9.0.0",
+    "better-sqlite3": "^8.0.0",
+    "itty-router": "^2.6.6",
+    "kysely-codegen": "^0.8.0",
+    "prisma": "^4.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3",
+    "wrangler": "^2.6.2"
   }
 }

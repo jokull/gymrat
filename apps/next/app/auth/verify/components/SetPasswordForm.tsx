@@ -1,6 +1,6 @@
 "use client";
 
-import { useField, useForm } from "@shopify/react-form";
+import { useField, useForm } from "@gymrat/react-form";
 
 import { Primary } from "@/components/Button";
 import { Input } from "@/components/Input";

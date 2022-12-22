@@ -1,7 +1,7 @@
 "use client";
 
 import { type Workout, getNumberValue } from "@gymrat/api";
-import { useField, useForm } from "@shopify/react-form";
+import { useField, useForm } from "@gymrat/react-form";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";

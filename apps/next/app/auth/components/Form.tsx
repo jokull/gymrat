@@ -1,9 +1,8 @@
 "use client";
 
-import { useField, useForm } from "@shopify/react-form";
+import { useField, useForm } from "@gymrat/react-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams as useNextSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useSearchParams } from "utils/use-search-params";
 import { z } from "zod";
 
@@ -64,14 +63,18 @@ function SendVerifyForm() {
 function LoginForm() {
   const searchParams = useNextSearchParams();
   const login = trpc.login.useMutation();
-  const [submitError, setSubmitError] = useState("");
+
   const { fields, submit, dirty, submitErrors } = useForm({
     fields: { email: useField(""), password: useField("") },
     makeCleanAfterSubmit: true,
     onSubmit: async (cleanValues) => {
       const response = await login.mutateAsync(cleanValues);
+      console.log(
+        typeof window !== "undefined",
+        typeof window.document !== "undefined",
+        typeof window.document.createElement !== "undefined"
+      );
       if (response.error) {
-        setSubmitError(response.error);
         return { status: "fail", errors: [{ message: response.error }] };
       }
       window.location.href = new URL(
@@ -81,7 +84,7 @@ function LoginForm() {
       return { status: "success" };
     },
   });
-  console.log({ submitErrors, dirty });
+
   return (
     <form
       onSubmit={(event) => {
@@ -110,14 +113,14 @@ function LoginForm() {
       <Primary disabled={!dirty}>Login</Primary>
 
       <AnimatePresence>
-        {!!submitError && (
+        {submitErrors.length > 0 && (
           <motion.div
             layout
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -10 }}
             className="text-center py-2 px-3 bg-red-600/20 text-red-500 font-medium my-8 rounded-md"
           >
-            <p>{submitError}</p>
+            <p>{submitErrors.map(({ message }) => message).join(", ")}</p>
           </motion.div>
         )}
       </AnimatePresence>

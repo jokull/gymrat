@@ -1,5 +1,5 @@
-export * from "./src/types";
-export * from "./src/validation";
+export * from './types';
+export * from './validation';
 
 export {
   asChoiceField,
@@ -14,8 +14,8 @@ export {
   submitFail,
   submitSuccess,
   useDynamicList,
-} from "./src/hooks";
-export type { ChoiceField, FieldConfig } from "./src/hooks";
+} from './hooks';
+export type {ChoiceField, FieldConfig} from './hooks';
 
 export {
   fieldsToArray,
@@ -26,4 +26,4 @@ export {
   reduceFields,
   makeCleanFields,
   makeCleanDynamicLists,
-} from "./src/utilities";
+} from './utilities';

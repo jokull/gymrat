@@ -14,7 +14,7 @@ export default async function Page() {
     <div className="flex flex-col gap-4 h-full">
       <div className="grow flex flex-col gap-4">
         <DataCreateWorkout workouts={workouts} data-superjson />
-        <DataWorkouts initialData={workouts} data-superjson />
+        <DataWorkouts initialData={[]} data-superjson />
       </div>
       <footer>
         <p className="text-xs text-neutral-600 text-center">{user.apiKey}</p>

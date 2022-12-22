@@ -29,7 +29,7 @@
     "framer-motion": "^7.6.19",
     "fuse.js": "^6.6.2",
     "iron-session": "^6.3.1",
-    "next": "13.0.8-canary.1",
+    "next": "13.0.8-canary.4",
     "next-superjson-plugin": "^0.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

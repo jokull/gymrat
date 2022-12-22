@@ -4,7 +4,7 @@ import { unsealData } from "iron-session/edge";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const publicPaths = ["/", "/auth*", "/trpc*"];
+const publicPaths = ["/", "/auth*", "/trpc*", "/api/trpc*"];
 
 const isPublic = (path: string) => {
   return publicPaths.find((x) =>

@@ -31,5 +31,7 @@ module.exports = {
         "ts-ignore": "allow-with-description",
       },
     ],
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off",
   },
 };

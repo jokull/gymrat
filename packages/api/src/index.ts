@@ -1,75 +1,48 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import jwt, { JwtPayload } from "@tsndr/cloudflare-worker-jwt";
 import { parse } from "cookie";
-import { generateApiKey } from "./apiKeys";
+import { unsealData } from "iron-session/edge";
+
 import { getQueryBuilder } from "./db";
-
 import { appRouter, createContextFactory } from "./router";
+import { Env, SessionUser } from "./types";
 
-export interface Env {
-  DB: D1Database;
-  CLERK_JWT_KEY: string;
-}
-
-export type ClerkJwtPayload = JwtPayload & { email: string; id: string };
-
-async function getClerkAuth(
+async function getSession(
   request: Request,
-  jwtKey: string
+  secretKey: string
 ): Promise<
   | { status: "invalid" }
   | { status: "unauthorized" }
-  | { status: "authorized"; jwt: ClerkJwtPayload }
+  | { status: "authorized"; user: SessionUser }
 > {
-  const splitPem = jwtKey.match(/.{1,64}/g)!;
-  const publicKey =
-    "-----BEGIN PUBLIC KEY-----\n" +
-    splitPem.join("\n") +
-    "\n-----END PUBLIC KEY-----";
+  const seal = parse(request.headers.get("Cookie") ?? "").__session || "";
 
-  const sessToken = parse(request.headers.get("Cookie") ?? "").__session ?? "";
-
-  if (!sessToken) {
+  if (!seal) {
     return { status: "unauthorized" };
   }
 
+  let user;
   try {
-    const verified = await jwt.verify(sessToken, publicKey, {
-      algorithm: "RS256",
+    user = await unsealData<SessionUser | Record<string, never>>(seal, {
+      password: secretKey,
     });
-    if (!verified) {
-      return { status: "invalid" };
-    }
-    var decoded = jwt.decode(sessToken);
   } catch (error) {
     return { status: "invalid" };
   }
 
-  // We have manually added email to the JWT template
-  const payload = {
-    ...decoded.payload,
-    email: decoded.payload.email as string,
-    id: decoded.payload.id as string,
-  };
+  if (Object.keys(user).length === 0) {
+    return { status: "invalid" };
+  }
 
-  return { status: "authorized", jwt: payload };
+  return { status: "authorized", user: user as SessionUser };
 }
 
-async function getUser(d1: Env["DB"], { id }: ClerkJwtPayload) {
+async function getUser(d1: Env["DB"], id: string) {
   const db = getQueryBuilder(d1);
-  let user = await db
+  return await db
     .selectFrom("User")
     .selectAll()
     .where("User.id", "=", id)
     .executeTakeFirst();
-  if (!user) {
-    user = await db
-      .insertInto("User")
-      .values({ id, apiKey: generateApiKey() })
-      .returningAll()
-      .executeTakeFirstOrThrow();
-  }
-  return user;
 }
 
 async function getUserFromApiKey(request: Request, d1: Env["DB"]) {
@@ -86,24 +59,37 @@ async function getUserFromApiKey(request: Request, d1: Env["DB"]) {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const clerkAuth = await getClerkAuth(request, env.CLERK_JWT_KEY);
-    let jwt: ClerkJwtPayload | null;
-    let user: Awaited<ReturnType<typeof getUser>> | null;
-    if (clerkAuth.status === "authorized") {
-      jwt = clerkAuth.jwt;
-      user = await getUser(env.DB, jwt);
+    const session = await getSession(request, env.SECRET_KEY);
+
+    let user: Awaited<ReturnType<typeof getUser>> | null = null;
+    if (session.status === "authorized") {
+      user = (await getUser(env.DB, session.user.id)) ?? null;
     } else {
-      jwt = null;
       user = null;
     }
 
-    user = user ?? (await getUserFromApiKey(request, env.DB));
+    user = user ?? (await getUserFromApiKey(request, env.DB)) ?? null;
 
     return fetchRequestHandler({
       endpoint: "/trpc",
       req: request,
       router: appRouter,
-      createContext: createContextFactory(env.DB, user, jwt),
+      createContext: createContextFactory(env, user),
+      responseMeta({ ctx, paths, errors }) {
+        const allOk = errors.length === 0;
+        if (
+          allOk &&
+          ctx?._session &&
+          paths?.find((path) => ["setPassword", "login"].includes(path))
+        ) {
+          return {
+            headers: {
+              "set-cookie": `__session=${ctx._session}; Max-Age=2592000; SameSite=Strict; Path=/; Secure; HttpOnly`,
+            },
+          };
+        }
+        return {};
+      },
     });
   },
 };

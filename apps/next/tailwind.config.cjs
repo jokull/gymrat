@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
@@ -8,15 +9,15 @@ module.exports = {
       data: {
         active: 'headlessui-state~="active"',
         selected: 'headlessui-state~="selected"',
+        workout: 'workout~="true"',
       },
       screens: {
         mobile: "380px",
       },
-      colors: {},
       fontFamily: {
         sans: ["Mona Sans", ...defaultTheme.fontFamily.sans],
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

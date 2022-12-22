@@ -1,6 +1,5 @@
-import { httpBatchLink } from "@trpc/client";
-
 import { type AppRouter } from "@gymrat/api";
+import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
 

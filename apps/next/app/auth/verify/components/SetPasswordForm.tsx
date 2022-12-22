@@ -16,6 +16,10 @@ export function SetPasswordForm({ token }: { token?: string }) {
         ...cleanValues,
         token: token ?? "",
       });
+      window.location.href = new URL(
+        "/dashboard",
+        window.location.href
+      ).toString();
       return { status: "success" };
     },
   });
@@ -29,16 +33,18 @@ export function SetPasswordForm({ token }: { token?: string }) {
     >
       <Input
         type="email"
-        readOnly
+        disabled
         value={email.data?.email}
         name="username"
         autoComplete="username"
-        autoFocus
         autoCorrect="off"
       />
       <Input
         type="password"
         autoComplete="new-password"
+        name="new-password"
+        placeholder="Choose a new password"
+        autoFocus
         value={fields.password.value}
         onChange={fields.password.onChange}
       />

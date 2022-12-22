@@ -10,7 +10,8 @@ export function Input({ className, ...props }: Props) {
     <input
       className={classNames(
         className,
-        "py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
+        "py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700",
+        "disabled:text-neutral-500 disabled:bg-neutral-800"
       )}
       {...props}
     />

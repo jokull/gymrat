@@ -18,18 +18,10 @@ export const middleware = async (req: NextRequest) => {
   }
 
   if (req.nextUrl.pathname.startsWith("/trpc")) {
-    return await fetch(
+    return NextResponse.rewrite(
       `https://${process.env.TRPC_HOST ?? ""}${
         req.nextUrl.pathname
-      }?${req.nextUrl.searchParams.toString()}`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          cookie: req.headers.get("cookie") ?? "",
-        },
-        body: await req.text(),
-      }
+      }?${req.nextUrl.searchParams.toString()}`
     );
   }
 

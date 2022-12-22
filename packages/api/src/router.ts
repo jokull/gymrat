@@ -101,6 +101,7 @@ export const appRouter = t.router({
         { email: normalizeEmail(input.email) },
         { password: ctx.env.SECRET_KEY, ttl: 15 * 60 }
       );
+      console.debug(`https://${ctx.env.HOST}/auth/verify?token=${token}`);
       const contentValue = `https://${ctx.env.HOST}/auth/verify?token=${token}`;
       const response = await fetch("https://api.mailchannels.net/tx/v1/send", {
         method: "POST",

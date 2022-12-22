@@ -51,7 +51,7 @@ importers:
       '@trpc/server': ^10.4.3
       '@types/cookie': ^0.5.1
       '@types/node': 18.11.10
-      '@types/react': 18.0.9
+      '@types/react': 18.0.26
       '@types/react-dom': 18.0.9
       '@typescript-eslint/parser': ^5.0.0
       add: ^2.0.6
@@ -108,7 +108,7 @@ importers:
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
       '@types/cookie': 0.5.1
       '@types/node': 18.11.10
-      '@types/react': 18.0.9
+      '@types/react': 18.0.26
       '@types/react-dom': 18.0.9
       '@typescript-eslint/parser': 5.47.0_s5ps7njkmjlaqajutnox5ntcla
       autoprefixer: 10.4.13_postcss@8.4.20
@@ -1330,7 +1330,15 @@ packages:
   /@types/react-dom/18.0.9:
     resolution: {integrity: sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==}
     dependencies:
-      '@types/react': 18.0.9
+      '@types/react': 18.0.26
+    dev: true
+
+  /@types/react/18.0.26:
+    resolution: {integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.1.1
     dev: true
 
   /@types/react/18.0.9:

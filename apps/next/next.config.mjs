@@ -2,10 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  transpilePackages: ["api"],
   experimental: {
     appDir: true,
-    // runtime: "experimental-edge",
-    transpilePackages: ["api"],
     allowMiddlewareResponseBody: true,
     swcPlugins: [["next-superjson-plugin", {}]],
   },

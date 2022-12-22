@@ -8,7 +8,7 @@ import { DataWorkouts } from "./components/Workouts";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const [, user] = await Promise.all([
+  const [workouts, user] = await Promise.all([
     trpc.workouts.query(),
     trpc.user.query(),
   ]);
@@ -16,7 +16,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col gap-4 h-full">
       <div className="grow flex flex-col gap-4">
-        <DataCreateWorkout workouts={[]} data-superjson />
+        <DataCreateWorkout workouts={workouts} data-superjson />
         <DataWorkouts initialData={[]} data-superjson />
       </div>
       <footer>

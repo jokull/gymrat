@@ -6,8 +6,8 @@ export function normalizeEmail(value: string) {
     return email;
   }
 
-  let username = emailParts[0];
-  const domain = emailParts[1];
+  let username = emailParts[0] as string;
+  const domain = emailParts[1] as string;
 
   if (["gmail.com", "fastmail.com", "googlemail.com"].includes(domain)) {
     username = username.replace(".", "");

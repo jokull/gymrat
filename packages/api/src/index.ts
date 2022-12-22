@@ -59,17 +59,6 @@ async function getUserFromApiKey(request: Request, d1: Env["DB"]) {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const { pathname } = new URL(request.url);
-
-    if (pathname === "/test") {
-      const { results } = await env.DB.prepare(
-        "SELECT * FROM Workout WHERE id = ?"
-      )
-        .bind("Bs Beverages")
-        .all();
-      return Response.json(results);
-    }
-
     const session = await getSession(request, env.SECRET_KEY);
 
     let user: Awaited<ReturnType<typeof getUser>> | null = null;

@@ -4,7 +4,7 @@ import { unsealData } from "iron-session/edge";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const publicPaths = ["/", "/auth*"];
+const publicPaths = ["/", "/auth*", "/trpc*"];
 
 const isPublic = (path: string) => {
   return publicPaths.find((x) =>
@@ -15,14 +15,6 @@ const isPublic = (path: string) => {
 export const middleware = async (req: NextRequest) => {
   if (isPublic(req.nextUrl.pathname)) {
     return NextResponse.next();
-  }
-
-  if (req.nextUrl.pathname.startsWith("/trpc")) {
-    return NextResponse.rewrite(
-      `https://${process.env.TRPC_HOST ?? ""}${
-        req.nextUrl.pathname
-      }?${req.nextUrl.searchParams.toString()}`
-    );
   }
 
   const seal = parse(req.headers.get("cookie") ?? "").__session;

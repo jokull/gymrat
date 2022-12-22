@@ -9,7 +9,7 @@ export const client = trpc.createClient({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: "/trpc",
+      url: "/api/trpc",
       fetch(url, options) {
         return fetch(url, { ...options, credentials: "include" });
       },

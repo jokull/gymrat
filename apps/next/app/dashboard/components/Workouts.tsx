@@ -89,10 +89,9 @@ export function DataWorkouts({ initialData }: { initialData: Workout[] }) {
     initialData: initialData,
   });
   const workouts = data ?? [];
-  return (
-    // @ts-expect-error Check to ensure it's non-empty
-    workouts.length > 0 ? <Workouts workouts={workouts} /> : null
-  );
+  return workouts.length > 0 ? (
+    <Workouts workouts={workouts as [Workout, ...Workout[]]} />
+  ) : null;
 }
 
 export function Workouts({

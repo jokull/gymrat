@@ -1,10 +1,7 @@
 import { Kysely, sql } from "kysely";
 import { D1Dialect } from "kysely-d1";
-import { DB } from "../db";
 
-export interface Env {
-  DB: D1Database;
-}
+import { DB } from "../db";
 
 export type DBWorkout = Awaited<
   ReturnType<ReturnType<typeof queryWorkouts>["executeTakeFirstOrThrow"]>
@@ -54,8 +51,8 @@ export function queryWorkouts(
 export function hydrateWorkout(workout: DBWorkout) {
   return {
     ...workout,
-    maxScore: workout.maxScore ?? 0,
-    minScore: workout.minScore ?? 0,
+    maxScore: workout.maxScore,
+    minScore: workout.minScore,
     isTime: ["1", "true"].includes(workout.isTime),
     date: new Date(workout.date),
   };

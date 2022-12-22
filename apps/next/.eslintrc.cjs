@@ -10,4 +10,5 @@ module.exports = {
   rules: {
     "jsx-expressions/strict-logical-expressions": "error",
   },
+  ignorePatterns: ["src/utils/use-search-params.ts"],
 };

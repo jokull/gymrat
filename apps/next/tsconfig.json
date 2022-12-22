@@ -11,12 +11,14 @@
       "@/*": ["./*"]
     }
   },
-  "exclude": [],
+  "exclude": ["../../packages/react-form/src/*.ts"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
+    "**/*.mjs",
+    "**/*.js",
     ".next/types/**/*.ts"
   ]
 }

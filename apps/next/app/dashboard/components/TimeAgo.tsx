@@ -1,12 +1,10 @@
 "use client";
 import { type Workout } from "@gymrat/api";
+import { isSameWeek, isToday, isYesterday } from "date-fns";
 
 import DateInput from "@/components/DateInput";
 import { trpc } from "@/trpc/client";
 import { formatTimeAgo } from "@/utils/timeago";
-
-const DAY_IN_MILLISECONDS = 86_400_000;
-const WEEK_IN_MILLISECONDS = DAY_IN_MILLISECONDS * 7;
 
 export function TimeAgo({
   workout,
@@ -21,13 +19,16 @@ export function TimeAgo({
       void utils.workouts.refetch();
     },
   });
-  const diff = new Date().valueOf() - workout.date.valueOf();
-  const label =
-    diff < DAY_IN_MILLISECONDS
-      ? "today"
-      : diff < WEEK_IN_MILLISECONDS
-      ? formatTimeAgo(workout.date)
-      : workout.date.toLocaleDateString("is-IS");
+  const today = new Date();
+
+  const label = isToday(workout.date)
+    ? "today"
+    : isYesterday(workout.date)
+    ? "yesterday"
+    : isSameWeek(workout.date, today)
+    ? formatTimeAgo(workout.date)
+    : workout.date.toLocaleDateString("is-IS");
+
   return editable ? (
     <DateInput
       initial={workout.date}

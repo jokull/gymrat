@@ -11,9 +11,12 @@ datasource db {
 }
 
 model User {
-  id       String    @id
-  Workouts Workout[]
-  apiKey   String
+  id             String    @id @default(uuid())
+  Workouts       Workout[]
+  apiKey         String
+  email          String    @unique
+  displayEmail   String
+  hashedPassword String
 }
 
 model Workout {

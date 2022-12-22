@@ -28,7 +28,7 @@ function TopScore({ workout }: { workout: Workout }) {
             damping: 5,
           }}
         >
-          <StarIcon className="w-4 h-4 text-neutral-400 group-data-active:text-yellow-500" />
+          <StarIcon className="w-4 h-4 text-neutral-400 group-data-active:text-yellow-500 group-data-workout:text-yellow-500" />
         </motion.div>
       ) : null}
     </AnimatePresence>
@@ -110,19 +110,28 @@ export function Workouts({
       className="flex flex-col gap-1"
     >
       <LayoutGroup>
-        {workouts.map((workout) => (
-          <RadioGroup.Option
-            value={workout}
-            key={workout.id}
-            as={motion.div}
-            layout
-            className={classNames(
-              "cursor-pointer hover:bg-neutral-900 data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
-            )}
-          >
-            {() => <WorkoutRow workout={workout} editable={editable} />}
-          </RadioGroup.Option>
-        ))}
+        {workouts.map((w) => {
+          const matchingWorkoutIsSelected =
+            workout.description.toLocaleLowerCase() ===
+            w.description.toLocaleLowerCase();
+          return (
+            <RadioGroup.Option
+              value={w}
+              key={w.id}
+              as={motion.div}
+              layout
+              data-workout={matchingWorkoutIsSelected ? "true" : "false"}
+              className={classNames(
+                "cursor-pointer hover:bg-neutral-900 data-active:bg-neutral-800 -mx-2 p-2 rounded-md group",
+                matchingWorkoutIsSelected
+                  ? "bg-neutral-900/50 text-neutral-100"
+                  : "text-neutral-400"
+              )}
+            >
+              {() => <WorkoutRow workout={w} editable={editable} />}
+            </RadioGroup.Option>
+          );
+        })}
       </LayoutGroup>
     </RadioGroup>
   );

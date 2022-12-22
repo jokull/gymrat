@@ -17,6 +17,9 @@ export interface _PrismaMigrations {
 
 export interface User {
   apiKey: string;
+  displayEmail: string;
+  email: string;
+  hashedPassword: string;
   id: string;
 }
 

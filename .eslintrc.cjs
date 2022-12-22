@@ -3,6 +3,7 @@ module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
   parserOptions: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     tsconfigRootDir: __dirname,
     project: [
       "./tsconfig.json",
@@ -31,5 +32,7 @@ module.exports = {
         "ts-ignore": "allow-with-description",
       },
     ],
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off",
   },
 };

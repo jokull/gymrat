@@ -1,9 +1,10 @@
-import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
+import { type SessionUser } from "@gymrat/api";
+import { parse } from "cookie";
+import { unsealData } from "iron-session/edge";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-// Set the paths that don't require the user to be signed in
-const publicPaths = ["/", "/sign-in*", "/sign-up*"];
+const publicPaths = ["/", "/auth*", "/trpc*"];
 
 const isPublic = (path: string) => {
   return publicPaths.find((x) =>
@@ -11,34 +12,50 @@ const isPublic = (path: string) => {
   );
 };
 
-export default withClerkMiddleware(async (request: NextRequest) => {
-  if (request.nextUrl.pathname.startsWith("/trpc")) {
-    return await fetch(
-      `https://${process.env.TRPC_HOST ?? ""}${request.nextUrl.pathname}?${
-        request.nextUrl.searchParams
-      }`,
-      {
-        headers: {
-          cookie: request.headers.get("cookie") ?? "",
-        },
-      }
+export const middleware = async (req: NextRequest) => {
+  if (isPublic(req.nextUrl.pathname)) {
+    return NextResponse.next();
+  }
+
+  const seal = parse(req.headers.get("cookie") ?? "").__session;
+
+  let user: SessionUser | null = null;
+
+  if (seal) {
+    const session = await unsealData<SessionUser | Record<string, never>>(
+      seal,
+      { password: process.env.SECRET_KEY ?? "" }
+    );
+
+    if ("email" in session) {
+      user = session as SessionUser;
+    }
+  }
+
+  if (!user) {
+    return NextResponse.redirect(
+      new URL(
+        `/auth?screen=login&next=${encodeURIComponent(req.nextUrl.pathname)}`,
+        req.url
+      )
     );
   }
 
-  if (isPublic(request.nextUrl.pathname)) {
-    return NextResponse.next();
+  if (req.nextUrl.pathname.startsWith("/trpc")) {
+    return await fetch(
+      `https://${process.env.TRPC_HOST ?? ""}${
+        req.nextUrl.pathname
+      }?${req.nextUrl.searchParams.toString()}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          cookie: req.headers.get("cookie") ?? "",
+        },
+        body: await req.text(),
+      }
+    );
   }
-  // if the user is not signed in redirect them to the sign in page.
-  const { userId } = getAuth(request);
-
-  if (!userId) {
-    // redirect the users to /pages/sign-in/[[...index]].ts
-
-    const signInUrl = new URL("/sign-in", request.url);
-    signInUrl.searchParams.set("redirect_url", request.url);
-    return NextResponse.redirect(signInUrl);
-  }
-  return NextResponse.next();
-});
+};
 
 export const config = { matcher: "/((?!.*\\.).*)" };

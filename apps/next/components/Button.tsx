@@ -43,8 +43,8 @@ function getPrimaryClassNames(className?: string) {
     baseClassName,
     "py-2 px-3",
     "bg-pink-500 hover:bg-pink-700 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-700/50",
-    "transition-shadow",
-    "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
+    "transition-all",
+    "disabled:hover:bg-neutral-400 disabled:bg-neutral-400 disabled:text-neutral-500 disabled:shadow-none",
     className
   );
 }

@@ -1,9 +1,12 @@
+import { headers } from "next/headers";
+
 import { trpc } from "@/trpc/server";
 
 import { DataCreateWorkout } from "./components/CreateWorkout";
 import { DataWorkouts } from "./components/Workouts";
 
 export default async function Page() {
+  headers(); // next.js now makes this a dynamic route
   const [workouts, user] = await Promise.all([
     trpc.workouts.query(),
     trpc.user.query(),

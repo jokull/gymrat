@@ -11,3 +11,39 @@ index 6fb207c81eb61ea59add0beb84941ff12412e60c..e5a388a339f7e6156bdfeecc4ea306a0
      defaultValue: value,
      error: undefined,
      touched: false,
+diff --git a/build/esm/hooks/submit.mjs b/build/esm/hooks/submit.mjs
+index fd53b93f1ffa816c7a7dc391d65663fa3d2d9641..99b447b0cc84d4bfdc84b3691d4bd25861890701 100644
+--- a/build/esm/hooks/submit.mjs
++++ b/build/esm/hooks/submit.mjs
+@@ -1,9 +1,8 @@
+ import { useState, useCallback } from 'react';
+-import { useMountedRef, useLazyRef } from '@shopify/react-hooks';
++import { useLazyRef } from '@shopify/react-hooks';
+ import { propagateErrors, validateAll, getValues, makeCleanFields, makeCleanDynamicLists } from '../utilities.mjs';
+ 
+ function useSubmit(onSubmit = noopSubmission, fieldBag, makeCleanAfterSubmit = false, dynamicListBag) {
+-  const mounted = useMountedRef();
+   const [submitting, setSubmitting] = useState(false);
+   const [submitErrors, setSubmitErrors] = useState([]);
+   const fieldBagRef = useLazyRef(() => fieldBag);
+@@ -30,11 +29,6 @@ function useSubmit(onSubmit = noopSubmission, fieldBag, makeCleanAfterSubmit = f
+ 
+     setSubmitting(true);
+     const result = await onSubmit(getValues(fields));
+-
+-    if (mounted.current === false) {
+-      return;
+-    }
+-
+     setSubmitting(false);
+ 
+     if (result.status === 'fail') {
+@@ -47,7 +41,7 @@ function useSubmit(onSubmit = noopSubmission, fieldBag, makeCleanAfterSubmit = f
+         makeCleanDynamicLists(dynamicLists);
+       }
+     }
+-  }, [fieldBagRef, dynamicListBagRef, onSubmit, mounted, setErrors, makeCleanAfterSubmit]);
++  }, [fieldBagRef, dynamicListBagRef, onSubmit, setErrors, makeCleanAfterSubmit]);
+   return {
+     submit,
+     submitting,

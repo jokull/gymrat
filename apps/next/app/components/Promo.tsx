@@ -4,7 +4,7 @@ import { type Workout, getNumberValue } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { CreateWorkout } from "../dashboard/components/CreateWorkout";
 import { WorkoutRow } from "../dashboard/components/Workouts";
@@ -13,66 +13,53 @@ type PromoWorkout = Omit<Workout, "minScore" | "maxScore" | "isTime">;
 
 export function Promo() {
   const [hasInteracted, setHasInteracted] = useState(false);
-  const [output, setOutput] = useState<PromoWorkout[]>([]);
-  const [maxScore, setMaxScore] = useState<number>(90);
   const [today] = useState(new Date());
-  const [input] = useState([
-    {
-      id: "1",
-      description: "500 m row",
-      date: addDays(today, -7),
-      numberValue: 90,
-      value: "2:30 min",
-    },
-    {
-      id: "2",
-      description: "Back Squat 3x",
-      date: addDays(today, -3),
-      numberValue: 95,
-      value: "95 kg",
-    },
-    {
-      id: "3",
-      description: "Back Squat 3x",
-      date: addDays(today, -5),
-      numberValue: 92,
-      value: "92 kg",
-    },
-    {
-      id: "4",
-      description: "Back Squat 3x",
-      date: addDays(today, -1),
-      numberValue: 100,
-      value: "100 kg",
-    },
-    {
-      id: "5",
-      description: "Back Squat 3x",
-      date: today,
-      numberValue: 105,
-      value: "105 kg",
-    },
-  ]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const workout = input.shift();
-      if (workout) {
-        setMaxScore(workout.numberValue);
-        setOutput((workouts) => [workout, ...workouts]);
-      } else {
-        clearInterval(interval);
-      }
-    }, 430);
-    return () => {
-      clearInterval(interval);
-    };
-  });
+  const [promoWorkouts, setPromoWorkouts] = useState<PromoWorkout[]>(
+    [
+      {
+        id: "1",
+        description: "500 m row",
+        date: addDays(today, -7),
+        numberValue: 90,
+        value: "2:30 min",
+      },
+      {
+        id: "2",
+        description: "Back Squat 3x",
+        date: addDays(today, -3),
+        numberValue: 95,
+        value: "95 kg",
+      },
+      {
+        id: "3",
+        description: "Back Squat 3x",
+        date: addDays(today, -5),
+        numberValue: 92,
+        value: "92 kg",
+      },
+      {
+        id: "4",
+        description: "Back Squat 3x",
+        date: addDays(today, -1),
+        numberValue: 100,
+        value: "100 kg",
+      },
+      {
+        id: "5",
+        description: "Back Squat 3x",
+        date: today,
+        numberValue: 105,
+        value: "105 kg",
+      },
+    ].reverse()
+  );
+  const [maxScore, setMaxScore] = useState<number>(105);
 
-  const workouts: Workout[] = output.map((workout) => ({
+  const workouts: Workout[] = promoWorkouts.map((workout) => ({
     ...workout,
     maxScore,
     minScore: -1,
-    isTime: false,
+    isTime: workout.value.match(/\:/)?.[0] ? true : false,
   }));
 
   const {
@@ -98,7 +85,7 @@ export function Promo() {
         const newMaxScore = getNumberValue(values.value).value;
         return newMaxScore > oldMaxScore ? newMaxScore : oldMaxScore;
       });
-      setOutput((workouts) => [
+      setPromoWorkouts((workouts) => [
         {
           id: Math.random().toString(),
           value: values.value,
@@ -132,40 +119,25 @@ export function Promo() {
       </form>
       {workouts.length > 0 ? (
         <div className="flex flex-col gap-1 py-4">
-          <>
+          <AnimatePresence>
             {workouts.map((workout, i) => (
-              <div
+              <motion.div
+                layout
+                transition={{
+                  delay: hasInteracted ? 0 : workouts.length * 0.1 - i * 0.1,
+                  type: "spring",
+                }}
+                initial={{ opacity: 0, y: -30 * i - 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 * i + 10 }}
                 key={workout.id}
                 className="data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
                 data-headlessui-state={i === 0 ? "active" : ""}
               >
                 <WorkoutRow workout={workout} editable={false} />
-              </div>
+              </motion.div>
             ))}
-            {workouts.length < 5
-              ? Array.from(Array(5 - workouts.length).keys()).map((i) => (
-                  <div
-                    key={`empty-${i}`}
-                    className="-mx-2 p-2 rounded-md group invisible"
-                    data-headlessui-state={i === 0 ? "active" : ""}
-                  >
-                    <WorkoutRow
-                      workout={{
-                        date: new Date(),
-                        description: "-",
-                        id: "",
-                        numberValue: 0,
-                        value: "",
-                        isTime: false,
-                        maxScore: -1,
-                        minScore: -1,
-                      }}
-                      editable={false}
-                    />
-                  </div>
-                ))
-              : null}
-          </>
+          </AnimatePresence>
         </div>
       ) : null}
       <AnimatePresence>

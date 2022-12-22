@@ -15,11 +15,11 @@ const DIVISIONS: { amount: number; name: Intl.RelativeTimeFormatUnit }[] = [
 
 export function formatTimeAgo(date: Date) {
   let duration = (date.valueOf() - new Date().valueOf()) / 1000;
-
   for (let i = 0; i <= DIVISIONS.length; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const division = DIVISIONS[i]!;
     if (Math.abs(duration) < division.amount) {
-      return formatter.format(Math.round(duration), division.name);
+      return formatter.format(Math.ceil(duration), division.name);
     }
     duration /= division.amount;
   }

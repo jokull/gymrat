@@ -8,6 +8,7 @@ import { Promo } from "./components/Promo";
 export default async function Home() {
   return (
     <div className="flex flex-col h-full">
+      {/* @ts-expect-error github.com/microsoft/TypeScript/pull/51328 */}
       <Header page="index" />
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
         <div

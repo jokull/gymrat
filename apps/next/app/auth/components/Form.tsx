@@ -1,6 +1,6 @@
 "use client";
 
-import { useField, useForm } from "@gymrat/react-form";
+import { useField, useForm } from "@shopify/react-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams as useNextSearchParams } from "next/navigation";
 import { useSearchParams } from "utils/use-search-params";
@@ -69,11 +69,6 @@ function LoginForm() {
     makeCleanAfterSubmit: true,
     onSubmit: async (cleanValues) => {
       const response = await login.mutateAsync(cleanValues);
-      console.log(
-        typeof window !== "undefined",
-        typeof window.document !== "undefined",
-        typeof window.document.createElement !== "undefined"
-      );
       if (response.error) {
         return { status: "fail", errors: [{ message: response.error }] };
       }

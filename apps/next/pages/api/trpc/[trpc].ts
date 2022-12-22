@@ -6,7 +6,7 @@ export const config = {
 
 export default async function handler(req: NextRequest) {
   const pathname = req.nextUrl.pathname.slice(4);
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const protocol = process.env.HOST === "gymrat.hundrad.is" ? "http" : "https";
   const host = process.env.TRPC_HOST ?? "";
   const searchParams = req.nextUrl.searchParams.toString();
   const url = `${protocol}://${host}${pathname}?${searchParams}`;

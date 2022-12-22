@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@gymrat/api": "*",
-    "@gymrat/react-form": "*",
     "@headlessui-float/react": "^0.10.1",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",

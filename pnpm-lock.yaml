@@ -1,6 +1,9 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
+  '@tanstack/react-query@4.20.4':
+    hash: 3zmozfq2xr5oyfzhgkcluqvgda
+    path: patches/@tanstack__react-query@4.20.4.patch
   '@shopify/react-form@2.4.1':
     hash: bd2fug3lvpaltwcxslmpj53kbq
     path: patches/@shopify__react-form@2.4.1.patch
@@ -10,6 +13,7 @@ importers:
   .:
     specifiers:
       '@shopify/react-form': ^2.4.1
+      '@tanstack/react-query': ^4.20.4
       '@typescript-eslint/eslint-plugin': ^5.0.0
       '@typescript-eslint/parser': ^5.0.0
       eslint: ^8.29.0
@@ -22,6 +26,7 @@ importers:
       typescript: ^4.9.4
     dependencies:
       '@shopify/react-form': 2.4.1_bd2fug3lvpaltwcxslmpj53kbq
+      '@tanstack/react-query': 4.20.4_3zmozfq2xr5oyfzhgkcluqvgda
     devDependencies:
       '@typescript-eslint/eslint-plugin': 5.47.0_ncmi6noazr3nzas7jxykisekym
       '@typescript-eslint/parser': 5.47.0_lzzuuodtsqwxnvqeq4g4likcqa
@@ -44,7 +49,7 @@ importers:
       '@next/eslint-plugin-next': ^13.0.7
       '@shopify/react-form': ^2.4.1
       '@tailwindcss/forms': ^0.5.3
-      '@tanstack/react-query': 4.3.0-beta.4
+      '@tanstack/react-query': ^4.20.4
       '@trpc/client': ^10.6.0
       '@trpc/next': ^10.6.0
       '@trpc/react-query': ^10.6.0
@@ -83,10 +88,10 @@ importers:
       '@heroicons/react': 2.0.13_react@18.2.0
       '@jokullsolberg/next-use-search-params': 0.2.0_pwdhgtudhu5q2ngyd5jimos4ha
       '@shopify/react-form': 2.4.1_bd2fug3lvpaltwcxslmpj53kbq_react@18.2.0
-      '@tanstack/react-query': 4.3.0-beta.4_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-query': 4.20.4_lzs4bqyt3y4vq53vhrafhsgquy_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.6.0_@trpc+server@10.6.0
-      '@trpc/next': 10.6.0_j3qd7cvknd7gd3nepphjllpwpq
-      '@trpc/react-query': 10.6.0_wnphk3lkicnzkulyhi7qd4ai7m
+      '@trpc/next': 10.6.0_a7yp3sykcoces3nogo3fmy4hi4
+      '@trpc/react-query': 10.6.0_jvy7igwpe5g26kdgldbjgphyd4
       '@trpc/server': 10.6.0
       add: 2.0.6
       classnames: 2.3.2
@@ -1098,12 +1103,12 @@ packages:
       tailwindcss: 3.2.4_postcss@8.4.20
     dev: true
 
-  /@tanstack/query-core/4.3.0-beta.4:
-    resolution: {integrity: sha512-GFtngk07PTj3WX1P0sN2hnb/z+Y+CnGtwJv2gdDepZ5M87vgaTb2y9qqd6HDpMswTAmEqjBbrNp7X/LCBZkY+A==}
+  /@tanstack/query-core/4.20.4:
+    resolution: {integrity: sha512-lhLtGVNJDsJ/DyZXrLzekDEywQqRVykgBqTmkv0La32a/RleILXy6JMLBb7UmS3QCatg/F/0N9/5b0i5j6IKcA==}
     dev: false
 
-  /@tanstack/react-query/4.3.0-beta.4_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-9fFerM2uuUbDxQRZMoyZJlbdKPquzAKuTiFkQM6GSne7H0Y8f8mU+nq3rneIacHzfVHRJ/hPLg6K0Qrik/tqyA==}
+  /@tanstack/react-query/4.20.4_3zmozfq2xr5oyfzhgkcluqvgda:
+    resolution: {integrity: sha512-SJRxx13k/csb9lXAJfycgVA1N/yU/h3bvRNWP0+aHMfMjmbyX82FdoAcckDBbOdEyAupvb0byelNHNeypCFSyA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -1116,11 +1121,31 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@tanstack/query-core': 4.3.0-beta.4
+      '@tanstack/query-core': 4.20.4
+      use-sync-external-store: 1.2.0
+    dev: false
+    patched: true
+
+  /@tanstack/react-query/4.20.4_lzs4bqyt3y4vq53vhrafhsgquy_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-SJRxx13k/csb9lXAJfycgVA1N/yU/h3bvRNWP0+aHMfMjmbyX82FdoAcckDBbOdEyAupvb0byelNHNeypCFSyA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.20.4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
+    patched: true
 
   /@trpc/client/10.6.0_@trpc+server@10.6.0:
     resolution: {integrity: sha512-GvZzUQuPStXN9zTyJ+PvlGweEa1mvsbtsAgo6yfnDGjrx1HJbDMtYC+o98lz1T+UOdDPgfDE/R1MaCrWDUrpSA==}
@@ -1130,7 +1155,7 @@ packages:
       '@trpc/server': 10.6.0
     dev: false
 
-  /@trpc/next/10.6.0_j3qd7cvknd7gd3nepphjllpwpq:
+  /@trpc/next/10.6.0_a7yp3sykcoces3nogo3fmy4hi4:
     resolution: {integrity: sha512-YCKGecShvn6KQl+/rjPk+PkILLr2OR32wQaZUhkRMkqgdZ+qOBj/obuopwsz5rNevHxJBc1qolp9yibWDG7F/A==}
     peerDependencies:
       '@tanstack/react-query': ^4.3.8
@@ -1144,9 +1169,9 @@ packages:
       react:
         optional: true
     dependencies:
-      '@tanstack/react-query': 4.3.0-beta.4_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-query': 4.20.4_lzs4bqyt3y4vq53vhrafhsgquy_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.6.0_@trpc+server@10.6.0
-      '@trpc/react-query': 10.6.0_wnphk3lkicnzkulyhi7qd4ai7m
+      '@trpc/react-query': 10.6.0_jvy7igwpe5g26kdgldbjgphyd4
       '@trpc/server': 10.6.0
       next: 13.0.8-canary.4_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
@@ -1154,7 +1179,7 @@ packages:
       react-ssr-prepass: 1.5.0_react@18.2.0
     dev: false
 
-  /@trpc/react-query/10.6.0_wnphk3lkicnzkulyhi7qd4ai7m:
+  /@trpc/react-query/10.6.0_jvy7igwpe5g26kdgldbjgphyd4:
     resolution: {integrity: sha512-2YC81kRG3jvsHH/66AKk4n3jPy/C+UY2FJuJsd3BtZU8ud8fsSIKQOOeUEeIs9gN6SLPzSCEEpSOB1x8e78FbQ==}
     peerDependencies:
       '@tanstack/react-query': ^4.3.8
@@ -1166,7 +1191,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@tanstack/react-query': 4.3.0-beta.4_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-query': 4.20.4_lzs4bqyt3y4vq53vhrafhsgquy_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.6.0_@trpc+server@10.6.0
       '@trpc/server': 10.6.0
       react: 18.2.0
@@ -5325,6 +5350,15 @@ packages:
   /urlpattern-polyfill/4.0.3:
     resolution: {integrity: sha512-DOE84vZT2fEcl9gqCUTcnAw5ZY5Id55ikUcziSUntuEFL3pRvavg5kwDmTEUJkeCHInTlV/HexFomgYnzO5kdQ==}
     dev: true
+
+  /use-sync-external-store/1.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}

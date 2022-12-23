@@ -19,7 +19,7 @@ export default async function Home() {
             backgroundPosition: "50% 50%",
           }}
         >
-          The dead simple way to track your progress in the gym
+          Journal for your workouts
         </div>
         <p className="font-medium text-sm text-center text-neutral-200">
           Try out a demo of the UI below

@@ -23,7 +23,8 @@ export default function Head() {
         href="/favicon-16x16.png"
       />
       <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
-      <meta property="og:image" content="/og.png" />
+      <link rel="manifest" href="/site.webmanifest"></link>
+      <meta property="og:image" content="/og-2.png" />
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { type Workout, getNumberValue } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
+import classNames from "classnames";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -131,7 +132,10 @@ export function Promo() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 * i + 10 }}
                 key={workout.id}
-                className="data-active:bg-neutral-800 -mx-2 p-2 rounded-md group"
+                className={classNames(
+                  "data-active:bg-black/90 data-active:ring-1 ring-white/20 p-2 rounded-md group",
+                  "text-neutral-400"
+                )}
                 data-headlessui-state={i === 0 ? "active" : ""}
               >
                 <WorkoutRow workout={workout} editable={false} />

@@ -121,9 +121,9 @@ export function Workouts({
               layout
               data-workout={matchingWorkoutIsSelected ? "true" : "false"}
               className={classNames(
-                "cursor-pointer hover:bg-black/90 data-active:bg-black/90 data-active:ring-1 ring-white/20 hover:ring-1 p-2 rounded-md group",
+                "cursor-pointer hover:bg-white/10 data-active:bg-white/15 p-2 rounded-md group",
                 matchingWorkoutIsSelected
-                  ? "bg-neutral-900/80 text-neutral-100"
+                  ? "bg-white/10 text-neutral-100"
                   : "text-neutral-400"
               )}
             >

@@ -12,14 +12,14 @@ export default async function Home() {
       <Header page="index" />
       <div className="my-4 sm:my-8 flex flex-col gap-4 sm:gap-8 grow">
         <div
-          className="text-3xl sm:text-4xl md:text-6xl md:-mx-12 font-black text-center leading-tight my-8 bg-no-repeat bg-clip-text text-transparent bg-[rgb(255,1,184)]"
+          className="text-4xl sm:text-5xl md:text-6xl md:-mx-24 font-black text-center leading-tight my-8 bg-no-repeat bg-clip-text text-transparent"
           style={{
             backgroundImage: "url(/background.svg)",
             backgroundSize: "cover",
             backgroundPosition: "50% 50%",
           }}
         >
-          Journal for your workouts
+          A simple journal <br /> for workouts
         </div>
         <p className="font-medium text-sm text-center text-neutral-200">
           Try out a demo of the UI below

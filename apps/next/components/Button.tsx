@@ -1,3 +1,5 @@
+"use client";
+
 import classNames from "classnames";
 import Link from "next/link";
 import { ButtonHTMLAttributes, forwardRef } from "react";

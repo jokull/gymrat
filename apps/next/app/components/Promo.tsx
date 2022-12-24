@@ -2,7 +2,6 @@
 
 import { type Workout, getNumberValue } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
-import classNames from "classnames";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -118,6 +117,19 @@ export function Promo() {
           isPromo={true}
         />
       </form>
+      <AnimatePresence>
+        {hasInteracted && (
+          <motion.div
+            layout
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            className="text-center py-2 px-3 bg-teal-600/20 text-teal-600 font-medium my-8 rounded-md"
+          >
+            <p>This is only a demo - Sign up to save your workouts</p>
+            <p className="text-xs mt-1">Gymrat is 100% free!</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {workouts.length > 0 ? (
         <div className="flex flex-col gap-1 py-4">
           <AnimatePresence>
@@ -132,10 +144,7 @@ export function Promo() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 * i + 10 }}
                 key={workout.id}
-                className={classNames(
-                  "data-active:bg-black/90 data-active:ring-1 ring-white/20 p-2 rounded-md group",
-                  "text-neutral-400"
-                )}
+                className="data-active:bg-white/5 p-2 rounded-md group text-neutral-400"
                 data-headlessui-state={i === 0 ? "active" : ""}
               >
                 <WorkoutRow workout={workout} editable={false} />
@@ -144,19 +153,6 @@ export function Promo() {
           </AnimatePresence>
         </div>
       ) : null}
-      <AnimatePresence>
-        {hasInteracted && (
-          <motion.div
-            layout
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: -10 }}
-            className="text-center py-2 px-3  bg-teal-600/20 text-teal-600 font-medium my-8 rounded-md"
-          >
-            <p>This is only a demo - Sign up to save your workouts</p>
-            <p className="text-xs mt-1">Gymrat is 100% free!</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

@@ -59,6 +59,17 @@ async function getUserFromApiKey(request: Request, d1: Env["DB"]) {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const { pathname } = new URL(request.url);
+
+    if (pathname === "/test") {
+      const { results } = await env.DB.prepare(
+        "SELECT * FROM Workout WHERE id = ?"
+      )
+        .bind("Bs Beverages")
+        .all();
+      return Response.json(results);
+    }
+
     const session = await getSession(request, env.SECRET_KEY);
 
     let user: Awaited<ReturnType<typeof getUser>> | null = null;
@@ -75,6 +86,12 @@ export default {
       req: request,
       router: appRouter,
       createContext: createContextFactory(env, user),
+      onError({ error }) {
+        console.error("Error:", error);
+        if (error.code === "INTERNAL_SERVER_ERROR") {
+          // send to bug reporting
+        }
+      },
       responseMeta({ ctx, paths, errors }) {
         const allOk = errors.length === 0;
         if (

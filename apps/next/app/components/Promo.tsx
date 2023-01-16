@@ -70,7 +70,7 @@ export function Promo() {
       description: useField({
         value: {
           description: "Back Squat 3x",
-          id: null,
+          id: "",
           maxScore: 110,
           minScore: 110,
         },

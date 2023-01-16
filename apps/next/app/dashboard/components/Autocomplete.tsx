@@ -1,36 +1,25 @@
 import { type Workout } from "@gymrat/api";
-import { Combobox } from "@headlessui/react";
 import classNames from "classnames";
+import {
+  useCombobox,
+  UseComboboxState,
+  UseComboboxStateChangeOptions,
+} from "downshift";
 import Fuse from "fuse.js";
-import { Fragment, useState } from "react";
+import { useCallback, useState } from "react";
+
+import { Input } from "@/components/Input";
 
 export type Item = {
-  id: string | null;
+  id: string;
 } & Pick<Workout, "description" | "minScore" | "maxScore">;
 
-function Option({ item }: { item: Item }) {
-  return (
-    <Combobox.Option
-      key={item.id}
-      value={item}
-      className={classNames(
-        "data-active:bg-neutral-600 data-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block cursor-pointer"
-      )}
-    >
-      {item.description}
-    </Combobox.Option>
-  );
-}
-
-function compareItems(a: Item, b: Item) {
-  return (
-    a.description.toLocaleLowerCase().trim() ===
-    b.description.toLocaleLowerCase().trim()
-  );
+function compareDescriptions(a: string, b: string) {
+  return a.toLocaleLowerCase().trim() === b.toLocaleLowerCase().trim();
 }
 
 export default function Autocomplete({
-  items,
+  items: sourceItems,
   value,
   onChange,
 }: {
@@ -38,55 +27,105 @@ export default function Autocomplete({
   value: Item;
   onChange: (value: Item) => void;
 }) {
-  const [query, setQuery] = useState("");
+  const [items, setItems] = useState([...sourceItems]);
 
-  const filteredItems =
-    query.trim().length > 0
-      ? new Fuse(items, {
-          keys: ["description"],
-          findAllMatches: true,
-          includeScore: true,
-        })
-          .search(query)
-          .map(({ item }) => item)
-      : items;
+  const stateReducer = useCallback(
+    (
+      state: UseComboboxState<Item>,
+      actionAndChanges: UseComboboxStateChangeOptions<Item>
+    ) => {
+      const { type, changes } = actionAndChanges;
+      switch (type) {
+        case useCombobox.stateChangeTypes.ItemClick:
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+        case useCombobox.stateChangeTypes.InputChange:
+        case useCombobox.stateChangeTypes.InputBlur:
+          const matchedItem =
+            sourceItems.find((item) =>
+              compareDescriptions(changes.inputValue ?? "", item.description)
+            ) ??
+            ({
+              id: "",
+              description: changes.inputValue ?? "",
+              maxScore: -1,
+              minScore: -1,
+            } satisfies Item);
+          return {
+            ...changes,
+            inputValue: matchedItem.description,
+            selectedItem: matchedItem,
+          };
+        default:
+          return changes; // otherwise business as usual.
+      }
+    },
+    []
+  );
+
+  const {
+    isOpen,
+    getMenuProps,
+    getInputProps,
+    highlightedIndex,
+    getItemProps,
+  } = useCombobox({
+    initialInputValue: value.description,
+    items,
+    itemToString(item) {
+      return item ? item.description : "";
+    },
+    onSelectedItemChange: (changes) => {
+      if (changes.selectedItem) {
+        onChange(changes.selectedItem);
+      }
+    },
+    onInputValueChange: ({ inputValue }) => {
+      setItems(
+        (inputValue?.trim().length ?? 0) > 0
+          ? new Fuse(sourceItems, {
+              keys: ["description"],
+              findAllMatches: true,
+              includeScore: true,
+            })
+              .search(inputValue ?? "")
+              .map(({ item }) => item)
+          : [...sourceItems]
+      );
+    },
+    stateReducer,
+  });
 
   return (
     <div className="relative inline-flex flex-col w-full">
-      <Combobox
-        value={value}
-        onChange={onChange}
-        as={Fragment}
-        by={compareItems}
-      >
-        <label className="block text-sm font-medium text-gray-400 text-left leading-6">
-          Workout / Lift
-        </label>
-        <Combobox.Input
-          className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
-          onChange={(event) => {
-            setQuery(event.target.value);
-          }}
-          displayValue={(item: Item | undefined) => item?.description ?? ""}
-          autoFocus
-        />
-        <Combobox.Options className="w-full z-10 shadow-lg border-2 border-neutral-400 bg-neutral-900 p-1 rounded-md mt-2 absolute top-14">
-          {query.length > 0 && (
-            <Option
-              key={"new"}
-              item={{
-                id: null,
-                description: query,
-                minScore: -1,
-                maxScore: -1,
-              }}
-            />
-          )}
-          {filteredItems.map((item) => (
-            <Option key={item.id} item={item} />
-          ))}
-        </Combobox.Options>
-      </Combobox>
+      <label className="block text-sm font-medium text-gray-400 text-left leading-6">
+        Workout / Lift
+      </label>
+      <Input
+        className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
+        autoFocus
+        {...getInputProps()}
+      />
+      <div {...getMenuProps()}>
+        {isOpen ? (
+          <div className="w-full z-10 shadow-lg border-2 border-neutral-400 bg-neutral-900 p-1 rounded-md mt-2 absolute top-14">
+            {items.map((item, index) => (
+              <li
+                aria-selected={index === highlightedIndex ? "true" : "false"}
+                className={classNames(
+                  "aria-active:bg-neutral-600 aria-selected:bg-neutral-500 text-sm px-2 py-1 rounded-sm block cursor-pointer"
+                )}
+                key={`${item.id}`}
+                {...getItemProps({
+                  item,
+                  index,
+                })}
+              >
+                {item.description}
+              </li>
+            ))}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

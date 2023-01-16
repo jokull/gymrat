@@ -43,7 +43,7 @@ function useWorkoutForm() {
   const form = useForm({
     fields: {
       description: useField<Item>({
-        value: { description: "", id: null, minScore: -1, maxScore: -1 },
+        value: { description: "", id: "", minScore: -1, maxScore: -1 },
         validates: (value) =>
           value.description.trim() === ""
             ? "Name of workout or lift is required"

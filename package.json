@@ -6,7 +6,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "dev": "turbo run dev",
-    "tsc": "turbo run tsc"
+    "tsc": "turbo run tsc",
+    "tunnel": "cloudflared tunnel --config ~/.cloudflared/gymrat.yaml run"
   },
   "keywords": [],
   "author": "Jökull Sólberg",
@@ -26,7 +27,8 @@
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
-        "react", "better-sqlite3"
+        "react",
+        "better-sqlite3"
       ]
     },
     "patchedDependencies": {

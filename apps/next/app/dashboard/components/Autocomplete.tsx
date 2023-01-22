@@ -102,7 +102,6 @@ export default function Autocomplete({
       </label>
       <Input
         className="w-full py-1.5 px-3 bg-transparent border border-neutral-600 rounded-md placeholder:text-neutral-700"
-        autoFocus
         {...getInputProps()}
       />
       <div {...getMenuProps()}>

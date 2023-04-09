@@ -1,3 +1,4 @@
+import type { D1Database } from "@cloudflare/workers-types/experimental";
 import { Kysely, sql } from "kysely";
 import { D1Dialect } from "kysely-d1";
 

@@ -9,6 +9,7 @@ importers:
 
   .:
     specifiers:
+      '@cloudflare/workers-types': ^4.20230404.0
       '@tanstack/react-query': ^4.20.4
       '@typescript-eslint/eslint-plugin': ^5.57.1
       '@typescript-eslint/parser': ^5.57.1
@@ -23,6 +24,7 @@ importers:
     dependencies:
       '@tanstack/react-query': 4.20.4_3zmozfq2xr5oyfzhgkcluqvgda
     devDependencies:
+      '@cloudflare/workers-types': 4.20230404.0
       '@typescript-eslint/eslint-plugin': 5.57.1_z2kgtpg43567unkcwpmcdtgh2q
       '@typescript-eslint/parser': 5.57.1_voubu7prgxjfsfbgx5d4sqnwiy
       eslint: 8.38.0

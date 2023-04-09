@@ -53,7 +53,7 @@ export function hydrateWorkout(workout: DBWorkout) {
     ...workout,
     maxScore: workout.maxScore,
     minScore: workout.minScore,
-    isTime: ["1", "true"].includes(workout.isTime),
+    isTime: [1, "1", "true"].includes(workout.isTime),
     date: new Date(workout.date),
   };
 }

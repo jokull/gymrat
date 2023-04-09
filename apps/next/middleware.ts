@@ -23,6 +23,7 @@ async function trpcHandler(req: NextRequest) {
       "content-type": "application/json",
       cookie: req.headers.get("cookie") ?? "",
     },
+    cache: "no-cache",
     ...(req.method === "POST" ? { body: await req.text() } : {}),
   });
 }

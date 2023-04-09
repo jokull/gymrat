@@ -4,6 +4,7 @@ import { type AppRouter, type Workout, getNumberValue } from "@gymrat/api";
 import { useField, useForm } from "@shopify/react-form";
 import { inferRouterOutputs } from "@trpc/server";
 import { AnimatePresence, motion } from "framer-motion";
+import superjson from "superjson";
 import { useDebounce } from "usehooks-ts";
 
 import { Primary } from "@/components/Button";
@@ -12,9 +13,6 @@ import { trpc } from "@/trpc/client";
 import Autocomplete, { Item } from "./Autocomplete";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-interface Props {
-  workouts: RouterOutput["workouts"];
-}
 
 function getDescriptionItems(
   workouts: RouterOutput["workouts"]
@@ -73,7 +71,13 @@ function useWorkoutForm() {
   return { form, create };
 }
 
-export function DataCreateWorkout({ workouts }: Props) {
+export function DataCreateWorkout({
+  serializedWorkouts,
+}: {
+  serializedWorkouts: ReturnType<typeof superjson.serialize>;
+}) {
+  const workouts =
+    superjson.deserialize<RouterOutput["workouts"]>(serializedWorkouts);
   const {
     form: {
       submit,

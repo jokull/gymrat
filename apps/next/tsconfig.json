@@ -8,10 +8,15 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "strictNullChecks": true
   },
-  "exclude": ["../../packages/react-form/src/*.ts"],
+  "exclude": [
+    "../../packages/react-form/src/*.ts"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

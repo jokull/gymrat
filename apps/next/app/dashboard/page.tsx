@@ -1,3 +1,5 @@
+import superjson from "superjson";
+
 import { trpc } from "@/trpc/server";
 
 import { DataCreateWorkout } from "./components/CreateWorkout";
@@ -10,14 +12,21 @@ export default async function Page() {
     trpc.workouts.query(),
     trpc.user.query(),
   ]);
+  const serializedWorkouts = superjson.serialize(workouts);
   return (
     <div className="flex flex-col gap-4 h-full">
       <div className="grow flex flex-col gap-4">
-        <DataCreateWorkout workouts={workouts} data-superjson />
+        <DataCreateWorkout
+          serializedWorkouts={serializedWorkouts}
+          data-superjson
+        />
         <DataWorkouts initialData={[]} data-superjson />
       </div>
-      <footer>
-        <p className="text-xs text-neutral-600 text-center">{user.apiKey}</p>
+      <footer className="leading-5 text-xs text-neutral-600 text-center">
+        <p className="underline text-sm text-neutral-400">
+          <a href="/workouts.csv">Download CSV</a>
+        </p>
+        <p className="">{user.apiKey}</p>
       </footer>
     </div>
   );

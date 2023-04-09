@@ -1,4 +1,5 @@
 import classNames from "classnames";
+
 import { WorkoutRow } from "./components/Workouts";
 
 function getSkeletonWorkout() {

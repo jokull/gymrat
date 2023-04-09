@@ -13,16 +13,16 @@
   "author": "Jökull Sólberg",
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.29.0",
-    "eslint-config-next": "13.0.6",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "eslint": "^8.38.0",
+    "eslint-config-next": "13.3.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "turbo": "^1.6.3",
-    "typescript": "^4.9.4"
+    "turbo": "^1.8.8",
+    "typescript": "^5.0.4"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -32,12 +32,10 @@
       ]
     },
     "patchedDependencies": {
-      "@shopify/react-form@2.4.1": "patches/@shopify__react-form@2.4.1.patch",
       "@tanstack/react-query@4.20.4": "patches/@tanstack__react-query@4.20.4.patch"
     }
   },
   "dependencies": {
-    "@shopify/react-form": "^2.4.1",
     "@tanstack/react-query": "^4.20.4"
   }
 }

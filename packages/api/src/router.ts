@@ -1,10 +1,16 @@
-import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
+import {
+  inferAsyncReturnType,
+  inferRouterOutputs,
+  initTRPC,
+  TRPCError,
+} from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { sealData, unsealData } from "iron-session/edge";
+import { Insertable, Selectable, Updateable } from "kysely";
 import superjson from "superjson";
 import { z } from "zod";
 
-import { type User } from "../db";
+import { DB, type User } from "../db";
 import { generateApiKey } from "./apiKeys";
 import { getQueryBuilder, hydrateWorkout, queryWorkouts } from "./db";
 import { hashPassword, verifyPassword } from "./passwords";
@@ -18,12 +24,16 @@ const workoutFormSchema = z.object({
   value: z.string(),
 });
 
-function createContext(req: Request, { DB, ...env }: Env, user: User | null) {
+function createContext(
+  req: Request,
+  { DB, ...env }: Env,
+  user: Selectable<User> | null
+) {
   const db = getQueryBuilder(DB);
   return { req, user, db, env, _session: "" };
 }
 
-export function createContextFactory(env: Env, user: User | null) {
+export function createContextFactory(env: Env, user: Selectable<User> | null) {
   return ({ req }: FetchCreateContextFnOptions) => {
     return createContext(req, env, user);
   };
@@ -194,14 +204,14 @@ export const appRouter = t.router({
     .mutation(async ({ ctx, input }) => {
       const updateStatement = ctx.db.updateTable("Workout");
 
-      let values: Parameters<typeof updateStatement.set>[0] = {};
+      let values: Updateable<DB["Workout"]> | Record<string, never> = {};
 
       if (input.fields.value) {
         const numberValue = getNumberValue(input.fields.value);
         values = {
           value: input.fields.value.trim(),
           numberValue: numberValue.value,
-          isTime: numberValue.isTime ? "true" : "false",
+          isTime: numberValue.isTime ? 1 : 0,
         };
       }
 
@@ -219,29 +229,32 @@ export const appRouter = t.router({
         };
       }
 
-      const result = await updateStatement
-        .set(values)
-        .where("Workout.id", "=", input.id)
-        .returningAll()
-        .executeTakeFirst();
-      return result;
+      if (Object.keys(values).length > 0) {
+        const result = await updateStatement
+          .set(values)
+          .where("Workout.id", "=", input.id)
+          .returningAll()
+          .executeTakeFirst();
+        return result;
+      }
     }),
   createWorkout: authProcedure
     .input(workoutFormSchema)
     .mutation(async ({ ctx, input }) => {
       const numberValue = getNumberValue(input.value);
+      const values = {
+        id: crypto.randomUUID(),
+        updatedAt: new Date().toISOString(),
+        value: input.value,
+        numberValue: numberValue.value,
+        isTime: numberValue.isTime ? 1 : 0,
+        description: input.description.split(" ").filter(Boolean).join(" "),
+        date: input.date.toISOString(),
+        userId: ctx.user.id,
+      } satisfies Insertable<DB["Workout"]>;
       const insert = await ctx.db
         .insertInto("Workout")
-        .values({
-          id: crypto.randomUUID(),
-          updatedAt: new Date().toISOString(),
-          value: input.value,
-          numberValue: numberValue.value,
-          isTime: numberValue.isTime ? "true" : "false",
-          description: input.description.split(" ").filter(Boolean).join(" "),
-          date: input.date.toISOString(),
-          userId: ctx.user.id,
-        })
+        .values(values)
         .returning("id as id")
         .executeTakeFirst();
       const workout = await queryWorkouts(ctx.db, ctx.user.id)
@@ -260,3 +273,4 @@ export const appRouter = t.router({
 });
 
 export type AppRouter = typeof appRouter;
+export type RouterOutput = inferRouterOutputs<AppRouter>;

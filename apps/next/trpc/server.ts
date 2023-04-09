@@ -15,7 +15,11 @@ export const trpc = createTRPCProxyClient<AppRouter>({
     httpBatchLink({
       url,
       fetch(url, options) {
-        return fetch(url, { ...options, credentials: "include" });
+        return fetch(url, {
+          ...options,
+          credentials: "include",
+          cache: "no-cache",
+        });
       },
       headers: () => {
         return { cookie: headers().get("cookie") ?? "" };

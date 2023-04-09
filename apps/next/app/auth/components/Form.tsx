@@ -73,7 +73,7 @@ function LoginForm() {
         return { status: "fail", errors: [{ message: response.error }] };
       }
       window.location.href = new URL(
-        searchParams.get("next") ?? "/dashboard",
+        searchParams?.get("next") ?? "/dashboard",
         window.location.href
       ).toString();
       return { status: "success" };

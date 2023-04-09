@@ -1,13 +1,11 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  transpilePackages: ["api"],
-  productionBrowserSourceMaps: true,
+  transpilePackages: ["@gymrat/api"],
   experimental: {
     appDir: true,
-    runtime: "experimental-edge",
-    swcPlugins: [["next-superjson-plugin", {}]],
+    runtime: "edge",
+    // swcPlugins: [["next-superjson-plugin", {}]],
   },
 };
 

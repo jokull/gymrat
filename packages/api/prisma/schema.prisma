@@ -1,8 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
+generator kysely {
+  provider = "prisma-kysely"
+
+  // Optionally provide a destination directory for the generated file
+  // and a filename of your choice
+  output   = ".."
+  fileName = "db.d.ts"
 }
 
 datasource db {
@@ -11,7 +16,7 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(uuid())
+  id             String    @id @default(dbgenerated("(uuid())"))
   Workouts       Workout[]
   apiKey         String
   email          String    @unique
@@ -20,8 +25,8 @@ model User {
 }
 
 model Workout {
-  id          String   @id @default(uuid())
-  updatedAt   DateTime @updatedAt
+  id          String   @id @default(dbgenerated("(uuid())"))
+  updatedAt   DateTime
   description String
   value       String
   numberValue Int      @default(0)

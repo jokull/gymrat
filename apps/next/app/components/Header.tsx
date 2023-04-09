@@ -34,7 +34,11 @@ export default async function Header({
                 <SignOut />
               </>
             ) : (
-              <GhostLink href="/dashboard" className="flex gap-2">
+              <GhostLink
+                href="/dashboard"
+                className="flex gap-2"
+                prefetch={false}
+              >
                 <span>Dashboard</span>
                 <ArrowRightIcon className="w-4 h-4" />
               </GhostLink>

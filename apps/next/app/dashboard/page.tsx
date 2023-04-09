@@ -16,11 +16,8 @@ export default async function Page() {
   return (
     <div className="flex flex-col gap-4 h-full">
       <div className="grow flex flex-col gap-4">
-        <DataCreateWorkout
-          serializedWorkouts={serializedWorkouts}
-          data-superjson
-        />
-        <DataWorkouts initialData={[]} data-superjson />
+        <DataCreateWorkout serializedWorkouts={serializedWorkouts} />
+        <DataWorkouts initialData={[]} />
       </div>
       <footer className="leading-5 text-xs text-neutral-600 text-center">
         <p className="underline text-sm text-neutral-400">

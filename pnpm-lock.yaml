@@ -42,7 +42,6 @@ importers:
       '@headlessui-float/react': ^0.10.1
       '@headlessui/react': ^1.7.4
       '@heroicons/react': ^2.0.13
-      '@jokullsolberg/next-use-search-params': ^0.2.0
       '@next/eslint-plugin-next': ^13.3.0
       '@shopify/react-form': ^2.5.4
       '@tailwindcss/forms': ^0.5.3
@@ -68,7 +67,6 @@ importers:
       fuse.js: ^6.6.2
       iron-session: ^6.3.1
       next: 13.3.0
-      next-superjson-plugin: ^0.5.6
       postcss: ^8.4.21
       pretty-cache-header: ^1.0.0
       react: 18.2.0
@@ -84,7 +82,6 @@ importers:
       '@headlessui-float/react': 0.10.1_cenc63qaec3qhbngckwsuig6ai
       '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 2.0.13_react@18.2.0
-      '@jokullsolberg/next-use-search-params': 0.2.0_yucv4tfv7v7nrkw2uguegj6e7e
       '@shopify/react-form': 2.5.4_react@18.2.0
       '@tanstack/react-query': 4.20.4_3zmozfq2xr5oyfzhgkcluqvgda_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.6.0_@trpc+server@10.6.0
@@ -99,7 +96,6 @@ importers:
       fuse.js: 6.6.2
       iron-session: 6.3.1_next@13.3.0
       next: 13.3.0_biqbaboplfbrettd7655fr4n2y
-      next-superjson-plugin: 0.5.6_ewirk4wma7x43vezorlkvgf2qy
       pretty-cache-header: 1.0.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -688,22 +684,6 @@ packages:
   /@iarna/toml/2.2.5:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
-
-  /@jokullsolberg/next-use-search-params/0.2.0_yucv4tfv7v7nrkw2uguegj6e7e:
-    resolution: {integrity: sha512-dz9pmK/9+/3+wRUx9S7mB8QBiJdmxGg9myadD7CQMk00R77FrKL9QplszgdMpNMIwK3R0r3oEVlu/M5doOblIw==}
-    peerDependencies:
-      next: ^12.0.0 || ^13.0.0
-      react: ^16.8.0  || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      next: 13.3.0_biqbaboplfbrettd7655fr4n2y
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      zod: 3.21.4
-    dev: false
 
   /@jridgewell/gen-mapping/0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
@@ -3529,12 +3509,6 @@ packages:
       type-fest: 0.8.1
     dev: false
 
-  /hoist-non-react-statics/3.3.2:
-    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
-    dependencies:
-      react-is: 16.13.1
-    dev: false
-
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
     dev: false
@@ -4266,17 +4240,6 @@ packages:
   /new-github-issue-url/0.2.1:
     resolution: {integrity: sha512-md4cGoxuT4T4d/HDOXbrUHkTKrp/vp+m3aOA7XXVYwNsUNMK49g3SQicTSeV5GIz/5QVGAeYRAOlyp9OvlgsYA==}
     engines: {node: '>=10'}
-    dev: false
-
-  /next-superjson-plugin/0.5.6_ewirk4wma7x43vezorlkvgf2qy:
-    resolution: {integrity: sha512-vokzkgtr3axon5uXobhXJWN6/YlPOHdcAb/BeR+d0rXA3h1b5h98A+V0TgMUf+vcy9RvBqte/ppaJfkOwi4NGA==}
-    peerDependencies:
-      next: ^13
-      superjson: ^1
-    dependencies:
-      hoist-non-react-statics: 3.3.2
-      next: 13.3.0_biqbaboplfbrettd7655fr4n2y
-      superjson: 1.12.2
     dev: false
 
   /next/13.3.0_biqbaboplfbrettd7655fr4n2y:

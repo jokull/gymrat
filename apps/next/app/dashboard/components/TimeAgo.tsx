@@ -1,6 +1,7 @@
 "use client";
 import { type Workout } from "@gymrat/api";
 import { isSameWeek, isToday, isYesterday } from "date-fns";
+import { useEffect, useState } from "react";
 
 import DateInput from "@/components/DateInput";
 import { trpc } from "@/trpc/client";
@@ -20,6 +21,11 @@ export function TimeAgo({
     },
   });
   const today = new Date();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const label = isToday(workout.date)
     ? "today"
@@ -27,7 +33,9 @@ export function TimeAgo({
     ? "yesterday"
     : isSameWeek(workout.date, today)
     ? formatTimeAgo(workout.date)
-    : workout.date.toLocaleDateString("is-IS");
+    : isMounted
+    ? workout.date.toLocaleDateString("is-IS")
+    : String(workout.date);
 
   return editable ? (
     <DateInput

@@ -1,3 +1,5 @@
+"use client";
+
 import classNames from "classnames";
 
 import { WorkoutRow } from "./components/Workouts";
@@ -42,11 +44,7 @@ export default function Loading() {
             data-headlessui-state={i === 0 ? "active" : ""}
           >
             <div className="invisible">
-              <WorkoutRow
-                workout={getSkeletonWorkout()}
-                editable={false}
-                data-superjson
-              />
+              <WorkoutRow workout={getSkeletonWorkout()} editable={false} />
             </div>
           </div>
         ))}

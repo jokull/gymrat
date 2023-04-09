@@ -9,7 +9,7 @@ import {
 import { z } from "zod";
 
 type ZodCoercePrimitives = {
-  [K in keyof typeof z.coerce]: ReturnType<typeof z.coerce[K]>;
+  [K in keyof typeof z.coerce]: ReturnType<(typeof z.coerce)[K]>;
 };
 
 type ZodCoercePrimitiveNames = keyof ZodCoercePrimitives;
@@ -97,7 +97,7 @@ export function useSearchParams<T extends UseParamSchema>(schema: T) {
   const entries = Object.entries(schema).map(([key, paramSchema]) => {
     const validatedValue = validateParam(
       paramSchema,
-      searchParams.get(key) ?? getDefaultValue(paramSchema._def)
+      searchParams?.get(key) ?? getDefaultValue(paramSchema._def)
     );
     return [key, validatedValue];
   });
@@ -109,7 +109,7 @@ export function useSearchParams<T extends UseParamSchema>(schema: T) {
     newValue: z.infer<T[K]>
   ) {
     const paramSchema = schema[key]!;
-    const newSearchParams = new URLSearchParams(searchParams);
+    const newSearchParams = new URLSearchParams(searchParams ?? {});
     const validated = validateParam(paramSchema, newValue);
     const stringified = isZodType(paramSchema, z.ZodFirstPartyTypeKind.ZodDate)
       ? (validated as Date).toISOString()

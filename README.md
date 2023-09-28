@@ -26,7 +26,7 @@ credentials-file: /Users/jokull/.cloudflared/<UUID>.json
 ingress:
   - hostname: gymrat.hundrad.is
     path: ^/trpc.*
-    service: http://localhost:8787
+    service: http://localhost:8989
   - hostname: gymrat.hundrad.is
     service: http://localhost:3800
   - service: http_status:404
@@ -34,7 +34,7 @@ ingress:
 
 Three processes therefore need to run.
 
-- `localhost:8787` is run with `pnpm --filter api run start`
+- `localhost:8989` is run with `pnpm --filter api run start`
 - `localhost:3800` is run with `pnpm --filter next run dev`
 - Then
 

@@ -4,7 +4,8 @@ import { cacheHeader } from "pretty-cache-header";
 
 import { trpc } from "@/trpc/server";
 
-export const config = {};
+export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -43,7 +44,6 @@ function jsonToCsv(workouts: Workout[]): string {
       let value = workout[header];
       if (value instanceof Date) {
         value = formatDate(value);
-        console.log("format date", value);
       }
       return String(value);
     })

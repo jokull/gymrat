@@ -100,7 +100,7 @@ export default function Command() {
     transformer: superjson,
     links: [
       httpBatchLink({
-        url: `http://127.0.0.1:8787/trpc`,
+        url: `http://127.0.0.1:8989/trpc`,
         // url: `https://gymrat-api.solberg.workers.dev/trpc`,
         headers: { Authorization: apiKey },
       }),

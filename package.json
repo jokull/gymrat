@@ -7,22 +7,22 @@
     "lint": "turbo run lint",
     "dev": "turbo run dev",
     "tsc": "turbo run tsc",
-    "tunnel": "cloudflared tunnel --config ~/.cloudflared/gymrat.yaml run"
+    "tunnel": "cloudflared tunnel --config ~/.cloudflared/gymrat.yaml run --protocol http2"
   },
   "keywords": [],
   "author": "Jökull Sólberg",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230404.0",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
-    "eslint": "^8.38.0",
-    "eslint-config-next": "13.3.0",
+    "@cloudflare/workers-types": "^4.20230511.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "eslint": "^8.41.0",
+    "eslint-config-next": "13.4.3",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "turbo": "^1.8.8",
+    "turbo": "^1.9.8",
     "typescript": "^5.0.4"
   },
   "pnpm": {

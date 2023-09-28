@@ -39,7 +39,7 @@ npx wrangler d1 create northwind-demo
 npx wrangler d1 execute northwind-demo --file ./data/Northwind.Sqlite3.create.sql
 
 # If you're creating a new project, you'll need to install some dependencies:
-npm install --save-dev itty-router @cloudflare/d1
+npm install --save-dev @cloudflare/d1
 
 # Deploy the worker
 npx wrangler publish

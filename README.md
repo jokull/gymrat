@@ -74,3 +74,38 @@ Initialize the remote D1 db
 ```
 pnpx wrangler d1 execute gymrat-api --file ./prisma/migrations/20221204224336_initial/migration.sql
 ```
+
+## Analytics
+
+Active users
+
+```sql
+WITH RankedWorkouts AS (
+    SELECT
+        w."updatedAt",
+        w."userId",
+        u."email",
+        ROW_NUMBER() OVER(PARTITION BY w."userId" ORDER BY w."updatedAt" DESC) AS rn
+    FROM "Workout" w
+    JOIN "User" u ON w."userId" = u."id"
+)
+
+SELECT
+    "email",
+    "updatedAt" AS "activeDate"
+FROM RankedWorkouts
+WHERE rn = 1
+ORDER BY "activeDate" DESC;
+```
+
+Total workouts tracked per month
+
+```sql
+SELECT
+    strftime('%Y-%m', w."updatedAt") AS "monthYear",
+    COUNT(w."id") AS "totalWorkouts",
+    COUNT(DISTINCT w."userId") AS "uniqueUsersActive"
+FROM "Workout" w
+GROUP BY "monthYear"
+ORDER BY "monthYear" DESC;
+```

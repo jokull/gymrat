@@ -1,0 +1,25 @@
+{
+  "parserOptions": {
+    "project": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:import/errors",
+    "plugin:import/typescript"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "import", "unicorn"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": ["tsconfig.json"]
+      }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  }
+}

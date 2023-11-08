@@ -4,7 +4,8 @@ import Link from "next/link";
 import Header from "./_components/header-";
 import { Promo } from "./_components/promo-";
 
-export default function Home() {
+// eslint-disable-next-line @typescript-eslint/require-await
+export default async function Home() {
   return (
     <div className="flex h-full flex-col">
       <Header page="index" />

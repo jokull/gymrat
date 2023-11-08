@@ -3,7 +3,7 @@
 import { isSameWeek, isToday, isYesterday } from "date-fns";
 import { useTransition } from "react";
 
-import DateInput from "~/components/date-input";
+import { DateInput } from "~/components/date-input";
 import { updateWorkout } from "~/db/actions";
 import { QueryWorkout } from "~/db/queries";
 import { formatTimeAgo } from "~/utils/timeago";

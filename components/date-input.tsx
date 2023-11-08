@@ -123,7 +123,7 @@ export function DayGrid({
   );
 }
 
-export default function DateInput({
+export function DateInput({
   initial,
   onChange,
   children,

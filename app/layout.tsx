@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(`https://${process.env.HOST}/`),
 };
 
-export default function RootLayout({
+// eslint-disable-next-line @typescript-eslint/require-await
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

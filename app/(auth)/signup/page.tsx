@@ -4,7 +4,8 @@ import { sendVerificationEmail } from "~/db/actions";
 
 import { Form } from "../_components/form";
 
-export default function Page() {
+// eslint-disable-next-line @typescript-eslint/require-await
+export default async function Page() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-baseline justify-between">

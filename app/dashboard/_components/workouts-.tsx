@@ -6,6 +6,10 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useState } from "react";
 
 import { TimeAgo } from "~/app/dashboard/_components/time-ago";
+import {
+  type deleteWorkout as deleteWorkoutAction,
+  type updateWorkout as updateWorkoutAction,
+} from "~/db/actions";
 import { QueryWorkout } from "~/db/queries";
 import { cn } from "~/utils/classnames";
 
@@ -32,9 +36,13 @@ function TopScore({ workout }: { workout: QueryWorkout }) {
 export function WorkoutRow({
   workout,
   editable,
+  deleteWorkout,
+  updateWorkout,
 }: {
   workout: QueryWorkout;
   editable: boolean;
+  updateWorkout?: typeof updateWorkoutAction;
+  deleteWorkout?: typeof deleteWorkoutAction;
 }) {
   return (
     <>
@@ -43,7 +51,11 @@ export function WorkoutRow({
         <div className="flex min-w-0 grow flex-col gap-1">
           <div>{workout.description}</div>
           <div className="whitespace-nowrap text-neutral-500">
-            <TimeAgo workout={workout} editable={editable} />
+            <TimeAgo
+              updateWorkout={updateWorkout}
+              workout={workout}
+              editable={editable}
+            />
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -52,7 +64,9 @@ export function WorkoutRow({
             <span className="font-medium">{workout.value}</span>
           </div>
           <div className="shrink-0 items-center gap-2">
-            {editable ? <DeleteWorkout workout={workout} /> : null}
+            {editable && deleteWorkout ? (
+              <DeleteWorkout deleteWorkout={deleteWorkout} workout={workout} />
+            ) : null}
           </div>
         </div>
       </div>
@@ -68,9 +82,15 @@ export function WorkoutRow({
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <div className="whitespace-nowrap text-neutral-500">
-              <TimeAgo workout={workout} editable={editable} />
+              <TimeAgo
+                updateWorkout={updateWorkout}
+                workout={workout}
+                editable={editable}
+              />
             </div>
-            {editable ? <DeleteWorkout workout={workout} /> : null}
+            {editable && deleteWorkout ? (
+              <DeleteWorkout deleteWorkout={deleteWorkout} workout={workout} />
+            ) : null}
           </div>
         </div>
       </div>
@@ -81,9 +101,13 @@ export function WorkoutRow({
 export function Workouts({
   workouts,
   editable = true,
+  deleteWorkout,
+  updateWorkout,
 }: {
   workouts: QueryWorkout[];
   editable?: boolean;
+  updateWorkout: typeof updateWorkoutAction;
+  deleteWorkout: typeof deleteWorkoutAction;
 }) {
   const [workout, setWorkout] = useState(workouts[0] ?? null);
   return (
@@ -111,7 +135,14 @@ export function Workouts({
                   : "text-neutral-400",
               )}
             >
-              {() => <WorkoutRow workout={w} editable={editable} />}
+              {() => (
+                <WorkoutRow
+                  workout={w}
+                  updateWorkout={updateWorkout}
+                  deleteWorkout={deleteWorkout}
+                  editable={editable}
+                />
+              )}
             </RadioGroup.Option>
           );
         })}

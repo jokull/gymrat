@@ -5,6 +5,8 @@ import { unsealVerificationToken } from "~/utils/auth";
 
 import { Form } from "./_components/form";
 
+export const runtime = "edge";
+
 export default async function Page({
   searchParams,
 }: {

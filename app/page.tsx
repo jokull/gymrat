@@ -4,6 +4,8 @@ import Link from "next/link";
 import Header from "./_components/header-";
 import { Promo } from "./_components/promo-";
 
+export const runtime = "edge";
+
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function Home() {
   return (

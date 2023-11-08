@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 
-import { createWorkout } from "~/db/actions";
+import { createWorkout, deleteWorkout, updateWorkout } from "~/db/actions";
 import { getWorkouts, QueryWorkout } from "~/db/queries";
 import { getLoginContext } from "~/utils/session";
 
 import { CreateWorkout } from "./_components/create-workout";
 import { Workouts } from "./_components/workouts-";
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 function getItemsFromWorkouts(workouts: QueryWorkout[]) {
@@ -42,7 +43,11 @@ export default async function Page() {
           createWorkout={createWorkout}
           workoutDescriptions={getItemsFromWorkouts(workouts)}
         />
-        <Workouts workouts={workouts} />
+        <Workouts
+          updateWorkout={updateWorkout}
+          deleteWorkout={deleteWorkout}
+          workouts={workouts}
+        />
       </div>
       <footer className="text-center text-xs leading-5 text-neutral-600">
         <p className="text-sm text-neutral-400 underline">

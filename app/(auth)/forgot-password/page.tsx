@@ -4,6 +4,8 @@ import { sendVerificationEmail } from "~/db/actions";
 
 import { Form } from "../_components/form";
 
+export const runtime = "edge";
+
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function Page() {
   return (

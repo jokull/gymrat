@@ -4,10 +4,16 @@ import { FocusTrap } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { KeyboardEvent, useCallback, useState, useTransition } from "react";
 
-import { deleteWorkout } from "~/db/actions";
+import { type deleteWorkout as deleteWorkoutAction } from "~/db/actions";
 import { QueryWorkout } from "~/db/queries";
 
-export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
+export function DeleteWorkout({
+  workout,
+  deleteWorkout,
+}: {
+  workout: QueryWorkout;
+  deleteWorkout: typeof deleteWorkoutAction;
+}) {
   const [screen, setScreen] = useState<"default" | "confirm">("default");
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {

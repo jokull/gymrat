@@ -3,9 +3,9 @@ import { unsealData } from "iron-session/edge";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-import { GhostLink, PrimaryLink } from "~/components/Button";
+import { GhostLink, PrimaryLink } from "~/components/button-";
 
-import { SignOut } from "./SignOut";
+import { SignOut } from "./sign-out";
 
 export default async function Header({
   page,

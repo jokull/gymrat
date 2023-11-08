@@ -1,5 +1,9 @@
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import { cacheHeader } from "pretty-cache-header";
+
+import { getWorkouts } from "~/db/queries";
+import { getLoginContext } from "~/utils/session";
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
@@ -15,7 +19,12 @@ function formatDate(date: Date): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function getWorkoutsData(workouts: RouterOutput["workouts"]) {
+async function getWorkoutsData() {
+  const { dbUser, db } = await getLoginContext();
+  if (!dbUser) {
+    redirect("/");
+  }
+  const workouts = await getWorkouts({ dbUser, db });
   return workouts.map(
     ({ maxScore, minScore, isTime, numberValue, ...workout }) => ({
       isTopScore: (isTime ? minScore : maxScore) === numberValue,
@@ -25,7 +34,7 @@ function getWorkoutsData(workouts: RouterOutput["workouts"]) {
   );
 }
 
-type Workout = ReturnType<typeof getWorkoutsData>[0];
+type Workout = Awaited<ReturnType<typeof getWorkoutsData>>[0];
 
 function jsonToCsv(workouts: Workout[]): string {
   const headers = [
@@ -50,8 +59,7 @@ function jsonToCsv(workouts: Workout[]): string {
 }
 
 export async function GET() {
-  const workouts = [] as unknown as any;
-  const body = jsonToCsv(getWorkoutsData(workouts));
+  const body = jsonToCsv(await getWorkoutsData());
   const response = new NextResponse(body, {
     headers: {
       "content-type": "text/csv;charset=utf-8;",

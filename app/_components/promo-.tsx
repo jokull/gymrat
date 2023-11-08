@@ -1,25 +1,25 @@
 "use client";
 
-import { useField, useForm } from "@shopify/react-form";
 import { addDays } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
-import { Workout } from "~/schema";
+import { CreateWorkoutFieldset } from "~/app/dashboard/_components/create-workout";
+import { WorkoutRow } from "~/app/dashboard/_components/workouts-";
+import { QueryWorkout } from "~/db/queries";
 import { getNumberValue } from "~/utils/workouts";
 
-import { CreateWorkout } from "../dashboard/_components/CreateWorkout";
-import { WorkoutRow } from "../dashboard/_components/Workouts";
-
 type PromoWorkout = Pick<
-  Workout,
-  "id" | "description" | "date" | "numberValue" | "value"
+  QueryWorkout,
+  "id" | "description" | "date" | "numberValue" | "value" | "isTime"
 >;
 
 export function Promo() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [today] = useState(new Date());
-  const [promoWorkouts, setPromoWorkouts] = useState<PromoWorkout[]>(
+  const [promoWorkouts, setPromoWorkouts] = useState<
+    Omit<PromoWorkout, "isTime">[]
+  >(
     [
       {
         id: "1",
@@ -60,8 +60,7 @@ export function Promo() {
   );
   const [maxScore, setMaxScore] = useState<number>(105);
 
-  const workouts: (PromoWorkout &
-    Pick<Workout, "isTime"> & { maxScore: number; minNumber: number })[] =
+  const workouts: (PromoWorkout & { maxScore: number; minScore: number })[] =
     promoWorkouts.map((workout) => ({
       ...workout,
       maxScore,
@@ -69,58 +68,40 @@ export function Promo() {
       isTime: workout.value.match(/\:/)?.[0] ? true : false,
     }));
 
-  const {
-    submit,
-    fields: { description, value },
-  } = useForm({
-    fields: {
-      description: useField({
-        value: {
-          description: "Back Squat 3x",
-          id: "",
-          maxScore: 110,
-          minScore: 110,
-        },
-        validates: [],
-      }),
-      value: useField("110 kg"),
-    },
-    // eslint-disable-next-line @typescript-eslint/require-await
-    async onSubmit(values) {
-      setHasInteracted(true);
-      setMaxScore((oldMaxScore) => {
-        const newMaxScore = getNumberValue(values.value).value;
-        return newMaxScore > oldMaxScore ? newMaxScore : oldMaxScore;
-      });
-      setPromoWorkouts((workouts) => [
-        {
-          id: Math.random().toString(),
-          value: values.value,
-          numberValue: getNumberValue(values.value).value,
-          isTime: false,
-          date: new Date(),
-          description: values.description.description,
-        },
-        ...workouts,
-      ]);
-      return { status: "success" };
-    },
-  });
-
   return (
     <div>
       <form
         className="relative mb-4"
         onSubmit={(event) => {
           event.preventDefault();
-          void submit();
+          setHasInteracted(true);
+          const form = new FormData(event.currentTarget);
+          const value = form.get("value");
+          const description = form.get("description");
+          if (typeof value !== "string" || typeof description !== "string") {
+            return;
+          }
+          setMaxScore((oldMaxScore) => {
+            const newMaxScore = getNumberValue(value).value;
+            return newMaxScore > oldMaxScore ? newMaxScore : oldMaxScore;
+          });
+          setPromoWorkouts((workouts) => [
+            {
+              id: Math.random().toString(),
+              value: value,
+              numberValue: getNumberValue(value).value,
+              isTime: value.match(/\:/)?.[0] ? true : false,
+              date: new Date(),
+              description,
+            },
+            ...workouts,
+          ]);
         }}
       >
-        <CreateWorkout
-          workouts={workouts}
-          isLoading={false}
-          description={description}
-          value={value}
+        <CreateWorkoutFieldset
+          workoutDescriptions={workouts.map(({ description }) => ({
+            description,
+          }))}
           isPromo={true}
         />
       </form>

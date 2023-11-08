@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useDebounce } from "usehooks-ts";
 
-import { Primary } from "~/components/Button";
+import { Primary } from "~/components/button-";
 import { type createWorkout as createWorkoutAction } from "~/db/actions";
 import { getNumberValue } from "~/utils/workouts";
 
@@ -21,13 +21,13 @@ export function CreateWorkout({
   const [message, action] = useFormState(createWorkout, null);
   return (
     <form action={action}>
-      <Fieldset workoutDescriptions={workoutDescriptions} />
+      <CreateWorkoutFieldset workoutDescriptions={workoutDescriptions} />
       {message}
     </form>
   );
 }
 
-function Fieldset({
+export function CreateWorkoutFieldset({
   workoutDescriptions,
   isPromo = false,
 }: {
@@ -77,7 +77,7 @@ function Fieldset({
             className="w-full rounded-md border border-neutral-600 bg-transparent px-3 py-1.5 placeholder:text-neutral-700"
             name="value"
             value={value}
-            onChange={(event) => setValue(event.target.value.trim())}
+            onChange={(event) => setValue(event.target.value)}
           />
         </label>
       </div>

@@ -6,10 +6,12 @@ import {
 import Fuse from "fuse.js";
 import { useCallback, useState } from "react";
 
-import { Input } from "~/components/Input";
+import { Input } from "~/components/input-";
 import { cn } from "~/utils/classnames";
 
-export type Item = { description: string };
+export interface Item {
+  description: string;
+}
 
 function compareDescriptions(a: string, b: string) {
   return a.toLocaleLowerCase().trim() === b.toLocaleLowerCase().trim();
@@ -53,7 +55,7 @@ export function Autocomplete({
           return changes; // otherwise business as usual.
       }
     },
-    [],
+    [sourceItems],
   );
 
   const {

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { Ghost } from "~/components/Button";
+import { Ghost } from "~/components/button-";
 
 function Inner() {
   const router = useRouter();

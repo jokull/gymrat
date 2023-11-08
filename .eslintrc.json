@@ -21,6 +21,5 @@
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     }
-  },
-  "include": ["prettier.config.cjs"]
+  }
 }

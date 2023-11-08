@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useFormState } from "react-dom";
 
-import { Primary } from "~/components/Button";
-import { Input } from "~/components/Input";
+import { Primary } from "~/components/button-";
+import { Input } from "~/components/input-";
 import { login } from "~/db/actions";
 
 export function Form(props: { action: typeof login }) {

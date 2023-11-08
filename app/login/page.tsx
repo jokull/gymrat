@@ -4,7 +4,7 @@ import { login } from "~/db/actions";
 
 import { Form } from "./_components.tsx/form";
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-baseline justify-between">
@@ -17,7 +17,7 @@ export default async function Page() {
       </div>
       <Form action={login} />
       <p className="text-sm text-neutral-400">
-        Don't have an account yet?{" "}
+        Don’t have an account yet?{" "}
         <Link className="text-neutral-50 underline" href="/signup">
           Sign up
         </Link>

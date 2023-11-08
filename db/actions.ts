@@ -23,6 +23,11 @@ const createWorkoutForm = z.object({
   value: z.string(),
 });
 
+const updateWorkoutForm = z.object({
+  id: z.string().uuid(),
+  date: z.coerce.date(),
+});
+
 const deleteWorkoutForm = z.object({
   id: z.string().uuid(),
 });
@@ -44,7 +49,7 @@ async function setAuthCookie(email: string) {
   );
 }
 
-export async function login(prevState: any, formData: FormData) {
+export async function login(prevState: unknown, formData: FormData) {
   const result = loginForm.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -76,7 +81,7 @@ export async function login(prevState: any, formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function createWorkout(prevState: any, formData: FormData) {
+export async function createWorkout(prevState: unknown, formData: FormData) {
   const { dbUser, db } = await getLoginContext();
 
   if (!dbUser) {
@@ -112,7 +117,7 @@ export async function createWorkout(prevState: any, formData: FormData) {
   revalidatePath("/dashboard");
 }
 
-export async function deleteWorkout(prevState: any, formData: FormData) {
+export async function deleteWorkout(prevState: unknown, formData: FormData) {
   const { dbUser, db } = await getLoginContext();
 
   if (!dbUser) {
@@ -124,13 +129,40 @@ export async function deleteWorkout(prevState: any, formData: FormData) {
   });
 
   if (!result.success) {
-    return "Description and value required";
+    return "Workout id required";
   }
 
   const { id } = result.data;
 
   await db
     .delete(workout)
+    .where(and(eq(workout.userId, dbUser.id), eq(workout.id, id)))
+    .run();
+
+  revalidatePath("/dashboard");
+}
+
+export async function updateWorkout(prevState: unknown, formData: FormData) {
+  const { dbUser, db } = await getLoginContext();
+
+  if (!dbUser) {
+    redirect("/login");
+  }
+
+  const result = updateWorkoutForm.safeParse({
+    date: formData.get("date"),
+    id: formData.get("id"),
+  });
+
+  if (!result.success) {
+    return "Workout id required";
+  }
+
+  const { date, id } = result.data;
+
+  await db
+    .update(workout)
+    .set({ date })
     .where(and(eq(workout.userId, dbUser.id), eq(workout.id, id)))
     .run();
 

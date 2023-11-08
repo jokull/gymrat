@@ -14,7 +14,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { cn } from "~/utils/classnames";
 import { useCalendar } from "~/utils/use-calendar";
 
-import { MonthSelect } from "./MonthSelect";
+import { MonthSelect } from "./month-select";
 
 export function DayGrid({
   calendar,

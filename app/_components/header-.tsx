@@ -47,8 +47,8 @@ export default async function Header({
         ) : (
           page === "index" && (
             <>
-              <GhostLink href="/auth?screen=login">Sign In</GhostLink>
-              <PrimaryLink href="/auth">Sign Up</PrimaryLink>
+              <GhostLink href="/login">Sign In</GhostLink>
+              <PrimaryLink href="/signup">Sign Up</PrimaryLink>
             </>
           )
         )}

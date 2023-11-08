@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Gymrat Monorepo
 
-## Getting Started
+![](https://ss.solberg.is/LyufAM+)
 
-First, run the development server:
+Goal is to be the simplest and fastest way to track your weight lifting progress.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Raycast extension to search and record lifts at light speed
+- tRPC Backend
+  - Using Cloudflare Workers (`fetchRequestHandler`)
+  - D1 with type safe Kysely query building
+- Next.js web frontend
+- Clerk auth and signup
+
+Since Vercel uses Cloudflare Worker behind the scenes for `experimental-edge` the proxying from
+Next.js backend to the tRPC backend should not add much latency. Arguably it would be an improvement
+to make Vercel host tRPC but I could not find an elegant way to make D1 bindings accessible to
+Next.js. Track [this issue](https://github.com/cloudflare/next-on-pages/issues/1) if interested.
+
+# Development
+
+The local stack expects a Cloudflare tunnel with ingress rules likes this:
+
+```yaml
+tunnel: <UUID>
+credentials-file: /Users/jokull/.cloudflared/<UUID>.json
+ingress:
+  - hostname: gymrat.hundrad.is
+    path: ^/trpc.*
+    service: http://localhost:8989
+  - hostname: gymrat.hundrad.is
+    service: http://localhost:3800
+  - service: http_status:404
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Three processes therefore need to run.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `localhost:8989` is run with `pnpm --filter api run start`
+- `localhost:3800` is run with `pnpm --filter next run dev`
+- Then
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+You might need to run the Kysely codegen
 
-## Learn More
+```bash
+pnpm --filter api run db-codegen
+```
 
-To learn more about Next.js, take a look at the following resources:
+Prisma is used to compose a schema and potentially help with creating migration
+scripts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Template `app/next/.env`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+HOST=
+CLERK_JWT_KEY=
+CLERK_API_KEY=
+NEXT_PUBLIC_CLERK_FRONTEND_API=
+```
 
-## Deploy on Vercel
+Template `packages/api/.env`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+DATABASE_URL=
+PRISMA_DATABASE_URL=
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Template `packages/api/.dev.vars`
+
+```
+CLERK_JWT_KEY=
+```
+
+Initialize the remote D1 db
+
+```
+pnpx wrangler d1 execute gymrat-api --file ./prisma/migrations/20221204224336_initial/migration.sql
+```
+
+## Analytics
+
+Active users
+
+```sql
+WITH RankedWorkouts AS (
+    SELECT
+        w."updatedAt",
+        w."userId",
+        u."email",
+        ROW_NUMBER() OVER(PARTITION BY w."userId" ORDER BY w."updatedAt" DESC) AS rn
+    FROM "Workout" w
+    JOIN "User" u ON w."userId" = u."id"
+)
+
+SELECT
+    "email",
+    "updatedAt" AS "activeDate"
+FROM RankedWorkouts
+WHERE rn = 1
+ORDER BY "activeDate" DESC;
+```
+
+Total workouts tracked per month
+
+```sql
+SELECT
+    strftime('%Y-%m', w."updatedAt") AS "monthYear",
+    COUNT(w."id") AS "totalWorkouts",
+    COUNT(DISTINCT w."userId") AS "uniqueUsersActive"
+FROM "Workout" w
+GROUP BY "monthYear"
+ORDER BY "monthYear" DESC;
+```

@@ -1,20 +1,11 @@
 # Gymrat Monorepo
 
-![](https://ss.solberg.is/LyufAM+)
-
 Goal is to be the simplest and fastest way to track your weight lifting progress.
 
-- Raycast extension to search and record lifts at light speed
-- tRPC Backend
-  - Using Cloudflare Workers (`fetchRequestHandler`)
-  - D1 with type safe Kysely query building
-- Next.js web frontend
-- Clerk auth and signup
-
-Since Vercel uses Cloudflare Worker behind the scenes for `experimental-edge` the proxying from
-Next.js backend to the tRPC backend should not add much latency. Arguably it would be an improvement
-to make Vercel host tRPC but I could not find an elegant way to make D1 bindings accessible to
-Next.js. Track [this issue](https://github.com/cloudflare/next-on-pages/issues/1) if interested.
+- Drizzle
+- Turso
+- Next.js App Router w/ server actions
+- ... that's it! Super simple stack. No react-query or tRPC.
 
 # Development
 
@@ -25,55 +16,35 @@ tunnel: <UUID>
 credentials-file: /Users/jokull/.cloudflared/<UUID>.json
 ingress:
   - hostname: gymrat.hundrad.is
-    path: ^/trpc.*
-    service: http://localhost:8989
-  - hostname: gymrat.hundrad.is
     service: http://localhost:3800
   - service: http_status:404
 ```
 
-Three processes therefore need to run.
-
-- `localhost:8989` is run with `pnpm --filter api run start`
-- `localhost:3800` is run with `pnpm --filter next run dev`
-- Then
-
-You might need to run the Kysely codegen
-
 ```bash
-pnpm --filter api run db-codegen
+bun install
+bun run tunnel
+bun run dev  # in another tab
 ```
 
-Prisma is used to compose a schema and potentially help with creating migration
-scripts.
-
-Template `app/next/.env`
+Template `.env.local`
 
 ```
-HOST=
-CLERK_JWT_KEY=
-CLERK_API_KEY=
-NEXT_PUBLIC_CLERK_FRONTEND_API=
+HOST=gymrat.hundrad.is
+SECRET_KEY=  # generate with `openssl rand -base64 32`
+DATABASE_URL=ws://127.0.0.1:3040
+DATABASE_AUTH_TOKEN=
 ```
 
-Template `packages/api/.env`
+Initialize the production db
 
 ```
-DATABASE_URL=
-PRISMA_DATABASE_URL=
+# signup with turso, install the turso cli
+turso db create gymrat --from-dump seed.sql
+turso db show --url gymrat  # for the prod `DATABASE_URL` value
+turso tokens create gymrat  # for the prod `DATABASE_AUTH_TOKEN` value
 ```
 
-Template `packages/api/.dev.vars`
-
-```
-CLERK_JWT_KEY=
-```
-
-Initialize the remote D1 db
-
-```
-pnpx wrangler d1 execute gymrat-api --file ./prisma/migrations/20221204224336_initial/migration.sql
-```
+Enter the Vercel variables. Deploy. Happy days.
 
 ## Analytics
 

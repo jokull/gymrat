@@ -1,0 +1,21 @@
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "User" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "apiKey" TEXT NOT NULL,
+  "email" TEXT NOT NULL,
+  "displayEmail" TEXT NOT NULL,
+  "hashedPassword" TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "Workout" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "updatedAt" INTEGER NOT NULL,
+  "description" TEXT NOT NULL,
+  "value" TEXT NOT NULL,
+  "numberValue" INTEGER NOT NULL DEFAULT 0,
+  "isTime" INTEGER NOT NULL,
+  "date" INTEGER NOT NULL,
+  "userId" TEXT NOT NULL,
+  CONSTRAINT "Workout_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+COMMIT;

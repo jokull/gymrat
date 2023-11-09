@@ -1,4 +1,4 @@
-# Gymrat Monorepo
+# Gymrat
 
 Goal is to be the simplest and fastest way to track your weight lifting progress.
 
@@ -7,7 +7,7 @@ Goal is to be the simplest and fastest way to track your weight lifting progress
 - Next.js App Router w/ server actions
 - ... that's it! Super simple stack. No react-query or tRPC.
 
-# Development
+## Development
 
 The local stack expects a Cloudflare tunnel with ingress rules likes this:
 
@@ -24,6 +24,8 @@ ingress:
 bun install
 bun run tunnel
 bun run dev  # in another tab
+bun run sqld  # in the third tab
+bun run db:push  # to seed the db
 ```
 
 Template `.env.local`
@@ -35,6 +37,8 @@ DATABASE_URL=ws://127.0.0.1:3040
 DATABASE_AUTH_TOKEN=
 ```
 
+## Production
+
 Initialize the production db
 
 ```
@@ -44,7 +48,7 @@ turso db show --url gymrat  # for the prod `DATABASE_URL` value
 turso tokens create gymrat  # for the prod `DATABASE_AUTH_TOKEN` value
 ```
 
-Enter the Vercel variables. Deploy. Happy days.
+Enter each of the four Vercel variables. Deploy. Happy days.
 
 ## Analytics
 

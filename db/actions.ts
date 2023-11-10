@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { getDrizzle } from "~/db/client";
-import { hashPassword, normalizeEmail, verifyPassword } from "~/db/utils";
+import { hashPassword, normalizeEmail, verifyPassword } from "~/db/passwords";
 import { user, workout } from "~/schema";
 import { unsealVerificationToken } from "~/utils/auth";
 import { getLoginContext } from "~/utils/session";

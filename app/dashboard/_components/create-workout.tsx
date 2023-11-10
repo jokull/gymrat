@@ -6,16 +6,14 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useDebounce } from "usehooks-ts";
 
 import { Primary } from "~/components/button-";
-import { type createWorkout as createWorkoutAction } from "~/db/actions";
+import { createWorkout } from "~/db/actions";
 import { getNumberValue } from "~/utils/workouts";
 
 import { Autocomplete, type Item } from "./auto-complete";
 
 export function CreateWorkout({
-  createWorkout,
   workoutDescriptions,
 }: {
-  createWorkout: typeof createWorkoutAction;
   workoutDescriptions: Item[];
 }) {
   const [message, action] = useFormState(createWorkout, null);

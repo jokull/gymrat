@@ -2,7 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ["https://wwww.gymrat.is", "https://gymrat.hundrad.is"],
+      allowedOrigins: ["gymrat.hundrad.is", "www.gymrat.is", "localhost:3800"],
     },
   },
 };

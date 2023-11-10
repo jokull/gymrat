@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "tsc": "tsc --pretty --project ./tsconfig.json --noEmit",
     "sqld": "sqld -l 127.0.0.1:3040 --disable-namespaces",
     "tunnel": "cloudflared tunnel --config ~/.cloudflared/gymrat.yaml run --protocol http2",
     "db:generate": "dotenv -e .env drizzle-kit generate:sqlite",

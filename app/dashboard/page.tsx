@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { createWorkout, deleteWorkout, updateWorkout } from "~/db/actions";
 import { getWorkouts, QueryWorkout } from "~/db/queries";
 import { getLoginContext } from "~/utils/session";
 
@@ -39,15 +38,8 @@ export default async function Page() {
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex grow flex-col gap-4">
-        <CreateWorkout
-          createWorkout={createWorkout}
-          workoutDescriptions={getItemsFromWorkouts(workouts)}
-        />
-        <Workouts
-          updateWorkout={updateWorkout}
-          deleteWorkout={deleteWorkout}
-          workouts={workouts}
-        />
+        <CreateWorkout workoutDescriptions={getItemsFromWorkouts(workouts)} />
+        <Workouts workouts={workouts} />
       </div>
       <footer className="text-center text-xs leading-5 text-neutral-600">
         <p className="text-sm text-neutral-400 underline">

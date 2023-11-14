@@ -5,29 +5,23 @@ import { useFormState } from "react-dom";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
-import { type setPassword } from "~/db/actions";
+import { type setPassword as setPasswordType } from "~/db/actions";
 
 export function Form({
   action,
   email,
   token,
 }: {
-  action: typeof setPassword;
+  action: typeof setPasswordType;
   email: string;
   token: string;
 }) {
-  const [message, verify] = useFormState(action, null);
+  const [message, setPassword] = useFormState(action, null);
 
   return (
-    <form className="mb-4 flex flex-col gap-4" action={verify}>
+    <form className="mb-4 flex flex-col gap-4" action={setPassword}>
       <input type="hidden" value={token} name="token" />
-      <Input
-        type="email"
-        readOnly
-        value={email}
-        name="username"
-        autoCorrect="off"
-      />
+      <Input type="email" readOnly value={email} autoCorrect="off" />
       <Input
         type="password"
         autoComplete="new-password"

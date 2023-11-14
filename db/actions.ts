@@ -5,7 +5,7 @@ import { sealData } from "iron-session/edge";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 import { getDrizzle } from "~/db/client";
 import { hashPassword, normalizeEmail, verifyPassword } from "~/db/passwords";
@@ -31,58 +31,12 @@ async function setAuthCookie(email: string) {
   );
 }
 
-export async function sendVerificationEmail(
-  prevState: unknown,
-  formData: FormData,
-) {
-  const result = z
-    .object({
-      email: z.string().email(),
-    })
-    .safeParse({
-      email: formData.get("email"),
-    });
-
-  if (!result.success) {
-    return "Email required";
-  }
-
-  const form = result.data;
-
-  const email = normalizeEmail(form.email);
-
-  const token = await sealData(email, {
-    password: process.env.SECRET_KEY ?? "",
-    ttl: 15 * 60,
-  });
-
-  const contentValue = `https://${process.env.HOST}/verify?token=${token}`;
-
-  await fetch("https://api.mailchannels.net/tx/v1/send", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email }] }],
-      from: {
-        email: "no-reply@gymrat.is",
-        name: "Gymrat",
-      },
-      subject: "Verify email",
-      content: [
-        {
-          type: "text/plain",
-          value: contentValue,
-        },
-      ],
-    }),
-  });
-}
-
 export async function setPassword(prevState: unknown, formData: FormData) {
   const result = z
     .object({ password: z.string().min(6), token: z.string() })
     .safeParse({
-      password: formData.get("password"),
+      password: formData.get("new-password"),
+      token: formData.get("token"),
     });
 
   if (!result.success) {
@@ -91,7 +45,15 @@ export async function setPassword(prevState: unknown, formData: FormData) {
 
   const form = result.data;
 
-  const email = await unsealVerificationToken(form.token);
+  let email;
+  try {
+    email = await unsealVerificationToken(form.token);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return "Token is invalid";
+    }
+    throw error;
+  }
 
   const db = getDrizzle();
   let dbUser = await db.query.user.findFirst({

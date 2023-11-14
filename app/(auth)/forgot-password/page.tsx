@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import { sendVerificationEmail } from "~/db/actions";
+import { sendVerificationEmail } from "~/db/node-actions";
 
 import { Form } from "../_components/form";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function Page() {

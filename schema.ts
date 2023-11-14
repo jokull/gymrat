@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import { InferSelectModel, relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
@@ -47,6 +46,7 @@ export const selectWorkoutSchema = createSelectSchema(workout);
 export type User = InferSelectModel<typeof user>;
 export type Workout = InferSelectModel<typeof workout>;
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   user,
   workout,

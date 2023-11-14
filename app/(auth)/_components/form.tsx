@@ -5,7 +5,7 @@ import { useFormState } from "react-dom";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
-import { type sendVerificationEmail } from "~/db/actions";
+import { type sendVerificationEmail } from "~/db/node-actions";
 
 export function Form(props: { action: typeof sendVerificationEmail }) {
   const [message, action] = useFormState(props.action, null);

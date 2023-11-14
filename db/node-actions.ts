@@ -52,4 +52,6 @@ export async function sendVerificationEmail(
     text: contentValue, // plain text body
     html: `<a href="${contentValue}">Verify email</a>`,
   });
+
+  return "Signup email was sent just now - follow the link in it to verify and finish signup - don't forget to check spam!";
 }

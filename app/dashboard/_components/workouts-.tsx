@@ -64,7 +64,7 @@ export function Workouts({
   workouts: QueryWorkout[];
   editable?: boolean;
 }) {
-  const [workout, setWorkout] = useState(workouts[0] ?? null);
+  const [workout, setWorkout] = useState<QueryWorkout | null>(null);
   return (
     <>
       <Portal>

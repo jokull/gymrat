@@ -28,13 +28,17 @@ export function CreateWorkout({
 export function CreateWorkoutFieldset({
   workoutDescriptions,
   isPromo = false,
+  defaultDescription,
+  defaultValue,
 }: {
   workoutDescriptions: Item[];
   isPromo?: boolean;
+  defaultDescription?: string;
+  defaultValue?: string;
 }) {
   const { pending } = useFormStatus();
-  const [description, setDescription] = useState("");
-  const [value, setValue] = useState("");
+  const [description, setDescription] = useState(defaultDescription ?? "");
+  const [value, setValue] = useState(defaultValue ?? "");
   const numberValue = getNumberValue(value);
   const valueType: "empty" | "value" | "time" =
     value.trim() === "" ? "empty" : numberValue.isTime ? "time" : "value";
@@ -88,7 +92,7 @@ export function CreateWorkoutFieldset({
         ) : null}
         <Primary
           type="submit"
-          className="z-30 w-full"
+          className="z-30 -mt-1 w-full"
           disabled={value.trim() === "" || description.trim() === ""}
         >
           <span className="@container font-bold">

@@ -103,6 +103,8 @@ export function Promo() {
             description,
           }))}
           isPromo={true}
+          defaultDescription="Back Squat 3x"
+          defaultValue="125 kg"
         />
       </form>
       <AnimatePresence>

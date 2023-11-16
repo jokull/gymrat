@@ -201,10 +201,12 @@ export async function updateWorkout(prevState: unknown, formData: FormData) {
   const result = z
     .object({
       id: z.string().uuid(),
-      date: z.coerce.date(),
+      date: z.coerce.date().nullable(),
+      comment: z.string().optional(),
     })
     .safeParse({
-      date: formData.get("date"),
+      comment: formData.get("comment") ?? null,
+      date: formData.get("date") ?? null,
       id: formData.get("id"),
     });
 
@@ -212,13 +214,21 @@ export async function updateWorkout(prevState: unknown, formData: FormData) {
     return "Workout id required";
   }
 
-  const { date, id } = result.data;
+  const { date, comment, id } = result.data;
 
-  await db
-    .update(workout)
-    .set({ date })
-    .where(and(eq(workout.userId, dbUser.id), eq(workout.id, id)))
-    .run();
+  const values = {
+    ...(date ? { date } : undefined),
+    ...(typeof comment === "string"
+      ? { comment: comment.trim() || null }
+      : undefined),
+  } as const;
 
-  revalidatePath("/dashboard");
+  if (date ?? typeof comment === "string") {
+    await db
+      .update(workout)
+      .set(values)
+      .where(and(eq(workout.userId, dbUser.id), eq(workout.id, id)))
+      .run();
+    revalidatePath("/dashboard");
+  }
 }

@@ -8,8 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "tsc": "tsc --pretty --project ./tsconfig.json --noEmit",
-    "sqld": "sqld -l 127.0.0.1:3040 --disable-namespaces",
-    "tunnel": "cloudflared tunnel --config ~/.cloudflared/gymrat.yaml run --protocol http2",
     "db:generate": "dotenv -e .env drizzle-kit generate:sqlite",
     "db:push": "dotenv -e .env drizzle-kit push:sqlite --verbose --strict",
     "db:check": "dotenv -e .env drizzle-kit check:sqlite"
@@ -30,7 +28,7 @@
     "framer-motion": "^10.16.4",
     "fuse.js": "^7.0.0",
     "iron-session": "^6.3.1",
-    "next": "14.0.2",
+    "next": "latest",
     "nodemailer": "^6.9.7",
     "pretty-cache-header": "^1.0.0",
     "react": "^18",

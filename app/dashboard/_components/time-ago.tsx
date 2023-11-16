@@ -8,6 +8,18 @@ import { updateWorkout } from "~/db/actions";
 import { QueryWorkout } from "~/db/queries";
 import { formatTimeAgo } from "~/utils/timeago";
 
+export function getTimeAgoLabel(date: Date) {
+  const today = new Date();
+
+  return isToday(date)
+    ? "today"
+    : isYesterday(date)
+    ? "yesterday"
+    : isSameWeek(date, today)
+    ? formatTimeAgo(date)
+    : date.toLocaleDateString("is-IS");
+}
+
 export function TimeAgo({
   workout,
   editable = true,
@@ -17,15 +29,7 @@ export function TimeAgo({
 }) {
   const [, startTransition] = useTransition();
 
-  const today = new Date();
-
-  const label = isToday(workout.date)
-    ? "today"
-    : isYesterday(workout.date)
-    ? "yesterday"
-    : isSameWeek(workout.date, today)
-    ? formatTimeAgo(workout.date)
-    : workout.date.toLocaleDateString("is-IS");
+  const label = getTimeAgoLabel(workout.date);
 
   return editable && updateWorkout ? (
     <DateInput

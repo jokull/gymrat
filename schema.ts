@@ -22,6 +22,7 @@ export const workout = sqliteTable("Workout", {
     .default(sql`(strftime('%s', 'now'))`)
     .notNull(),
   description: text("description").notNull(),
+  comment: text("comment"),
   value: text("value").notNull(),
   numberValue: integer("numberValue").default(0).notNull(),
   isTime: integer("isTime", { mode: "boolean" }).default(false).notNull(),

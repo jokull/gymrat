@@ -35,6 +35,7 @@ export async function getWorkouts({
       id: workout.id,
       date: workout.date,
       description: workout.description,
+      comment: workout.comment,
       isTime: workout.isTime,
       numberValue: workout.numberValue,
       value: workout.value,

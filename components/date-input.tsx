@@ -166,7 +166,7 @@ export function DateInput({
   return (
     <Popover>
       <Float
-        placement="bottom-end"
+        placement="top-end"
         offset={5}
         shift={6}
         portal

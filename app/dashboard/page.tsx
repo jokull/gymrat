@@ -36,7 +36,7 @@ export default async function Page() {
   const workouts = await getWorkouts({ dbUser, db });
 
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full flex-col gap-4 pb-64">
       <div className="flex grow flex-col gap-4">
         <CreateWorkout workoutDescriptions={getItemsFromWorkouts(workouts)} />
         <Workouts workouts={workouts} />

@@ -23,16 +23,6 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
       <FocusTrap>
         <fieldset disabled={isPending} className="flex gap-2">
           <button
-            className="rounded px-1.5 text-neutral-100 hover:text-neutral-400"
-            autoFocus
-            onClick={() => {
-              setScreen("default");
-            }}
-            onKeyDown={onKeyDown}
-          >
-            Cancel
-          </button>
-          <button
             className="rounded px-1.5 text-pink-500 hover:text-pink-700"
             onClick={() => {
               const formData = new FormData();
@@ -45,6 +35,16 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
           >
             Delete
           </button>
+          <button
+            className="rounded px-1.5 text-neutral-100 hover:text-neutral-400"
+            autoFocus
+            onClick={() => {
+              setScreen("default");
+            }}
+            onKeyDown={onKeyDown}
+          >
+            Cancel
+          </button>
         </fieldset>
       </FocusTrap>
     );
@@ -55,8 +55,8 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
         setScreen("confirm");
       }}
     >
-      <TrashIcon className="hidden h-6 w-6 text-neutral-600 mobile:block" />
-      <span className="text-red-300/50 mobile:hidden">Delete</span>
+      <TrashIcon className="hidden h-6 w-6 text-neutral-600" />
+      <span className="text-white">Delete</span>
     </button>
   );
 }

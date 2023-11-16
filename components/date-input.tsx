@@ -37,7 +37,7 @@ export function DayGrid({
     <>
       <div className="my-3 grid grid-cols-7 place-items-center gap-1">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div key={day} className="text-xs font-semibold text-neutral-500">
+          <div key={day} className="text-xs font-semibold text-slate-500">
             {day.slice(0, 1)}
           </div>
         ))}
@@ -102,13 +102,11 @@ export function DayGrid({
                       "border disabled:line-through",
                       isSelected(day)
                         ? "bg-pink-500 text-white hover:bg-pink-600"
-                        : "hover:bg-pink-400 hover:text-white disabled:bg-transparent disabled:text-neutral-700",
-                      isToday(day)
-                        ? "border-neutral-300"
-                        : "border-transparent",
+                        : "hover:bg-pink-400 hover:text-white disabled:bg-transparent disabled:text-slate-700",
+                      isToday(day) ? "border-slate-300" : "border-transparent",
                       !inRange(day, startOfMonth(viewing), endOfMonth(viewing))
-                        ? "text-neutral-600"
-                        : "text-neutral-300",
+                        ? "text-slate-600"
+                        : "text-slate-300",
                     )}
                   >
                     <span className="mt-0.5">{format(day, "dd")}</span>
@@ -178,7 +176,7 @@ export function DateInput({
         leaveTo="opacity-0 -translate-y-1"
       >
         <Popover.Button className="hover:underline">{children}</Popover.Button>
-        <Popover.Panel className="rounded-md bg-neutral-900 p-3 text-white shadow">
+        <Popover.Panel className="rounded-md bg-slate-900 p-3 text-white shadow">
           {({ close }) => (
             <div>
               <MonthSelect

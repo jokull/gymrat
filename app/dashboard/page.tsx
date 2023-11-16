@@ -41,8 +41,8 @@ export default async function Page() {
         <CreateWorkout workoutDescriptions={getItemsFromWorkouts(workouts)} />
         <Workouts workouts={workouts} />
       </div>
-      <footer className="text-center text-xs leading-5 text-neutral-600">
-        <p className="text-sm text-neutral-400 underline">
+      <footer className="text-center text-xs leading-5 text-slate-600">
+        <p className="text-sm text-slate-400 underline">
           <a href="/workouts.csv">Download CSV</a>
         </p>
         <p className="">{dbUser.apiKey}</p>

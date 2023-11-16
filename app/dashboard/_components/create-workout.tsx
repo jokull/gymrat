@@ -72,7 +72,7 @@ export function CreateWorkoutFieldset({
             </motion.span>
           </AnimatePresence>
           <input
-            className="w-full rounded-md border border-neutral-600 bg-transparent px-3 py-1.5 placeholder:text-neutral-700"
+            className="w-full rounded-md border border-slate-600 bg-transparent px-3 py-1.5 placeholder:text-slate-700"
             name="value"
             value={value}
             onChange={(event) => setValue(event.target.value)}

@@ -36,7 +36,7 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
             Delete
           </button>
           <button
-            className="rounded px-1.5 text-neutral-100 hover:text-neutral-400"
+            className="rounded px-1.5 text-slate-100 hover:text-slate-400"
             autoFocus
             onClick={() => {
               setScreen("default");
@@ -55,7 +55,7 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
         setScreen("confirm");
       }}
     >
-      <TrashIcon className="hidden h-6 w-6 text-neutral-600" />
+      <TrashIcon className="hidden h-6 w-6 text-slate-600" />
       <span className="text-white">Delete</span>
     </button>
   );

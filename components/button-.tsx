@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
         className={cn(
           baseClassName,
           "px-3 py-2",
-          "text-neutral-200",
+          "text-slate-200",
           "border-outline-enabled hover:border-outline-hover border",
           "border-outline-enabled disabled:text-[#7F808B] disabled:hover:border-transparent",
           className,
@@ -48,7 +48,7 @@ function getPrimaryClassNames(className?: string) {
     "py-2 px-3",
     "bg-pink-500 hover:bg-pink-700 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-700/50",
     "transition-all",
-    "disabled:hover:bg-neutral-400 disabled:bg-neutral-400 disabled:text-neutral-500 disabled:shadow-none",
+    "disabled:hover:bg-slate-400 disabled:bg-slate-400 disabled:text-slate-500 disabled:shadow-none",
     className,
   );
 }
@@ -82,7 +82,7 @@ export const Secondary = forwardRef<HTMLButtonElement, Props>(
           baseClassName,
           "px-3 py-2",
           "bg-blue-500 text-white hover:bg-blue-700",
-          "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
+          "disabled:hover:bg-disabled-slate disabled:bg-disabled-slate disabled:text-disabled-filled",
           className,
         )}
         {...props}
@@ -99,8 +99,8 @@ function getGhostClassNames(className?: string) {
   return cn(
     baseClassName,
     "py-2 px-3",
-    "hover:bg-neutral-900 active:bg-neutral-800 text-white",
-    "disabled:hover:bg-disabled-neutral disabled:bg-disabled-neutral disabled:text-disabled-filled",
+    "hover:bg-slate-900 active:bg-slate-800 text-white",
+    "disabled:hover:bg-disabled-slate disabled:bg-disabled-slate disabled:text-disabled-filled",
     className,
   );
 }

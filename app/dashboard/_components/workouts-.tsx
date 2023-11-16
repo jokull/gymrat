@@ -24,7 +24,7 @@ function TopScore({ workout }: { workout: QueryWorkout }) {
           animate={{ opacity: 1, scale: 1.1 }}
           transition={{ damping: 5 }}
         >
-          <StarIcon className="h-4 w-4 text-neutral-400 group-data-active:text-yellow-500 group-data-workout:text-yellow-500" />
+          <StarIcon className="h-4 w-4 text-slate-400 group-data-active:text-yellow-500 group-data-workout:text-yellow-500" />
         </motion.div>
       ) : null}
     </AnimatePresence>
@@ -71,7 +71,7 @@ export function Workouts({
         {workout && editable ? (
           <div
             key={workout.id}
-            className="fixed inset-x-0 bottom-0 w-full bg-neutral-600/30 text-white backdrop-blur-lg"
+            className="fixed inset-x-0 bottom-0 w-full bg-slate-600/30 text-white backdrop-blur-lg"
           >
             <div className="absolute -top-px h-px w-full overflow-hidden">
               <div className="absolute -top-6 h-12 w-full bg-white/20 backdrop-blur-md backdrop-brightness-200 backdrop-contrast-150" />
@@ -79,7 +79,7 @@ export function Workouts({
             <div className="mx-auto max-w-lg px-4 py-4 md:px-2">
               <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                 <TimeAgo workout={workout} editable={true} />
-                <div className="text-neutral-500">{workout.description}</div>
+                <div className="text-slate-500">{workout.description}</div>
                 <div className="flex justify-end">
                   <DeleteWorkout workout={workout} />
                 </div>
@@ -111,10 +111,10 @@ export function Workouts({
                 className={cn(
                   "data-active:bg-white/15 group cursor-pointer rounded-md p-2 hover:bg-white/10",
                   workout?.id === w.id
-                    ? "bg-white/10 text-neutral-100 shadow-[0_0_2px_0_white]"
+                    ? "bg-white/10 text-slate-100 shadow-[0_0_2px_0_white]"
                     : matchingWorkoutIsSelected
-                    ? "text-neutral-200"
-                    : "text-neutral-400",
+                    ? "text-slate-200"
+                    : "text-slate-400",
                 )}
               >
                 {({ active, checked }) => (

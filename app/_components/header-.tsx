@@ -28,7 +28,7 @@ export default async function Header({
           <>
             {page === "dashboard" ? (
               <>
-                <div className="min-w-0 truncate text-neutral-500">
+                <div className="min-w-0 truncate text-slate-500">
                   <Link href="/dashboard">{session.email}</Link>
                 </div>
                 <SignOut />

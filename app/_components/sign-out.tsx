@@ -8,7 +8,7 @@ function Inner() {
   const router = useRouter();
   return (
     <Ghost
-      className="border border-neutral-500"
+      className="border border-slate-500"
       onClick={() => {
         router.push("/api/logout");
       }}

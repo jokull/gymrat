@@ -132,7 +132,7 @@ export function Promo() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 * i + 10 }}
                 key={workout.id}
-                className="group rounded-md p-2 text-neutral-400 data-active:bg-white/5"
+                className="group rounded-md p-2 text-slate-400 data-active:bg-white/5"
                 data-headlessui-state={i === 0 ? "active" : ""}
               >
                 <WorkoutRow

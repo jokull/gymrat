@@ -22,13 +22,13 @@ export default async function Home() {
         >
           A simple journal <br /> for workouts
         </div>
-        <p className="text-center text-sm font-medium text-neutral-200">
+        <p className="text-center text-sm font-medium text-slate-200">
           Try out a demo of the UI below
         </p>
         <div className="min-h-[340px]">
           <Promo />
         </div>
-        <div className="mb-8 text-center font-light leading-tight text-neutral-400">
+        <div className="mb-8 text-center font-light leading-tight text-slate-400">
           Gymrat only uses two fields; description and value. If you use units
           like <strong>kg</strong>, <strong>lb</strong> or even{" "}
           <strong>rounds</strong> Gymrat will track the highest score for all
@@ -45,7 +45,7 @@ export default async function Home() {
         </div>
       </div>
       <footer className="pb-12">
-        <p className="text-center text-xs text-neutral-700">
+        <p className="text-center text-xs text-slate-700">
           <Link href="https://github.com/jokull/gymrat">GitHub</Link>
         </p>
       </footer>

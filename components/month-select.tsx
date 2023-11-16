@@ -26,7 +26,7 @@ export function MonthSelect({
   return (
     <div className="flex h-10 w-full items-center justify-between gap-3">
       <button
-        className="px-2 py-1.5 text-neutral-500 transition-all hover:scale-110 hover:text-neutral-700"
+        className="px-2 py-1.5 text-slate-500 transition-all hover:scale-110 hover:text-slate-700"
         onClick={(event) => {
           event.preventDefault();
           onPrevious();
@@ -52,7 +52,7 @@ export function MonthSelect({
       <button
         className={cn(
           "px-2 py-1.5 transition-all",
-          "text-neutral-500 hover:scale-110 hover:text-neutral-700",
+          "text-slate-500 hover:scale-110 hover:text-slate-700",
         )}
         onClick={(event) => {
           event.preventDefault();

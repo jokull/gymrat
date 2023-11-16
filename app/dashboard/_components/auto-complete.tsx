@@ -97,30 +97,32 @@ export function Autocomplete({
         Workout / Lift
       </label>
       <Input
-        className="w-full rounded-md border border-neutral-600 bg-transparent px-3 py-1.5 placeholder:text-neutral-700"
+        className="w-full rounded-md border border-slate-600 bg-transparent px-3 py-1.5 placeholder:text-slate-700"
         {...getInputProps()}
       />
       <div {...getMenuProps()}>
-        {isOpen ? (
-          <div className="absolute top-14 z-10 mt-2 w-full rounded-md border-2 border-neutral-400 bg-neutral-900 p-1 shadow-lg">
-            {items.map((item, index) => (
-              <li
-                className={cn(
-                  "aria-active:bg-neutral-600 block cursor-pointer rounded-sm px-2 py-1 text-sm aria-selected:bg-neutral-500",
-                )}
-                key={item.description}
-                {...getItemProps({
-                  item,
-                  index,
-                  "aria-selected":
-                    index === highlightedIndex ? "true" : "false",
-                })}
-              >
-                {item.description}
-              </li>
-            ))}
-          </div>
-        ) : null}
+        <div
+          className={cn(
+            "absolute top-14 z-10 mt-2 w-full rounded-md bg-slate-800 p-1 shadow-[5px_5px_25px_5px_rgba(0,0,0,0.4)] transition-opacity duration-200",
+            isOpen ? "opacity-100" : "opacity-0",
+          )}
+        >
+          {items.map((item, index) => (
+            <li
+              className={cn(
+                "aria-active:bg-slate-800 block cursor-pointer rounded-sm px-2 py-1 text-sm aria-selected:bg-slate-700",
+              )}
+              key={item.description}
+              {...getItemProps({
+                item,
+                index,
+                "aria-selected": index === highlightedIndex ? "true" : "false",
+              })}
+            >
+              {item.description}
+            </li>
+          ))}
+        </div>
       </div>
     </div>
   );

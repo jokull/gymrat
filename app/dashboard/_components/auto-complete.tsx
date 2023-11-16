@@ -104,7 +104,7 @@ export function Autocomplete({
         <div
           className={cn(
             "absolute top-14 z-10 mt-2 w-full rounded-md bg-slate-800 p-1 shadow-[5px_5px_25px_5px_rgba(0,0,0,0.4)] transition-opacity duration-200",
-            isOpen ? "opacity-100" : "opacity-0",
+            isOpen ? "opacity-100" : "pointer-events-none opacity-0",
           )}
         >
           {items.map((item, index) => (

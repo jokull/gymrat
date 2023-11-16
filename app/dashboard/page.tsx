@@ -37,7 +37,7 @@ export default async function Page() {
 
   return (
     <div className="flex h-full flex-col gap-4 pb-64">
-      <div className="flex grow flex-col gap-4">
+      <div className="flex grow flex-col gap-8">
         <CreateWorkout workoutDescriptions={getItemsFromWorkouts(workouts)} />
         <Workouts workouts={workouts} />
       </div>

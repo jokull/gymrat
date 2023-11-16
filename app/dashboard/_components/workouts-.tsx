@@ -109,12 +109,12 @@ export function Workouts({
                 layout
                 data-workout={matchingWorkoutIsSelected ? "true" : "false"}
                 className={cn(
-                  "data-active:bg-white/15 group cursor-pointer rounded-md p-2 hover:bg-white/10",
+                  "data-active:bg-white/15 group cursor-pointer rounded-md border-2 p-2 hover:bg-white/10",
                   workout?.id === w.id
-                    ? "bg-white/10 text-slate-100 shadow-[0_0_2px_0_white]"
+                    ? "border-slate-700 bg-white/10 text-slate-100"
                     : matchingWorkoutIsSelected
-                    ? "text-slate-200"
-                    : "text-slate-400",
+                    ? "border-transparent text-slate-200"
+                    : "border-transparent text-slate-400",
                 )}
               >
                 {({ active, checked }) => (

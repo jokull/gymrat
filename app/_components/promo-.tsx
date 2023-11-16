@@ -135,7 +135,11 @@ export function Promo() {
                 className="group rounded-md p-2 text-neutral-400 data-active:bg-white/5"
                 data-headlessui-state={i === 0 ? "active" : ""}
               >
-                <WorkoutRow workout={workout} editable={false} />
+                <WorkoutRow
+                  active={false}
+                  checked={false}
+                  workout={{ ...workout, comment: null }}
+                />
               </motion.div>
             ))}
           </AnimatePresence>

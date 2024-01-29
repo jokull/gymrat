@@ -1,4 +1,4 @@
-import { unsealData } from "iron-session/edge";
+import { unsealData } from "iron-session";
 import { z } from "zod";
 
 export async function unsealVerificationToken(token: string) {

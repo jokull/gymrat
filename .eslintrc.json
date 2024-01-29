@@ -5,22 +5,10 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:import/errors",
-    "plugin:import/typescript"
+    "plugin:@typescript-eslint/stylistic-type-checked"
   ],
 
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import", "unicorn"],
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "project": ["tsconfig.json"]
-      }
-    },
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    }
-  },
+  "plugins": ["@typescript-eslint", "drizzle", "unicorn"],
   "ignorePatterns": ["next.config.js"]
 }

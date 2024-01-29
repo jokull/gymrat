@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { unsealData } from "iron-session/edge";
+import { unsealData } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";

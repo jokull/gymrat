@@ -1,7 +1,6 @@
 import { eq } from "drizzle-orm";
 import { unsealData } from "iron-session/edge";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { getDrizzle } from "~/db/client";
@@ -15,11 +14,7 @@ export async function getLoginContext() {
     const data = await unsealData(cookie, {
       password: process.env.SECRET_KEY ?? "",
     });
-    const result = sessionSchema.safeParse(data);
-    if (result.success) {
-      return result.data;
-    }
-    redirect("/login");
+    return sessionSchema.parse(data);
   }
 
   const db = getDrizzle();

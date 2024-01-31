@@ -1,5 +1,5 @@
 import { ArrowRightIcon, StarIcon } from "@heroicons/react/24/solid";
-import { unsealData } from "iron-session/edge";
+import { unsealData } from "iron-session";
 import { cookies } from "next/headers";
 import Link from "next/link";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { sealData } from "iron-session/edge";
+import { sealData } from "iron-session";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 

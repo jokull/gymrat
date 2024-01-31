@@ -1,6 +1,5 @@
 import { InferSelectModel, relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const user = sqliteTable("User", {
   id: text("id")
@@ -37,13 +36,6 @@ export const userRelations = relations(user, ({ many }) => ({
   workouts: many(workout),
 }));
 
-// Create schemas for insert and select operations using Drizzle Zod, if needed
-export const insertUserSchema = createInsertSchema(user);
-export const selectUserSchema = createSelectSchema(user);
-
-export const insertWorkoutSchema = createInsertSchema(workout);
-export const selectWorkoutSchema = createSelectSchema(workout);
-
 export type User = InferSelectModel<typeof user>;
 export type Workout = InferSelectModel<typeof workout>;
 
@@ -52,8 +44,4 @@ export default {
   user,
   workout,
   userRelations,
-  insertUserSchema,
-  selectUserSchema,
-  insertWorkoutSchema,
-  selectWorkoutSchema,
 };

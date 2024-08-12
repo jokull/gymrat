@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start a new tmux session and create the first window (tab)
-tmux new-session -d -s gymrat -n sqld 'sqld -l 127.0.0.1:3030 --disable-namespaces'
+tmux new-session -d -s gymrat -n sqld 'sqld -l 127.0.0.1:3030'
 
 # Set mouse support and increase scrollback buffer for this session
 tmux set -t gymrat mouse on

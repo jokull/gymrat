@@ -1,7 +1,8 @@
-import {
-  useCombobox,
+import type {
   UseComboboxState,
-  UseComboboxStateChangeOptions,
+  UseComboboxStateChangeOptions} from "downshift";
+import {
+  useCombobox
 } from "downshift";
 import Fuse from "fuse.js";
 import { useCallback, useState } from "react";

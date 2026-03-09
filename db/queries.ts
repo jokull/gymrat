@@ -1,7 +1,8 @@
 import { desc, eq, sql } from "drizzle-orm";
 
-import { Database } from "~/db/client";
-import { User, workout } from "~/schema";
+import type { Database } from "~/db/client";
+import type { User} from "~/schema";
+import { workout } from "~/schema";
 
 export async function getWorkouts({
   dbUser,
@@ -48,7 +49,7 @@ export async function getWorkouts({
     .leftJoin(maxSq, eq(maxSq.description, sql`lower(${workout.description})`))
     .orderBy(desc(workout.date));
 
-  return await workouts;
+  return  workouts;
 }
 
 export type QueryWorkout = Awaited<ReturnType<typeof getWorkouts>>[0];

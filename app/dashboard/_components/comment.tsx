@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useFormState } from "react-dom";
+import { useActionState, useState } from "react";
 
 import { Secondary } from "~/components/button-";
 import { Input } from "~/components/input-";
 import { updateWorkout } from "~/db/actions";
-import { QueryWorkout } from "~/db/queries";
+import type { QueryWorkout } from "~/db/queries";
 
 export function Comment({ workout }: { workout: QueryWorkout }) {
-  const [, action] = useFormState(updateWorkout, null);
+  const [, action] = useActionState(updateWorkout, null);
   const [value, setValue] = useState(workout.comment ?? "");
   return (
     <form action={action} className="flex w-full gap-2">
@@ -19,7 +18,7 @@ export function Comment({ workout }: { workout: QueryWorkout }) {
         name="comment"
         placeholder="Add a comment"
         defaultValue={workout.comment ?? ""}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) =>{  setValue(event.target.value); }}
       />
       {value !== (workout.comment ?? "") ? <Secondary>Save</Secondary> : null}
     </form>

@@ -15,11 +15,11 @@ import { getLoginContext } from "~/utils/session";
 import { getNumberValue } from "~/utils/workouts";
 
 async function setAuthCookie(email: string) {
-  cookies().set(
+  (await cookies()).set(
     "__session",
     await sealData(
       { email: email },
-      { password: process.env.SECRET_KEY ?? "", ttl: 60 * 60 * 24 * 365 }, // 1 year
+      { password: process.env.SECRET_KEY, ttl: 60 * 60 * 24 * 365 },
     ),
     {
       maxAge: 2592000,
@@ -57,7 +57,7 @@ export async function setPassword(prevState: unknown, formData: FormData) {
 
   const db = getDrizzle();
   let dbUser = await db.query.user.findFirst({
-    where: eq(user.email, normalizeEmail(email)),
+    where: { email: normalizeEmail(email) },
   });
 
   if (!dbUser) {
@@ -105,7 +105,7 @@ export async function login(prevState: unknown, formData: FormData) {
 
   const db = getDrizzle();
   const dbUser = await db.query.user.findFirst({
-    where: eq(user.email, email),
+    where: { email },
   });
 
   if (!dbUser) {

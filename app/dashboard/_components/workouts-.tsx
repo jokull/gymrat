@@ -1,13 +1,13 @@
 "use client";
 
-import { Portal, RadioGroup } from "@headlessui/react";
+import { Radio, RadioGroup } from "@headlessui/react";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useState } from "react";
 
 import { getTimeAgoLabel, TimeAgo } from "~/app/dashboard/_components/time-ago";
-import { QueryWorkout } from "~/db/queries";
+import type { QueryWorkout } from "~/db/queries";
 import { cn } from "~/utils/classnames";
 
 import { Comment } from "./comment";
@@ -67,30 +67,28 @@ export function Workouts({
   const [workout, setWorkout] = useState<QueryWorkout | null>(null);
   return (
     <>
-      <Portal>
-        {workout && editable ? (
-          <div
-            key={workout.id}
-            className="fixed inset-x-0 bottom-0 w-full bg-slate-600/30 text-white backdrop-blur-lg"
-          >
-            <div className="absolute -top-px h-px w-full overflow-hidden">
-              <div className="absolute -top-6 h-12 w-full bg-white/20 backdrop-blur-md backdrop-brightness-200 backdrop-contrast-150" />
+      {workout && editable ? (
+        <div
+          key={workout.id}
+          className="fixed inset-x-0 bottom-0 z-50 w-full bg-slate-600/30 text-white backdrop-blur-lg"
+        >
+          <div className="absolute -top-px h-px w-full overflow-hidden">
+            <div className="absolute -top-6 h-12 w-full bg-white/20 backdrop-blur-md backdrop-brightness-200 backdrop-contrast-150" />
+          </div>
+          <div className="mx-auto max-w-lg px-4 py-4 md:px-2">
+            <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+              <TimeAgo workout={workout} editable={true} />
+              <div className="text-slate-500">{workout.description}</div>
+              <div className="flex justify-end">
+                <DeleteWorkout workout={workout} />
+              </div>
             </div>
-            <div className="mx-auto max-w-lg px-4 py-4 md:px-2">
-              <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                <TimeAgo workout={workout} editable={true} />
-                <div className="text-slate-500">{workout.description}</div>
-                <div className="flex justify-end">
-                  <DeleteWorkout workout={workout} />
-                </div>
-              </div>
-              <div className="mb-2">
-                <Comment workout={workout} />
-              </div>
+            <div className="mb-2">
+              <Comment workout={workout} />
             </div>
           </div>
-        ) : null}
-      </Portal>
+        </div>
+      ) : null}
       <RadioGroup
         value={workout}
         onChange={setWorkout}
@@ -102,7 +100,7 @@ export function Workouts({
               workout?.description.toLocaleLowerCase() ===
               w.description.toLocaleLowerCase();
             return (
-              <RadioGroup.Option
+              <Radio
                 value={w}
                 key={w.id}
                 as={motion.div}
@@ -117,10 +115,8 @@ export function Workouts({
                     : "border-transparent text-slate-400",
                 )}
               >
-                {({ active, checked }) => (
-                  <WorkoutRow active={active} checked={checked} workout={w} />
-                )}
-              </RadioGroup.Option>
+                <WorkoutRow active={false} checked={false} workout={w} />
+              </Radio>
             );
           })}
         </LayoutGroup>

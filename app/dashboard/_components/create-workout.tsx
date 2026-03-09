@@ -1,9 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { useDebounce } from "usehooks-ts";
+import { useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { useDebounceValue } from "usehooks-ts";
 
 import { Primary } from "~/components/button-";
 import { createWorkout } from "~/db/actions";
@@ -16,7 +16,7 @@ export function CreateWorkout({
 }: {
   workoutDescriptions: Item[];
 }) {
-  const [message, action] = useFormState(createWorkout, null);
+  const [message, action] = useActionState(createWorkout, null);
   return (
     <form action={action}>
       <CreateWorkoutFieldset workoutDescriptions={workoutDescriptions} />
@@ -42,7 +42,7 @@ export function CreateWorkoutFieldset({
   const numberValue = getNumberValue(value);
   const valueType: "empty" | "value" | "time" =
     value.trim() === "" ? "empty" : numberValue.isTime ? "time" : "value";
-  const debouncedValueType = useDebounce(valueType, 500);
+  const [debouncedValueType] = useDebounceValue(valueType, 500);
   return (
     <fieldset
       className="flex w-full flex-wrap items-end gap-4"
@@ -79,7 +79,7 @@ export function CreateWorkoutFieldset({
             className="w-full rounded-md border border-slate-600 bg-transparent px-3 py-1.5 placeholder:text-slate-700"
             name="value"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) =>{  setValue(event.target.value); }}
           />
         </label>
       </div>

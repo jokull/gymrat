@@ -1,20 +1,16 @@
 import { StarIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 import Link from "next/link";
 
 import Header from "./_components/header-";
 import { Promo } from "./_components/promo-";
 
-export const runtime = "edge";
-
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async function Home() {
   return (
     <div className="flex h-full flex-col">
       <Header page="index" />
       <div className="my-4 flex grow flex-col gap-4 sm:my-8 sm:gap-8">
         <div className="flex flex-col items-center gap-2 align-middle">
-          <Image
+          <img
             src="/the-gymrat.png"
             height={120}
             width={120}

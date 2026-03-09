@@ -1,14 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
-import { login } from "~/db/actions";
+import type { login } from "~/db/actions";
 
 export function Form(props: { action: typeof login }) {
-  const [message, action] = useFormState(props.action, null);
+  const [message, action] = useActionState(props.action, null);
 
   return (
     <form className="mb-4 flex flex-col gap-4" action={action}>

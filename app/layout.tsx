@@ -11,10 +11,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Gymrat",
   description: "The simple workout tracker",
-  metadataBase: new URL(`https://${process.env.HOST}/`),
+  metadataBase: new URL(`https://www.gymrat.is/`),
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async function RootLayout({
   children,
 }: {

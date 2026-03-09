@@ -1,4 +1,5 @@
-import { forwardRef, InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
 
 import { cn } from "~/utils/classnames";
 
@@ -7,8 +8,7 @@ interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(
-  ({ className, ...props }, ref) => {
-    return (
+  ({ className, ...props }, ref) => (
       <input
         className={cn(
           className,
@@ -18,8 +18,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
         {...props}
         ref={ref}
       />
-    );
-  },
+    ),
 );
 
 Input.displayName = "Input";

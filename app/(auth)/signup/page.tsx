@@ -4,9 +4,6 @@ import { sendVerificationEmail } from "~/db/node-actions";
 
 import { Form } from "../_components/form";
 
-export const runtime = "nodejs";
-
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async function Page() {
   return (
     <div className="flex flex-col gap-4">

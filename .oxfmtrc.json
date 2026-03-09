@@ -1,0 +1,16 @@
+{
+	"$schema": "https://oxc.rs/schema/oxfmtrc.json",
+	"printWidth": 100,
+	"tabWidth": 4,
+	"useTabs": true,
+	"semi": true,
+	"singleQuote": false,
+	"jsxSingleQuote": false,
+	"quoteProps": "as-needed",
+	"trailingComma": "all",
+	"bracketSpacing": true,
+	"bracketSameLine": false,
+	"arrowParens": "always",
+	"endOfLine": "lf",
+	"ignorePatterns": ["node_modules", ".next", ".wrangler", "out", "dist", "build"]
+}

@@ -250,7 +250,11 @@ export function useCalendar({
   };
 
   const toggle = (date: Date, replaceExisting?: boolean) => {
-    isSelected(date) ? deselect(date) : select(date, replaceExisting);
+    if (isSelected(date)) {
+      deselect(date);
+    } else {
+      select(date, replaceExisting);
+    }
   };
 
   const selectRange = (start: Date, end: Date, replaceExisting?: boolean) => {

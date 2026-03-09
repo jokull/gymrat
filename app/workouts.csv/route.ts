@@ -1,12 +1,7 @@
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
-import { cacheHeader } from "pretty-cache-header";
 
 import { getWorkouts } from "~/db/queries";
 import { getLoginContext } from "~/utils/session";
-
-export const dynamic = "force-dynamic";
-export const runtime = "edge";
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -60,16 +55,11 @@ function jsonToCsv(workouts: Workout[]): string {
 
 export async function GET() {
   const body = jsonToCsv(await getWorkoutsData());
-  const response = new NextResponse(body, {
+  return new Response(body, {
     headers: {
       "content-type": "text/csv;charset=utf-8;",
-      "cache-control": cacheHeader({
-        noCache: true,
-        noStore: true,
-        maxAge: "0m",
-      }),
+      "cache-control": "no-cache, no-store, max-age=0",
       "content-disposition": "attachment; filename=gymrat-workouts.csv",
     },
   });
-  return response;
 }

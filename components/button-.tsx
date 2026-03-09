@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import type { ButtonHTMLAttributes} from "react";
+import { forwardRef } from "react";
 import { useFormStatus } from "react-dom";
 
 import { cn } from "~/utils/classnames";
@@ -20,8 +21,7 @@ export const baseClassName = cn(
 );
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ children, className, ...props }, ref) => {
-    return (
+  ({ children, className, ...props }, ref) => (
       <button
         ref={ref}
         className={cn(
@@ -36,8 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       >
         {children}
       </button>
-    );
-  },
+    ),
 );
 
 Button.displayName = "Button";
@@ -74,8 +73,7 @@ export function PrimaryLink({ children, className, ...props }: LinkProps) {
 }
 
 export const Secondary = forwardRef<HTMLButtonElement, Props>(
-  ({ children, className, ...props }, ref) => {
-    return (
+  ({ children, className, ...props }, ref) => (
       <button
         ref={ref}
         className={cn(
@@ -89,8 +87,7 @@ export const Secondary = forwardRef<HTMLButtonElement, Props>(
       >
         {children}
       </button>
-    );
-  },
+    ),
 );
 
 Secondary.displayName = "Secondary";

@@ -1,11 +1,9 @@
-import { InferSelectModel, relations, sql } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
+import { defineRelations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("User", {
-  id: text("id")
-    .primaryKey()
-    .default(sql`(uuid())`)
-    .notNull(),
+  id: text("id").primaryKey().notNull(),
   apiKey: text("apiKey").notNull(),
   email: text("email").unique().notNull(),
   displayEmail: text("displayEmail").notNull(),
@@ -13,13 +11,10 @@ export const user = sqliteTable("User", {
 });
 
 export const workout = sqliteTable("Workout", {
-  id: text("id")
-    .primaryKey()
-    .default(sql`(uuid())`)
-    .notNull(),
+  id: text("id").primaryKey().notNull(),
   updatedAt: integer("updatedAt", { mode: "timestamp" })
-    .default(sql`(strftime('%s', 'now'))`)
-    .notNull(),
+    .notNull()
+    .$default(() => new Date()),
   description: text("description").notNull(),
   comment: text("comment"),
   value: text("value").notNull(),
@@ -31,17 +26,17 @@ export const workout = sqliteTable("Workout", {
     .references(() => user.id),
 });
 
-// Define relationships
-export const userRelations = relations(user, ({ many }) => ({
-  workouts: many(workout),
+export const relations = defineRelations({ user, workout }, (r) => ({
+  user: {
+    workouts: r.many.workout(),
+  },
+  workout: {
+    user: r.one.user({
+      from: r.workout.userId,
+      to: r.user.id,
+    }),
+  },
 }));
 
 export type User = InferSelectModel<typeof user>;
 export type Workout = InferSelectModel<typeof workout>;
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
-  user,
-  workout,
-  userRelations,
-};

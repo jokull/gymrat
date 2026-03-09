@@ -1,18 +1,17 @@
-import "server-only";
+import { drizzle } from "drizzle-orm/d1";
+import { env } from "cloudflare:workers";
+import * as schema from "../schema";
+import { relations } from "../schema";
 
-import { createClient } from "@libsql/client/web";
-import { drizzle } from "drizzle-orm/libsql";
+let _db: ReturnType<typeof createDb> | undefined;
 
-import { default as schema } from "../schema";
+function createDb() {
+  return drizzle(env.DB, { schema, relations });
+}
 
 export function getDrizzle() {
-  return drizzle(
-    createClient({
-      authToken: process.env.DATABASE_AUTH_TOKEN,
-      url: process.env.DATABASE_URL ?? "",
-    }),
-    { schema },
-  );
+  _db ??= createDb();
+  return _db;
 }
 
 export type Database = ReturnType<typeof getDrizzle>;

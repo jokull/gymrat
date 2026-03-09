@@ -14,8 +14,8 @@ export default async function Header({
 }) {
   const session = await unsealData<
     { id: string; email: string } | Record<string, never>
-  >(cookies().get("__session")?.value ?? "", {
-    password: process.env.SECRET_KEY ?? "",
+  >((await cookies()).get("__session")?.value ?? "", {
+    password: process.env.SECRET_KEY,
   });
   return (
     <header className="flex items-center justify-between gap-2 whitespace-nowrap md:gap-4">

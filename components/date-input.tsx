@@ -1,5 +1,6 @@
-import { Float } from "@headlessui-float/react";
-import { Popover } from "@headlessui/react";
+"use client";
+
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   addDays,
   endOfMonth,
@@ -9,7 +10,8 @@ import {
   isToday,
   startOfMonth,
 } from "date-fns";
-import { ReactNode, useEffect, useState } from "react";
+import type { ReactNode} from "react";
+import { useEffect, useState } from "react";
 
 import { cn } from "~/utils/classnames";
 import { useCalendar } from "~/utils/use-calendar";
@@ -55,9 +57,7 @@ export function DayGrid({
               };
 
               const rangeSelected = selected.length > 1;
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const firstSelected = selected[0]!;
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const lastSelected = selected[selected.length - 1]!;
               const isStart =
                 rangeSelected && isSelected(day) && isEqual(day, firstSelected);
@@ -93,7 +93,7 @@ export function DayGrid({
                   )}
                   <button
                     onClick={onPick}
-                    role="button"
+                    
                     disabled={maxDate && isAfter(day, maxDate)}
                     tabIndex={0}
                     className={cn(
@@ -157,49 +157,38 @@ export function DateInput({
   }, []);
 
   if (!mounted) {
-    // Only mount on client side - these libraries are not ready for `/app` it seems
     return <>{children}</>;
   }
 
   return (
     <Popover>
-      <Float
-        placement="top-end"
-        offset={5}
-        shift={6}
-        portal
-        enter="transition duration-200 ease-out"
-        enterFrom="opacity-0 -translate-y-1"
-        enterTo="opacity-100 translate-y-0"
-        leave="transition duration-150 ease-in"
-        leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 -translate-y-1"
+      <PopoverButton className="hover:underline">{children}</PopoverButton>
+      <PopoverPanel
+        anchor="top end"
+        className="z-50 rounded-md bg-slate-900 p-3 text-white shadow transition duration-200 ease-out data-[closed]:translate-y-1 data-[closed]:opacity-0"
       >
-        <Popover.Button className="hover:underline">{children}</Popover.Button>
-        <Popover.Panel className="rounded-md bg-slate-900 p-3 text-white shadow">
-          {({ close }) => (
-            <div>
-              <MonthSelect
-                value={viewing}
-                onNext={viewNextMonth}
-                onPrevious={viewPreviousMonth}
-              />
-              <DayGrid
-                calendar={calendar}
-                inRange={inRange}
-                isSelected={isSelected}
-                onSelect={(day) => {
-                  onSelect(day);
-                  close();
-                }}
-                selected={selected}
-                viewing={viewing}
-                maxDate={addDays(new Date(), 1)}
-              />
-            </div>
-          )}
-        </Popover.Panel>
-      </Float>
+        {({ close }) => (
+          <div>
+            <MonthSelect
+              value={viewing}
+              onNext={viewNextMonth}
+              onPrevious={viewPreviousMonth}
+            />
+            <DayGrid
+              calendar={calendar}
+              inRange={inRange}
+              isSelected={isSelected}
+              onSelect={(day) => {
+                onSelect(day);
+                close();
+              }}
+              selected={selected}
+              viewing={viewing}
+              maxDate={addDays(new Date(), 1)}
+            />
+          </div>
+        )}
+      </PopoverPanel>
     </Popover>
   );
 }

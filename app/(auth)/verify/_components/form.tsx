@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
@@ -16,7 +16,7 @@ export function Form({
   email: string;
   token: string;
 }) {
-  const [message, setPassword] = useFormState(action, null);
+  const [message, setPassword] = useActionState(action, null);
 
   return (
     <form className="mb-4 flex flex-col gap-4" action={setPassword}>

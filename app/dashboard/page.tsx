@@ -1,13 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { getWorkouts, QueryWorkout } from "~/db/queries";
+import type { QueryWorkout } from "~/db/queries";
+import { getWorkouts } from "~/db/queries";
 import { getLoginContext } from "~/utils/session";
 
 import { CreateWorkout } from "./_components/create-workout";
 import { Workouts } from "./_components/workouts-";
-
-export const runtime = "edge";
-export const dynamic = "force-dynamic";
 
 function getItemsFromWorkouts(workouts: QueryWorkout[]) {
   const choices: { id: string; description: string }[] = [];

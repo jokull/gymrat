@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { CreateWorkoutFieldset } from "~/app/dashboard/_components/create-workout";
 import { WorkoutRow } from "~/app/dashboard/_components/workouts-";
-import { QueryWorkout } from "~/db/queries";
+import type { QueryWorkout } from "~/db/queries";
 import { getNumberValue } from "~/utils/workouts";
 
 type PromoWorkout = Pick<
@@ -65,7 +65,7 @@ export function Promo() {
       ...workout,
       maxScore,
       minScore: -1,
-      isTime: workout.value.match(/\:/)?.[0] ? true : false,
+      isTime: workout.value.match(/:/)?.[0] ? true : false,
     }));
 
   return (
@@ -90,7 +90,7 @@ export function Promo() {
               id: Math.random().toString(),
               value: value,
               numberValue: getNumberValue(value).value,
-              isTime: value.match(/\:/)?.[0] ? true : false,
+              isTime: value.match(/:/)?.[0] ? true : false,
               date: new Date(),
               description,
             },

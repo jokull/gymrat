@@ -5,15 +5,14 @@ import { unsealVerificationToken } from "~/utils/auth";
 
 import { Form } from "./_components/form";
 
-export const runtime = "edge";
-
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const params = await searchParams;
   const token = new URLSearchParams(
-    Object.entries(searchParams).flatMap(([key, value]) =>
+    Object.entries(params).flatMap(([key, value]) =>
       typeof value === "string" ? [[key, value]] : [],
     ),
   ).get("token");

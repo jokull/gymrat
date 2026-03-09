@@ -5,7 +5,7 @@ import { useTransition } from "react";
 
 import { DateInput } from "~/components/date-input";
 import { updateWorkout } from "~/db/actions";
-import { QueryWorkout } from "~/db/queries";
+import type { QueryWorkout } from "~/db/queries";
 import { formatTimeAgo } from "~/utils/timeago";
 
 export function getTimeAgoLabel(date: Date) {
@@ -31,7 +31,7 @@ export function TimeAgo({
 
   const label = getTimeAgoLabel(workout.date);
 
-  return editable && updateWorkout ? (
+  return editable ? (
     <DateInput
       initial={workout.date}
       onChange={(date) => {

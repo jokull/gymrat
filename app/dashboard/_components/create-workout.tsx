@@ -1,11 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 
 import { Primary } from "~/components/button-";
+import { useCreateWorkout } from "~/lib/use-workouts";
 import { getNumberValue } from "~/utils/workouts";
 
 import { Autocomplete, type Item } from "./auto-complete";
@@ -15,44 +15,36 @@ export function CreateWorkout({
 }: {
   workoutDescriptions: Item[];
 }) {
-  const router = useRouter();
-  const [message, setMessage] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
+  const mutation = useCreateWorkout();
   const [description, setDescription] = useState("");
   const [value, setValue] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPending(true);
-    setMessage(null);
-    void fetch("/api/workouts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ description, value }),
-    }).then(async (res) => {
-      if (res.ok) {
-        setDescription("");
-        setValue("");
-        router.refresh();
-      } else {
-        const data: { error?: string } = await res.json();
-        setMessage(data.error ?? "Failed to create workout");
-      }
-      setPending(false);
-    });
+    mutation.mutate(
+      { description, value },
+      {
+        onSuccess: () => {
+          setDescription("");
+          setValue("");
+        },
+      },
+    );
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <CreateWorkoutFieldset
         workoutDescriptions={workoutDescriptions}
-        pending={pending}
+        pending={mutation.isPending}
         description={description}
         setDescription={setDescription}
         value={value}
         setValue={setValue}
       />
-      {message}
+      {mutation.error ? (
+        <p className="mt-2 text-red-500">{mutation.error.message}</p>
+      ) : null}
     </form>
   );
 }

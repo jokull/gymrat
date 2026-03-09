@@ -1,16 +1,15 @@
 "use client";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 import { useCallback, useState } from "react";
 
 import type { QueryWorkout } from "~/db/queries";
+import { useDeleteWorkout } from "~/lib/use-workouts";
 
 export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
-  const router = useRouter();
+  const mutation = useDeleteWorkout();
   const [screen, setScreen] = useState<"default" | "confirm">("default");
-  const [isPending, setIsPending] = useState(false);
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Escape") {
@@ -18,24 +17,14 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
     }
   }, []);
 
-  const handleDelete = () => {
-    setIsPending(true);
-    void fetch(`/api/workouts/${workout.id}`, {
-      method: "DELETE",
-    }).then((res) => {
-      if (res.ok) {
-        router.refresh();
-      }
-      setIsPending(false);
-    });
-  };
-
   if (screen === "confirm") {
     return (
-      <fieldset disabled={isPending} className="flex gap-2">
+      <fieldset disabled={mutation.isPending} className="flex gap-2">
         <button
           className="rounded px-1.5 text-pink-500 hover:text-pink-700"
-          onClick={handleDelete}
+          onClick={() => {
+            mutation.mutate(workout.id);
+          }}
           onKeyDown={onKeyDown}
         >
           Delete

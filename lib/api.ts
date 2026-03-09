@@ -179,6 +179,18 @@ api.post(
   },
 );
 
+// Get workouts
+api.get("/workouts", async (c) => {
+  const cookie = c.req.header("Cookie")?.match(/__session=([^;]+)/)?.[1];
+  const dbUser = await getSessionUser(cookie);
+  if (!dbUser) return c.json({ error: "Unauthorized" }, 401);
+
+  const db = getDrizzle();
+  const { getWorkouts } = await import("~/db/queries");
+  const workouts = await getWorkouts({ dbUser, db });
+  return c.json(workouts);
+});
+
 // Create workout
 api.post(
   "/workouts",

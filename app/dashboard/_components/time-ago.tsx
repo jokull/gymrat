@@ -1,10 +1,10 @@
 "use client";
 
 import { isSameWeek, isToday, isYesterday } from "date-fns";
-import { useRouter } from "next/navigation";
 
 import { DateInput } from "~/components/date-input";
 import type { QueryWorkout } from "~/db/queries";
+import { useUpdateWorkout } from "~/lib/use-workouts";
 import { formatTimeAgo } from "~/utils/timeago";
 
 export function getTimeAgoLabel(date: Date) {
@@ -26,7 +26,7 @@ export function TimeAgo({
   workout: QueryWorkout;
   editable?: boolean;
 }) {
-  const router = useRouter();
+  const mutation = useUpdateWorkout();
 
   const label = getTimeAgoLabel(workout.date);
 
@@ -34,13 +34,7 @@ export function TimeAgo({
     <DateInput
       initial={workout.date}
       onChange={(date) => {
-        void fetch(`/api/workouts/${workout.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ date: date.toISOString() }),
-        }).then(() => {
-          router.refresh();
-        });
+        mutation.mutate({ id: workout.id, date: date.toISOString() });
       }}
     >
       {label}

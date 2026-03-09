@@ -68,7 +68,7 @@ export function Autocomplete({
     highlightedIndex,
     getItemProps,
   } = useCombobox({
-    initialInputValue: value.description,
+    inputValue: value.description,
     items,
     itemToString(item) {
       return item ? item.description : "";

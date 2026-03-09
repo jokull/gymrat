@@ -22,7 +22,7 @@ export function Comment({ workout }: { workout: QueryWorkout }) {
         className="w-full grow"
         name="comment"
         placeholder="Add a comment"
-        defaultValue={workout.comment ?? ""}
+        value={value}
         onChange={(event) => {
           setValue(event.target.value);
         }}

@@ -12,21 +12,34 @@ import { Autocomplete, type Item } from "./auto-complete";
 
 export function CreateWorkout({
   workoutDescriptions,
+  suggestedDescription,
+  onUserInput,
+  onReset,
 }: {
   workoutDescriptions: Item[];
+  suggestedDescription?: string;
+  onUserInput?: () => void;
+  onReset?: () => void;
 }) {
   const mutation = useCreateWorkout();
   const [description, setDescription] = useState("");
   const [value, setValue] = useState("");
 
+  // Show suggested description when user hasn't typed anything
+  const displayDescription =
+    description === "" && suggestedDescription
+      ? suggestedDescription
+      : description;
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate(
-      { description, value },
+      { description: displayDescription, value },
       {
         onSuccess: () => {
           setDescription("");
           setValue("");
+          onReset?.();
         },
       },
     );
@@ -37,8 +50,11 @@ export function CreateWorkout({
       <CreateWorkoutFieldset
         workoutDescriptions={workoutDescriptions}
         pending={mutation.isPending}
-        description={description}
-        setDescription={setDescription}
+        description={displayDescription}
+        setDescription={(v) => {
+          setDescription(v);
+          onUserInput?.();
+        }}
         value={value}
         setValue={setValue}
       />
@@ -127,7 +143,7 @@ export function CreateWorkoutFieldset({
           />
         </label>
       </div>
-      <div className="relative grow-[1] basis-[80px]">
+      <div className="relative grow-[1] basis-[80px] self-end">
         {isPromo ? (
           <>
             <div className="absolute -right-[5px] -top-[5px] z-10 h-2.5 w-2.5 animate-ping rounded-full bg-pink-500" />
@@ -136,13 +152,10 @@ export function CreateWorkoutFieldset({
         ) : null}
         <Primary
           type="submit"
-          className="z-30 -mt-1 w-full"
+          className="z-30 w-full"
           disabled={value.trim() === "" || description.trim() === ""}
         >
-          <span className="@container font-bold">
-            <span className="@sm:hidden">Save</span>
-            <span className="@sm:inline hidden">Record New Workout</span>
-          </span>
+          <span className="font-bold">Save</span>
         </Primary>
       </div>
     </fieldset>

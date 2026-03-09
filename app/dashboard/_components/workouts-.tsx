@@ -4,7 +4,6 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { useState } from "react";
 
 import { getTimeAgoLabel, TimeAgo } from "~/app/dashboard/_components/time-ago";
 import type { QueryWorkout } from "~/db/queries";
@@ -60,16 +59,19 @@ export function WorkoutRow({
 export function Workouts({
   workouts,
   editable = true,
+  selected = null,
+  onSelect,
 }: {
   workouts: QueryWorkout[];
   editable?: boolean;
+  selected?: QueryWorkout | null;
+  onSelect?: (workout: QueryWorkout | null) => void;
 }) {
-  const [workout, setWorkout] = useState<QueryWorkout | null>(null);
   return (
     <>
-      {workout && editable ? (
+      {selected && editable ? (
         <div
-          key={workout.id}
+          key={selected.id}
           className="fixed inset-x-0 bottom-0 z-50 w-full bg-slate-600/30 text-white backdrop-blur-lg"
         >
           <div className="absolute -top-px h-px w-full overflow-hidden">
@@ -77,27 +79,29 @@ export function Workouts({
           </div>
           <div className="mx-auto max-w-lg px-4 py-4 md:px-2">
             <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-              <TimeAgo workout={workout} editable={true} />
-              <div className="text-slate-500">{workout.description}</div>
+              <TimeAgo workout={selected} editable={true} />
+              <div className="text-slate-500">{selected.description}</div>
               <div className="flex justify-end">
-                <DeleteWorkout workout={workout} />
+                <DeleteWorkout workout={selected} />
               </div>
             </div>
             <div className="mb-2">
-              <Comment workout={workout} />
+              <Comment workout={selected} />
             </div>
           </div>
         </div>
       ) : null}
       <RadioGroup
-        value={workout}
-        onChange={setWorkout}
+        value={selected}
+        onChange={(value) => {
+          onSelect?.(value);
+        }}
         className="flex flex-col gap-1"
       >
         <LayoutGroup>
           {workouts.map((w) => {
             const matchingWorkoutIsSelected =
-              workout?.description.toLocaleLowerCase() ===
+              selected?.description.toLocaleLowerCase() ===
               w.description.toLocaleLowerCase();
             return (
               <Radio
@@ -108,7 +112,7 @@ export function Workouts({
                 data-workout={matchingWorkoutIsSelected ? "true" : "false"}
                 className={cn(
                   "data-active:bg-white/15 group cursor-pointer rounded-md border-2 p-2 hover:bg-white/10",
-                  workout?.id === w.id
+                  selected?.id === w.id
                     ? "border-slate-700 bg-white/10 text-slate-100"
                     : matchingWorkoutIsSelected
                     ? "border-transparent text-slate-200"

@@ -1,7 +1,9 @@
-import { zValidator } from "@hono/zod-validator";
+import { zValidator as zv } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { sealData, unsealData } from "iron-session";
+import type { ValidationTargets } from "hono";
+import type { ZodSchema } from "zod";
 import { WorkerMailer } from "worker-mailer";
 import { z } from "zod";
 
@@ -10,6 +12,20 @@ import { hashPassword, normalizeEmail, verifyPassword } from "~/db/passwords";
 import { user, workout } from "~/schema";
 import { unsealVerificationToken } from "~/utils/auth";
 import { getNumberValue } from "~/utils/workouts";
+
+function zValidator<T extends keyof ValidationTargets, S extends ZodSchema>(
+  target: T,
+  schema: S,
+) {
+  return zv(target, schema, (result, c) => {
+    if (!result.success) {
+      return c.json(
+        { error: result.error.issues.map((i) => i.message).join(", ") },
+        400,
+      );
+    }
+  });
+}
 
 const sessionSchema = z.object({ email: z.string().email() });
 

@@ -1,10 +1,8 @@
+import { handle } from "hono/vercel";
+
 import api from "~/lib/api";
 
-async function handler(request: Request) {
-  return api.fetch(request);
-}
-
-export const GET = handler;
-export const POST = handler;
-export const PATCH = handler;
-export const DELETE = handler;
+export const GET = handle(api);
+export const POST = handle(api);
+export const PATCH = handle(api);
+export const DELETE = handle(api);

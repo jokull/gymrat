@@ -22,10 +22,12 @@ export function Autocomplete({
   items: sourceItems,
   value,
   onChange,
+  onInputChange,
 }: {
   items: readonly Item[];
   value: Item;
   onChange: (value: Item) => void;
+  onInputChange?: (value: string) => void;
 }) {
   const [items, setItems] = useState([...sourceItems]);
 
@@ -77,6 +79,7 @@ export function Autocomplete({
       }
     },
     onInputValueChange: ({ inputValue }) => {
+      onInputChange?.(inputValue ?? "");
       setItems(
         (inputValue?.trim().length ?? 0) > 0
           ? new Fuse(sourceItems, {

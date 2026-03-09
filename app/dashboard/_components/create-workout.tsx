@@ -94,6 +94,7 @@ export function CreateWorkoutFieldset({
         <Autocomplete
           items={workoutDescriptions}
           value={{ description }}
+          onInputChange={setDescription}
           onChange={(item) => {
             setDescription(item.description);
           }}

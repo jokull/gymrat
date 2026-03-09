@@ -1,10 +1,9 @@
 "use client";
 
 import { isSameWeek, isToday, isYesterday } from "date-fns";
-import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import { DateInput } from "~/components/date-input";
-import { updateWorkout } from "~/db/actions";
 import type { QueryWorkout } from "~/db/queries";
 import { formatTimeAgo } from "~/utils/timeago";
 
@@ -27,7 +26,7 @@ export function TimeAgo({
   workout: QueryWorkout;
   editable?: boolean;
 }) {
-  const [, startTransition] = useTransition();
+  const router = useRouter();
 
   const label = getTimeAgoLabel(workout.date);
 
@@ -35,13 +34,13 @@ export function TimeAgo({
     <DateInput
       initial={workout.date}
       onChange={(date) => {
-        const formData = new FormData();
-        formData.append("id", workout.id);
-        formData.append("date", date.toISOString());
-        startTransition(() => {
-          void updateWorkout(null, formData);
+        void fetch(`/api/workouts/${workout.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ date: date.toISOString() }),
+        }).then(() => {
+          router.refresh();
         });
-        return;
       }}
     >
       {label}

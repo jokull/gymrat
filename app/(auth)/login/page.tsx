@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { login } from "~/db/actions";
-
 import { Form } from "./_components/form";
 
 export default function Page() {
@@ -15,9 +13,9 @@ export default function Page() {
           </Link>
         </p>
       </div>
-      <Form action={login} />
+      <Form />
       <p className="text-sm text-slate-400">
-        Don’t have an account yet?{" "}
+        Don't have an account yet?{" "}
         <Link className="text-slate-50 underline" href="/signup">
           Sign up
         </Link>

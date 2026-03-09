@@ -1,12 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useActionState, useState } from "react";
-import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+import { type FormEvent, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 
 import { Primary } from "~/components/button-";
-import { createWorkout } from "~/db/actions";
 import { getNumberValue } from "~/utils/workouts";
 
 import { Autocomplete, type Item } from "./auto-complete";
@@ -16,10 +15,43 @@ export function CreateWorkout({
 }: {
   workoutDescriptions: Item[];
 }) {
-  const [message, action] = useActionState(createWorkout, null);
+  const router = useRouter();
+  const [message, setMessage] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const [description, setDescription] = useState("");
+  const [value, setValue] = useState("");
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setMessage(null);
+    void fetch("/api/workouts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description, value }),
+    }).then(async (res) => {
+      if (res.ok) {
+        setDescription("");
+        setValue("");
+        router.refresh();
+      } else {
+        const data: { error?: string } = await res.json();
+        setMessage(data.error ?? "Failed to create workout");
+      }
+      setPending(false);
+    });
+  };
+
   return (
-    <form action={action}>
-      <CreateWorkoutFieldset workoutDescriptions={workoutDescriptions} />
+    <form onSubmit={handleSubmit}>
+      <CreateWorkoutFieldset
+        workoutDescriptions={workoutDescriptions}
+        pending={pending}
+        description={description}
+        setDescription={setDescription}
+        value={value}
+        setValue={setValue}
+      />
       {message}
     </form>
   );
@@ -30,15 +62,32 @@ export function CreateWorkoutFieldset({
   isPromo = false,
   defaultDescription,
   defaultValue,
+  pending = false,
+  description: controlledDescription,
+  setDescription: controlledSetDescription,
+  value: controlledValue,
+  setValue: controlledSetValue,
 }: {
   workoutDescriptions: Item[];
   isPromo?: boolean;
   defaultDescription?: string;
   defaultValue?: string;
+  pending?: boolean;
+  description?: string;
+  setDescription?: (v: string) => void;
+  value?: string;
+  setValue?: (v: string) => void;
 }) {
-  const { pending } = useFormStatus();
-  const [description, setDescription] = useState(defaultDescription ?? "");
-  const [value, setValue] = useState(defaultValue ?? "");
+  const [localDescription, localSetDescription] = useState(
+    defaultDescription ?? "",
+  );
+  const [localValue, localSetValue] = useState(defaultValue ?? "");
+
+  const description = controlledDescription ?? localDescription;
+  const setDescription = controlledSetDescription ?? localSetDescription;
+  const value = controlledValue ?? localValue;
+  const setValue = controlledSetValue ?? localSetValue;
+
   const numberValue = getNumberValue(value);
   const valueType: "empty" | "value" | "time" =
     value.trim() === "" ? "empty" : numberValue.isTime ? "time" : "value";
@@ -79,7 +128,9 @@ export function CreateWorkoutFieldset({
             className="w-full rounded-md border border-slate-600 bg-transparent px-3 py-1.5 placeholder:text-slate-700"
             name="value"
             value={value}
-            onChange={(event) =>{  setValue(event.target.value); }}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
           />
         </label>
       </div>

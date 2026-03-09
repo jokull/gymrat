@@ -1,14 +1,16 @@
 "use client";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
-import type { KeyboardEvent} from "react";
-import { useCallback, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import type { KeyboardEvent } from "react";
+import { useCallback, useState } from "react";
 
-import { deleteWorkout } from "~/db/actions";
 import type { QueryWorkout } from "~/db/queries";
 
 export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
+  const router = useRouter();
   const [screen, setScreen] = useState<"default" | "confirm">("default");
+  const [isPending, setIsPending] = useState(false);
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Escape") {
@@ -16,20 +18,24 @@ export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
     }
   }, []);
 
-  const [isPending, startTransition] = useTransition();
+  const handleDelete = () => {
+    setIsPending(true);
+    void fetch(`/api/workouts/${workout.id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        router.refresh();
+      }
+      setIsPending(false);
+    });
+  };
 
   if (screen === "confirm") {
     return (
       <fieldset disabled={isPending} className="flex gap-2">
         <button
           className="rounded px-1.5 text-pink-500 hover:text-pink-700"
-          onClick={() => {
-            const formData = new FormData();
-            formData.append("id", workout.id);
-            startTransition(() => {
-              void deleteWorkout(null, formData);
-            });
-          }}
+          onClick={handleDelete}
           onKeyDown={onKeyDown}
         >
           Delete

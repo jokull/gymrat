@@ -1,26 +1,50 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useActionState } from "react";
+import { type FormEvent, useState } from "react";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
-import { type sendVerificationEmail } from "~/db/node-actions";
 
-export function Form(props: { action: typeof sendVerificationEmail }) {
-  const [message, action] = useActionState(props.action, null);
+export function Form() {
+  const [message, setMessage] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setMessage(null);
+    const formData = new FormData(e.currentTarget);
+    void fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.get("email") }),
+    }).then(async (res) => {
+      const data: { message?: string; error?: string } = await res.json();
+      if (res.ok) {
+        setMessage(data.message ?? "Check your email");
+      } else {
+        setMessage(data.error ?? "Something went wrong");
+      }
+      setPending(false);
+    });
+  };
 
   return (
-    <form className="mb-4 flex flex-col gap-4" action={action}>
-      <Input
-        type="email"
-        name="email"
-        autoComplete="username"
-        autoFocus
-        autoCorrect="off"
-        placeholder="Your email address"
-      />
-      <Primary>Submit</Primary>
+    <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
+      <fieldset disabled={pending}>
+        <div className="flex flex-col gap-4">
+          <Input
+            type="email"
+            name="email"
+            autoComplete="username"
+            autoFocus
+            autoCorrect="off"
+            placeholder="Your email address"
+          />
+          <Primary>Submit</Primary>
+        </div>
+      </fieldset>
       <AnimatePresence>
         {message && (
           <motion.div

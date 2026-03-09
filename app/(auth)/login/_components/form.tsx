@@ -1,31 +1,60 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { type FormEvent, useState } from "react";
 
 import { Primary } from "~/components/button-";
 import { Input } from "~/components/input-";
-import type { login } from "~/db/actions";
 
-export function Form(props: { action: typeof login }) {
-  const [message, action] = useActionState(props.action, null);
+export function Form() {
+  const router = useRouter();
+  const [message, setMessage] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setMessage(null);
+    const formData = new FormData(e.currentTarget);
+    void fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+    }).then(async (res) => {
+      if (res.ok) {
+        router.push("/dashboard");
+      } else {
+        const data: { error?: string } = await res.json();
+        setMessage(data.error ?? "Login failed");
+        setPending(false);
+      }
+    });
+  };
 
   return (
-    <form className="mb-4 flex flex-col gap-4" action={action}>
-      <Input
-        type="email"
-        name="email"
-        autoComplete="username"
-        autoCorrect="off"
-        placeholder="Your email address"
-      />
-      <Input
-        type="password"
-        name="password"
-        autoComplete="current-password"
-        placeholder="Your password"
-      />
-      <Primary>Submit</Primary>
+    <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
+      <fieldset disabled={pending}>
+        <div className="flex flex-col gap-4">
+          <Input
+            type="email"
+            name="email"
+            autoComplete="username"
+            autoCorrect="off"
+            placeholder="Your email address"
+          />
+          <Input
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            placeholder="Your password"
+          />
+          <Primary>Submit</Primary>
+        </div>
+      </fieldset>
       <AnimatePresence>
         {message && (
           <motion.div

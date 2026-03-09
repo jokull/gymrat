@@ -3522,10 +3522,10 @@ uuid@^8.3.0:
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-vinext@0.0.24:
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/vinext/-/vinext-0.0.24.tgz"
-  integrity sha512-+unmn1XJYoUrwi2M6h4cQXWMFit3QRP7Vynnzvd+eI756BLGFzFKsZvK6pHwC8k+HR0QzCwve/k8Md/tA1d8DA==
+vinext@^0.0.26:
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/vinext/-/vinext-0.0.26.tgz"
+  integrity sha512-ZfTfAB/NKC7s2OfvuMTi/nmSxZIKskKmCz5U5U8CZUOZZvuLNFDW6O9tqDsI85VmwrRdv8q9eDn/YT4ROXgZ0w==
   dependencies:
     "@unpic/react" "^1.0.2"
     "@vercel/og" "^0.8.6"

@@ -2974,7 +2974,7 @@ oxlint@^1.51.0:
     "@oxlint/binding-win32-ia32-msvc" "1.51.0"
     "@oxlint/binding-win32-x64-msvc" "1.51.0"
 
-oxlint-tsgolint@>=0.15.0:
+oxlint-tsgolint@>=0.15.0, oxlint-tsgolint@^0.16.0:
   version "0.16.0"
   resolved "https://registry.npmjs.org/oxlint-tsgolint/-/oxlint-tsgolint-0.16.0.tgz"
   integrity sha512-4RuJK2jP08XwqtUu+5yhCbxEauCm6tv2MFHKEMsjbosK2+vy5us82oI3VLuHwbNyZG7ekZA26U2LLHnGR4frIA==

@@ -15,9 +15,9 @@ The local stack expects a Cloudflare tunnel with ingress rules likes this:
 tunnel: <UUID>
 credentials-file: /Users/jokull/.cloudflared/<UUID>.json
 ingress:
-  - hostname: gymrat.hundrad.is
-    service: http://localhost:3800
-  - service: http_status:404
+    - hostname: gymrat.hundrad.is
+      service: http://localhost:3800
+    - service: http_status:404
 ```
 
 ```bash

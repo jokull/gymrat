@@ -9,8 +9,10 @@
 
 # next.js / vinext
 /.next/
+/.vinext/
 /out/
 /dist/
+next-env.d.ts
 
 # production
 /build

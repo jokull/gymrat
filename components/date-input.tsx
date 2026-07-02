@@ -1,16 +1,8 @@
 "use client";
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import {
-  addDays,
-  endOfMonth,
-  format,
-  isAfter,
-  isEqual,
-  isToday,
-  startOfMonth,
-} from "date-fns";
-import type { ReactNode} from "react";
+import { addDays, endOfMonth, format, isAfter, isEqual, isToday, startOfMonth } from "date-fns";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { cn } from "~/utils/classnames";
@@ -19,176 +11,181 @@ import { useCalendar } from "~/utils/use-calendar";
 import { MonthSelect } from "./month-select";
 
 export function DayGrid({
-  calendar,
-  onSelect,
-  isSelected,
-  inRange,
-  viewing,
-  selected,
-  maxDate,
+	calendar,
+	onSelect,
+	isSelected,
+	inRange,
+	viewing,
+	selected,
+	maxDate,
 }: {
-  calendar: Date[][];
-  onSelect: (day: Date) => void;
-  isSelected: (date: Date) => boolean;
-  inRange: (date: Date, min: Date, max: Date) => boolean;
-  viewing: Date;
-  selected: Date[];
-  maxDate?: Date;
+	calendar: Date[][];
+	onSelect: (day: Date) => void;
+	isSelected: (date: Date) => boolean;
+	inRange: (date: Date, min: Date, max: Date) => boolean;
+	viewing: Date;
+	selected: Date[];
+	maxDate?: Date;
 }) {
-  return (
-    <>
-      <div className="my-3 grid grid-cols-7 place-items-center gap-1">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div key={day} className="text-xs font-semibold text-slate-500">
-            {day.slice(0, 1)}
-          </div>
-        ))}
-      </div>
+	return (
+		<>
+			<div className="my-3 grid grid-cols-7 place-items-center gap-1">
+				{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+					<div key={day} className="text-xs font-semibold text-slate-500">
+						{day.slice(0, 1)}
+					</div>
+				))}
+			</div>
 
-      <div className="flex flex-col gap-1" aria-label="Calendar grid">
-        {calendar.map((week) => (
-          <div
-            key={week[0]?.toString()}
-            className="grid grid-cols-7 justify-between gap-1"
-          >
-            {week.map((day) => {
-              const onPick = () => {
-                onSelect(day);
-              };
+			<div className="flex flex-col gap-1" aria-label="Calendar grid">
+				{calendar.map((week) => (
+					<div
+						key={week[0]?.toString()}
+						className="grid grid-cols-7 justify-between gap-1"
+					>
+						{week.map((day) => {
+							const onPick = () => {
+								onSelect(day);
+							};
 
-              const rangeSelected = selected.length > 1;
-              const firstSelected = selected[0]!;
-              const lastSelected = selected[selected.length - 1]!;
-              const isStart =
-                rangeSelected && isSelected(day) && isEqual(day, firstSelected);
-              const isEnd =
-                rangeSelected && isSelected(day) && isEqual(day, lastSelected);
-              const isWithinRange =
-                rangeSelected &&
-                isSelected(day) &&
-                !isEqual(day, firstSelected) &&
-                !isEqual(day, lastSelected);
+							const rangeSelected = selected.length > 1;
+							const firstSelected = selected[0]!;
+							const lastSelected = selected[selected.length - 1]!;
+							const isStart =
+								rangeSelected && isSelected(day) && isEqual(day, firstSelected);
+							const isEnd =
+								rangeSelected && isSelected(day) && isEqual(day, lastSelected);
+							const isWithinRange =
+								rangeSelected &&
+								isSelected(day) &&
+								!isEqual(day, firstSelected) &&
+								!isEqual(day, lastSelected);
 
-              return (
-                <div
-                  key={day.toString()}
-                  className={cn(
-                    "relative h-7 w-7",
-                    "flex items-center justify-center",
-                    isWithinRange &&
-                      "bg-secondary-200 border-secondary-300 border-b border-t",
-                  )}
-                >
-                  {isStart && (
-                    <div
-                      className="bg-secondary-200 border-secondary-500 absolute inset-y-0 left-1.5 right-0
+							return (
+								<div
+									key={day.toString()}
+									className={cn(
+										"relative h-7 w-7",
+										"flex items-center justify-center",
+										isWithinRange &&
+											"bg-secondary-200 border-secondary-300 border-b border-t",
+									)}
+								>
+									{isStart && (
+										<div
+											className="bg-secondary-200 border-secondary-500 absolute inset-y-0 left-1.5 right-0
                     rounded-l-full border-b border-l border-t opacity-30"
-                    />
-                  )}
-                  {isEnd && (
-                    <div
-                      className="bg-secondary-200 border-secondary-500 absolute inset-y-0 left-0 right-1.5
+										/>
+									)}
+									{isEnd && (
+										<div
+											className="bg-secondary-200 border-secondary-500 absolute inset-y-0 left-0 right-1.5
                     rounded-r-full border-b border-r border-t opacity-30"
-                    />
-                  )}
-                  <button
-                    onClick={onPick}
-                    
-                    disabled={maxDate && isAfter(day, maxDate)}
-                    tabIndex={0}
-                    className={cn(
-                      "z-30 h-7 w-7 translate-x-0 transform-gpu transition-colors",
-                      "flex items-center justify-center rounded-sm text-sm",
-                      "border disabled:line-through",
-                      isSelected(day)
-                        ? "bg-pink-500 text-white hover:bg-pink-600"
-                        : "hover:bg-pink-400 hover:text-white disabled:bg-transparent disabled:text-slate-700",
-                      isToday(day) ? "border-slate-300" : "border-transparent",
-                      !inRange(day, startOfMonth(viewing), endOfMonth(viewing))
-                        ? "text-slate-600"
-                        : "text-slate-300",
-                    )}
-                  >
-                    <span className="mt-0.5">{format(day, "dd")}</span>
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </>
-  );
+										/>
+									)}
+									<button
+										onClick={onPick}
+										disabled={maxDate && isAfter(day, maxDate)}
+										tabIndex={0}
+										className={cn(
+											"z-30 h-7 w-7 translate-x-0 transform-gpu transition-colors",
+											"flex items-center justify-center rounded-sm text-sm",
+											"border disabled:line-through",
+											isSelected(day)
+												? "bg-pink-500 text-white hover:bg-pink-600"
+												: "hover:bg-pink-400 hover:text-white disabled:bg-transparent disabled:text-slate-700",
+											isToday(day)
+												? "border-slate-300"
+												: "border-transparent",
+											!inRange(
+												day,
+												startOfMonth(viewing),
+												endOfMonth(viewing),
+											)
+												? "text-slate-600"
+												: "text-slate-300",
+										)}
+									>
+										<span className="mt-0.5">{format(day, "dd")}</span>
+									</button>
+								</div>
+							);
+						})}
+					</div>
+				))}
+			</div>
+		</>
+	);
 }
 
 export function DateInput({
-  initial,
-  onChange,
-  children,
+	initial,
+	onChange,
+	children,
 }: {
-  initial: Date;
-  onChange: (value: Date) => void;
-  children: ReactNode;
+	initial: Date;
+	onChange: (value: Date) => void;
+	children: ReactNode;
 }) {
-  const {
-    selected,
-    calendar,
-    inRange,
-    isSelected,
-    viewing,
-    select,
-    viewNextMonth,
-    viewPreviousMonth,
-    setViewing,
-  } = useCalendar({
-    selected: [initial],
-    viewing: initial,
-  });
+	const {
+		selected,
+		calendar,
+		inRange,
+		isSelected,
+		viewing,
+		select,
+		viewNextMonth,
+		viewPreviousMonth,
+		setViewing,
+	} = useCalendar({
+		selected: [initial],
+		viewing: initial,
+	});
 
-  const onSelect = (day: Date) => {
-    select(day, true);
-    setViewing(day);
-    onChange(day);
-  };
+	const onSelect = (day: Date) => {
+		select(day, true);
+		setViewing(day);
+		onChange(day);
+	};
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+	if (!mounted) {
+		return <>{children}</>;
+	}
 
-  return (
-    <Popover>
-      <PopoverButton className="hover:underline">{children}</PopoverButton>
-      <PopoverPanel
-        anchor="top end"
-        className="z-50 rounded-md bg-slate-900 p-3 text-white shadow transition duration-200 ease-out data-[closed]:translate-y-1 data-[closed]:opacity-0"
-      >
-        {({ close }) => (
-          <div>
-            <MonthSelect
-              value={viewing}
-              onNext={viewNextMonth}
-              onPrevious={viewPreviousMonth}
-            />
-            <DayGrid
-              calendar={calendar}
-              inRange={inRange}
-              isSelected={isSelected}
-              onSelect={(day) => {
-                onSelect(day);
-                close();
-              }}
-              selected={selected}
-              viewing={viewing}
-              maxDate={addDays(new Date(), 1)}
-            />
-          </div>
-        )}
-      </PopoverPanel>
-    </Popover>
-  );
+	return (
+		<Popover>
+			<PopoverButton className="hover:underline">{children}</PopoverButton>
+			<PopoverPanel
+				anchor="top end"
+				className="z-50 rounded-md bg-slate-900 p-3 text-white shadow transition duration-200 ease-out data-[closed]:translate-y-1 data-[closed]:opacity-0"
+			>
+				{({ close }) => (
+					<div>
+						<MonthSelect
+							value={viewing}
+							onNext={viewNextMonth}
+							onPrevious={viewPreviousMonth}
+						/>
+						<DayGrid
+							calendar={calendar}
+							inRange={inRange}
+							isSelected={isSelected}
+							onSelect={(day) => {
+								onSelect(day);
+								close();
+							}}
+							selected={selected}
+							viewing={viewing}
+							maxDate={addDays(new Date(), 1)}
+						/>
+					</div>
+				)}
+			</PopoverPanel>
+		</Popover>
+	);
 }

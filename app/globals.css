@@ -1,23 +1,24 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Mona Sans";
-  src: url("/fonts/Mona-Sans.woff2") format("woff2 supports variations"),
-    url("/fonts/Mona-Sans.woff2") format("woff2-variations");
-  font-weight: 200 900;
-  font-stretch: 75% 125%;
+	font-family: "Mona Sans";
+	src:
+		url("/fonts/Mona-Sans.woff2") format("woff2 supports variations"),
+		url("/fonts/Mona-Sans.woff2") format("woff2-variations");
+	font-weight: 200 900;
+	font-stretch: 75% 125%;
 }
 
 body {
-  font-family: "Mona Sans";
+	font-family: "Mona Sans";
 }
 
 html,
 body {
-  height: 100%;
+	height: 100%;
 }
 
 input::-webkit-search-cancel-button,
 input::-webkit-search-decoration {
-  -webkit-appearance: none;
+	-webkit-appearance: none;
 }

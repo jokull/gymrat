@@ -1,28 +1,28 @@
 import * as bcrypt from "bcryptjs";
 
 export function hashPassword(value: string) {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(value, salt);
+	const salt = bcrypt.genSaltSync(10);
+	return bcrypt.hashSync(value, salt);
 }
 
 export function verifyPassword(value: string, hash: string) {
-  return bcrypt.compareSync(value, hash);
+	return bcrypt.compareSync(value, hash);
 }
 
 export function normalizeEmail(value: string) {
-  const email = value.toLowerCase().trim();
-  const emailParts = email.split(/@/);
+	const email = value.toLowerCase().trim();
+	const emailParts = email.split(/@/);
 
-  if (emailParts.length !== 2) {
-    return email;
-  }
+	if (emailParts.length !== 2) {
+		return email;
+	}
 
-  let username = emailParts[0]!;
-  const domain = emailParts[1]!;
+	let username = emailParts[0]!;
+	const domain = emailParts[1]!;
 
-  if (["gmail.com", "fastmail.com", "googlemail.com"].includes(domain)) {
-    username = username.replace(".", "");
-  }
+	if (["gmail.com", "fastmail.com", "googlemail.com"].includes(domain)) {
+		username = username.replace(".", "");
+	}
 
-  return username + "@" + domain;
+	return username + "@" + domain;
 }

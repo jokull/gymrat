@@ -8,48 +8,48 @@ import type { QueryWorkout } from "~/db/queries";
 import { useDeleteWorkout } from "~/lib/use-workouts";
 
 export function DeleteWorkout({ workout }: { workout: QueryWorkout }) {
-  const mutation = useDeleteWorkout();
-  const [screen, setScreen] = useState<"default" | "confirm">("default");
+	const mutation = useDeleteWorkout();
+	const [screen, setScreen] = useState<"default" | "confirm">("default");
 
-  const onKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === "Escape") {
-      setScreen("default");
-    }
-  }, []);
+	const onKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
+		if (event.key === "Escape") {
+			setScreen("default");
+		}
+	}, []);
 
-  if (screen === "confirm") {
-    return (
-      <fieldset disabled={mutation.isPending} className="flex gap-2">
-        <button
-          className="rounded px-1.5 text-pink-500 hover:text-pink-700"
-          onClick={() => {
-            mutation.mutate(workout.id);
-          }}
-          onKeyDown={onKeyDown}
-        >
-          Delete
-        </button>
-        <button
-          className="rounded px-1.5 text-slate-100 hover:text-slate-400"
-          autoFocus
-          onClick={() => {
-            setScreen("default");
-          }}
-          onKeyDown={onKeyDown}
-        >
-          Cancel
-        </button>
-      </fieldset>
-    );
-  }
-  return (
-    <button
-      onClick={() => {
-        setScreen("confirm");
-      }}
-    >
-      <TrashIcon className="hidden h-6 w-6 text-slate-600" />
-      <span className="text-white">Delete</span>
-    </button>
-  );
+	if (screen === "confirm") {
+		return (
+			<fieldset disabled={mutation.isPending} className="flex gap-2">
+				<button
+					className="rounded px-1.5 text-pink-500 hover:text-pink-700"
+					onClick={() => {
+						mutation.mutate(workout.id);
+					}}
+					onKeyDown={onKeyDown}
+				>
+					Delete
+				</button>
+				<button
+					className="rounded px-1.5 text-slate-100 hover:text-slate-400"
+					autoFocus
+					onClick={() => {
+						setScreen("default");
+					}}
+					onKeyDown={onKeyDown}
+				>
+					Cancel
+				</button>
+			</fieldset>
+		);
+	}
+	return (
+		<button
+			onClick={() => {
+				setScreen("confirm");
+			}}
+		>
+			<TrashIcon className="hidden h-6 w-6 text-slate-600" />
+			<span className="text-white">Delete</span>
+		</button>
+	);
 }

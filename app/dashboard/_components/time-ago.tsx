@@ -8,38 +8,38 @@ import { useUpdateWorkout } from "~/lib/use-workouts";
 import { formatTimeAgo } from "~/utils/timeago";
 
 export function getTimeAgoLabel(date: Date) {
-  const today = new Date();
+	const today = new Date();
 
-  return isToday(date)
-    ? "today"
-    : isYesterday(date)
-    ? "yesterday"
-    : isSameWeek(date, today)
-    ? formatTimeAgo(date)
-    : date.toLocaleDateString("is-IS");
+	return isToday(date)
+		? "today"
+		: isYesterday(date)
+			? "yesterday"
+			: isSameWeek(date, today)
+				? formatTimeAgo(date)
+				: date.toLocaleDateString("is-IS");
 }
 
 export function TimeAgo({
-  workout,
-  editable = true,
+	workout,
+	editable = true,
 }: {
-  workout: QueryWorkout;
-  editable?: boolean;
+	workout: QueryWorkout;
+	editable?: boolean;
 }) {
-  const mutation = useUpdateWorkout();
+	const mutation = useUpdateWorkout();
 
-  const label = getTimeAgoLabel(workout.date);
+	const label = getTimeAgoLabel(workout.date);
 
-  return editable ? (
-    <DateInput
-      initial={workout.date}
-      onChange={(date) => {
-        mutation.mutate({ id: workout.id, date: date.toISOString() });
-      }}
-    >
-      {label}
-    </DateInput>
-  ) : (
-    <>{label}</>
-  );
+	return editable ? (
+		<DateInput
+			initial={workout.date}
+			onChange={(date) => {
+				mutation.mutate({ id: workout.id, date: date.toISOString() });
+			}}
+		>
+			{label}
+		</DateInput>
+	) : (
+		<>{label}</>
+	);
 }

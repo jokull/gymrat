@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { getDrizzle } from "~/db/client";
 import { getWorkouts } from "~/db/queries";
-import { getSessionCookie, getSessionUser } from "~/src/lib/session";
+import { getSessionCookie, getSessionUser, unsealCsvToken } from "~/src/lib/session";
 
 function formatDate(date: Date): string {
 	const year = date.getFullYear();
@@ -15,12 +15,29 @@ function formatDate(date: Date): string {
 	return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function csvField(value: string): string {
+	return /[",\n\r]/.test(value) ? `"${value.replaceAll('"', '""')}"` : value;
+}
+
+async function resolveUser(request: Request) {
+	const token = new URL(request.url).searchParams.get("token");
+	const db = getDrizzle();
+
+	if (token) {
+		const userId = await unsealCsvToken(token);
+		if (!userId) return null;
+		return (await db.query.user.findFirst({ where: { id: userId } })) ?? null;
+	}
+
+	const cookie = request.headers.get("Cookie") ?? undefined;
+	return getSessionUser(getSessionCookie(cookie));
+}
+
 export const Route = createFileRoute("/workouts.csv")({
 	server: {
 		handlers: {
 			GET: async ({ request }) => {
-				const cookie = request.headers.get("Cookie") ?? undefined;
-				const dbUser = await getSessionUser(getSessionCookie(cookie));
+				const dbUser = await resolveUser(request);
 				if (!dbUser) {
 					return Response.redirect(new URL("/login", request.url), 302);
 				}
@@ -41,14 +58,15 @@ export const Route = createFileRoute("/workouts.csv")({
 					"description",
 					"isTopScore",
 					"value",
+					"comment",
 				] as const;
 				const rows = workouts.map((workout) =>
 					headers.map((header) => {
-						let value = workout[header];
+						const value = workout[header];
 						if (value instanceof Date) {
-							value = formatDate(value);
+							return formatDate(value);
 						}
-						return String(value);
+						return csvField(String(value ?? ""));
 					}),
 				);
 				const body = [headers, ...rows].map((row) => row.join(",")).join("\n");

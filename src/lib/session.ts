@@ -43,3 +43,34 @@ export async function setSessionCookie(email: string) {
 export function clearSessionCookie() {
 	deleteCookie(SESSION_COOKIE, { path: "/" });
 }
+
+// Short-lived signed token granting read access to the CSV export without
+// a session cookie (e.g. for handing to an AI agent). The purpose tag keeps
+// it from being interchangeable with email verification tokens, which are
+// sealed with the same secret.
+const CSV_TOKEN_TTL = 60 * 60 * 24;
+
+const csvTokenSchema = z.object({
+	purpose: z.literal("csv-export"),
+	userId: z.string(),
+});
+
+export async function sealCsvToken(userId: string) {
+	return sealData(
+		{ purpose: "csv-export", userId },
+		{ password: process.env.SECRET_KEY, ttl: CSV_TOKEN_TTL },
+	);
+}
+
+export async function unsealCsvToken(token: string) {
+	try {
+		const data = await unsealData(token, {
+			password: process.env.SECRET_KEY,
+			ttl: CSV_TOKEN_TTL,
+		});
+		const result = csvTokenSchema.safeParse(data);
+		return result.success ? result.data.userId : null;
+	} catch {
+		return null;
+	}
+}

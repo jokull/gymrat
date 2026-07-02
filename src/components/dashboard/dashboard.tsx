@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { QueryWorkout } from "~/db/queries";
 import { useWorkouts } from "~/lib/use-workouts";
 
+import { CopyForClaude } from "./copy-for-claude";
 import { CreateWorkout } from "./create-workout";
 import { Workouts } from "./workouts";
 
@@ -73,8 +74,11 @@ export function Dashboard({ apiKey }: { apiKey: string }) {
 				<Workouts workouts={workouts} selected={selected} onSelect={onSelect} />
 			</div>
 			<footer className="text-center text-xs leading-5 text-slate-600">
-				<p className="text-sm text-slate-400 underline">
-					<a href="/workouts.csv">Download CSV</a>
+				<p className="flex items-center justify-center gap-3 text-sm text-slate-400">
+					<a className="underline" href="/workouts.csv">
+						Download CSV
+					</a>
+					<CopyForClaude />
 				</p>
 				<p className="">{apiKey}</p>
 			</footer>

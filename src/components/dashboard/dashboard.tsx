@@ -27,13 +27,16 @@ function getHashId() {
 
 export function Dashboard({ apiKey }: { apiKey: string }) {
 	const { data: workouts = [] } = useWorkouts();
-	const [selectedId, setSelectedId] = useState<string | null>(getHashId);
+	// Start with no selection to match the server-rendered HTML; the URL
+	// hash is only readable in the browser, so apply it after mount
+	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [userTouched, setUserTouched] = useState(false);
 
 	const selected = workouts.find((w) => w.id === selectedId) ?? null;
 
-	// Sync hash on popstate (back/forward)
+	// Initial read after hydration, then sync on popstate (back/forward)
 	useEffect(() => {
+		setSelectedId(getHashId());
 		const onHashChange = () => {
 			setSelectedId(getHashId());
 		};

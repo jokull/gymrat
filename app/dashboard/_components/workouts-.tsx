@@ -8,6 +8,7 @@ import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { getTimeAgoLabel, TimeAgo } from "~/app/dashboard/_components/time-ago";
 import type { QueryWorkout } from "~/db/queries";
 import { cn } from "~/utils/classnames";
+import { formatTimeAgo } from "~/utils/timeago";
 
 import { Comment } from "./comment";
 import { DeleteWorkout } from "./delete-workout";
@@ -28,6 +29,25 @@ function TopScore({ workout }: { workout: QueryWorkout }) {
 				</motion.div>
 			) : null}
 		</AnimatePresence>
+	);
+}
+
+function getReferenceWorkout(workouts: QueryWorkout[], selected: QueryWorkout) {
+	const sameDescription = workouts.filter(
+		(w) => w.description.toLocaleLowerCase() === selected.description.toLocaleLowerCase(),
+	);
+	const index = sameDescription.findIndex((w) => w.id === selected.id);
+	if (index === -1) return null;
+	// Viewing the most recent entry: reference the previous one.
+	// Viewing an older entry: reference the most recent one.
+	return (index === 0 ? sameDescription[1] : sameDescription[0]) ?? null;
+}
+
+function ReferenceScore({ reference }: { reference: QueryWorkout }) {
+	return (
+		<div className="text-xs text-slate-500">
+			{formatTimeAgo(reference.date)}: {reference.value}
+		</div>
 	);
 }
 
@@ -68,6 +88,8 @@ export function Workouts({
 	selected?: QueryWorkout | null;
 	onSelect?: (workout: QueryWorkout | null) => void;
 }) {
+	const referenceWorkout = selected ? getReferenceWorkout(workouts, selected) : null;
+
 	return (
 		<>
 			{selected && editable ? (
@@ -93,6 +115,7 @@ export function Workouts({
 						<div className="mb-2">
 							<Comment workout={selected} />
 						</div>
+						{referenceWorkout ? <ReferenceScore reference={referenceWorkout} /> : null}
 					</div>
 				</div>
 			) : null}

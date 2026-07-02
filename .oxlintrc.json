@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/oxlint/configuration_schema.json",
-	"plugins": ["react", "jsx-a11y", "import", "typescript", "nextjs"],
+	"plugins": ["react", "jsx-a11y", "import", "typescript"],
 	"env": {
 		"browser": true,
 		"es2024": true,
@@ -42,8 +42,6 @@
 		"jsx-a11y/no-autofocus": "off",
 		"jsx-a11y/anchor-is-valid": "off",
 		"jsx-a11y/label-has-associated-control": "off",
-		"nextjs/no-img-element": "off",
-		"nextjs/no-html-link-for-pages": "off",
 		"react/no-children-prop": "off",
 		"react/self-closing-comp": "error",
 		"import/no-duplicates": "error",
@@ -85,5 +83,5 @@
 	"categories": {
 		"correctness": "warn"
 	},
-	"ignorePatterns": ["node_modules", ".next", ".wrangler", "out", "dist", "build"]
+	"ignorePatterns": ["node_modules", ".wrangler", "out", "dist", "build", "src/routeTree.gen.ts"]
 }

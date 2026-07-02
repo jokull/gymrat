@@ -3,7 +3,7 @@
 	"name": "gymrat",
 	"compatibility_date": "2026-02-28",
 	"compatibility_flags": ["nodejs_compat"],
-	"main": "./worker/index.ts",
+	"main": "./src/server.ts",
 	"vars": {
 		"SITE_URL": "https://www.gymrat.is",
 		"HOST": "www.gymrat.is",

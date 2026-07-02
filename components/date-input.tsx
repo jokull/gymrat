@@ -1,5 +1,3 @@
-"use client";
-
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { addDays, endOfMonth, format, isAfter, isEqual, isToday, startOfMonth } from "date-fns";
 import type { ReactNode } from "react";

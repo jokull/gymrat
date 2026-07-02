@@ -1,9 +1,7 @@
-"use client";
-
-import Link from "next/link";
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, ComponentProps } from "react";
 import { forwardRef } from "react";
 import { useFormStatus } from "react-dom";
+import { Link } from "@tanstack/react-router";
 
 import { cn } from "~/utils/classnames";
 
@@ -11,7 +9,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	className?: string;
 }
 
-type LinkProps = Parameters<typeof Link>[0];
+type LinkProps = ComponentProps<typeof Link>;
 
 export const baseClassName = cn(
 	"font-medium text-sm inline-flex items-center justify-center",

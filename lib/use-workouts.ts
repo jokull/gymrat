@@ -1,28 +1,19 @@
-"use client";
-
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { QueryWorkout } from "~/db/queries";
+import { $createWorkout, $deleteWorkout, $getWorkouts, $updateWorkout } from "~/src/lib/workouts";
 import { getNumberValue } from "~/utils/workouts";
-
-export type SerializedWorkout = Omit<QueryWorkout, "date"> & { date: string };
-
-function deserialize(w: SerializedWorkout): QueryWorkout {
-	return { ...w, date: new Date(w.date) };
-}
 
 const WORKOUTS_KEY = ["workouts"] as const;
 
-export function useWorkouts(initialData: QueryWorkout[]) {
-	return useQuery<QueryWorkout[]>({
+export const workoutsQueryOptions = () =>
+	queryOptions({
 		queryKey: WORKOUTS_KEY,
-		queryFn: async () => {
-			const res = await fetch("/api/workouts");
-			const data: SerializedWorkout[] = await res.json();
-			return data.map(deserialize);
-		},
-		initialData,
+		queryFn: ({ signal }) => $getWorkouts({ signal }),
 	});
+
+export function useWorkouts() {
+	return useQuery(workoutsQueryOptions());
 }
 
 export function useCreateWorkout() {
@@ -30,15 +21,7 @@ export function useCreateWorkout() {
 
 	return useMutation({
 		mutationFn: async (input: { description: string; value: string }) => {
-			const res = await fetch("/api/workouts", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(input),
-			});
-			if (!res.ok) {
-				const data: { error?: string } = await res.json();
-				throw new Error(data.error ?? "Failed to create workout");
-			}
+			await $createWorkout({ data: input });
 		},
 		onMutate: async (input) => {
 			await queryClient.cancelQueries({ queryKey: WORKOUTS_KEY });
@@ -79,11 +62,7 @@ export function useDeleteWorkout() {
 
 	return useMutation({
 		mutationFn: async (id: string) => {
-			const res = await fetch(`/api/workouts/${id}`, { method: "DELETE" });
-			if (!res.ok) {
-				const data: { error?: string } = await res.json();
-				throw new Error(data.error ?? "Failed to delete workout");
-			}
+			await $deleteWorkout({ data: { id } });
 		},
 		onMutate: async (id) => {
 			await queryClient.cancelQueries({ queryKey: WORKOUTS_KEY });
@@ -116,16 +95,7 @@ export function useUpdateWorkout() {
 			comment?: string;
 			value?: string;
 		}) => {
-			const { id, ...body } = input;
-			const res = await fetch(`/api/workouts/${id}`, {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(body),
-			});
-			if (!res.ok) {
-				const data: { error?: string } = await res.json();
-				throw new Error(data.error ?? "Failed to update workout");
-			}
+			await $updateWorkout({ data: input });
 		},
 		onMutate: async (input) => {
 			await queryClient.cancelQueries({ queryKey: WORKOUTS_KEY });

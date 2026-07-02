@@ -7,12 +7,11 @@
 # testing
 /coverage
 
-# next.js / vinext
-/.next/
-/.vinext/
+# build output
 /out/
 /dist/
-next-env.d.ts
+/.tanstack/
+/.nitro/
 
 # production
 /build

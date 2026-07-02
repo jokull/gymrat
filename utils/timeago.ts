@@ -1,4 +1,6 @@
-const formatter = new Intl.RelativeTimeFormat(undefined, {
+// Pinned locale: server and client runtimes resolve `undefined` differently,
+// which breaks SSR hydration
+const formatter = new Intl.RelativeTimeFormat("en", {
 	numeric: "auto",
 	style: "short",
 });

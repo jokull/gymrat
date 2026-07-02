@@ -29,8 +29,13 @@ export function HeroTitle() {
 				distortion={0.8}
 				swirl={0.6}
 			/>
-			<h1 className="relative bg-[rgb(5,1,13)] text-center text-3xl font-black leading-tight text-white mix-blend-darken sm:text-4xl md:text-5xl">
-				The Notepad for Gymrats
+			<h1
+				className="relative bg-[rgb(5,1,13)] text-center text-[clamp(2.25rem,10.5vw,4rem)] font-black uppercase leading-[0.85] tracking-tight text-white mix-blend-darken md:text-7xl"
+				style={{ fontStretch: "125%" }}
+			>
+				The Notepad
+				<br />
+				for Gymrats
 			</h1>
 		</div>
 	);

@@ -1155,6 +1155,18 @@
   resolved "https://registry.npmjs.org/@oxlint/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.72.0.tgz"
   integrity sha512-b2eKFD2hX7tIwmo/cyH6TDq8vzWRZ2qNHrzoGntUTmq0h3zQh/uX3eTSHCwI8OB/ADQfJCRelLItK8BsxuucDA==
 
+"@paper-design/shaders@0.0.76":
+  version "0.0.76"
+  resolved "https://registry.npmjs.org/@paper-design/shaders/-/shaders-0.0.76.tgz"
+  integrity sha512-AcNDY4J66YQHUfQYFInkCP7M9VOje0od7wLpOR7LtCmc532opJy6ll+h1W9zBovz8tt9U7OADUmJ/qKEXyOX/A==
+
+"@paper-design/shaders-react@^0.0.76":
+  version "0.0.76"
+  resolved "https://registry.npmjs.org/@paper-design/shaders-react/-/shaders-react-0.0.76.tgz"
+  integrity sha512-uPJWrYRf6cJdO2H+fuXlahaqz0QjYglNAyUTaRfIInpzCa/d6guxBIK003soAZQFuQ035yg9FhtfFzKNWm+a5A==
+  dependencies:
+    "@paper-design/shaders" "0.0.76"
+
 "@poppinss/colors@^4.1.5":
   version "4.1.6"
   resolved "https://registry.npmjs.org/@poppinss/colors/-/colors-4.1.6.tgz"
@@ -1844,7 +1856,7 @@
   dependencies:
     undici-types "~7.18.0"
 
-"@types/react@^19.2.0", "@types/react@^19.2.17":
+"@types/react@^18 || ^19", "@types/react@^19.2.0", "@types/react@^19.2.17":
   version "19.2.17"
   resolved "https://registry.npmjs.org/@types/react/-/react-19.2.17.tgz"
   integrity sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==

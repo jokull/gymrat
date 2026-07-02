@@ -3,6 +3,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
 
 import Header from "~/src/components/header";
+import { HeroTitle } from "~/src/components/hero-title";
 import { Promo } from "~/src/components/promo";
 
 export const Route = createFileRoute("/")({ component: Home });
@@ -20,15 +21,7 @@ function Home() {
 						alt="The Gymrat"
 						className="shrink-0"
 					/>
-					<div
-						className="my-8 bg-cover bg-clip-text bg-no-repeat text-center text-3xl font-black leading-tight text-transparent sm:text-4xl md:-mx-24 md:text-5xl"
-						style={{
-							backgroundImage: "url(/background.svg?1)",
-							backgroundPosition: "50% 50%",
-						}}
-					>
-						The Notepad for Gymrats
-					</div>
+					<HeroTitle />
 				</div>
 				<p className="text-center text-sm font-medium text-slate-200">
 					Try out a demo of the UI below - then sign up for free!

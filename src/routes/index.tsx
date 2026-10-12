@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import Header from "~/src/components/header";
 import { HeroTitle } from "~/src/components/hero-title";
-import { Promo } from "~/src/components/promo";
+import { Teaser } from "~/src/components/teaser";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -24,13 +24,11 @@ function Home() {
 					<HeroTitle />
 				</div>
 				<p className="text-center text-sm font-medium text-slate-200">
-					Try out a demo of the UI below - then sign up for free!
+					Type a workout the way you'd say it - then sign up for free!
 				</p>
-				<div className="min-h-[340px]">
-					<Promo />
-				</div>
+				<Teaser />
 				<div className="mb-8 text-center text-slate-200 [&>p]:mb-4">
-					<p>Gymrat only uses two fields; workout and value.</p>
+					<p>Gymrat only tracks two things; the workout and the value.</p>
 					<p>
 						If the value ends with <strong>kg</strong>, <strong>lb</strong> or{" "}
 						<strong>rounds</strong> Gymrat will track the highest score across those

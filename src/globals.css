@@ -18,6 +18,17 @@ body {
 	height: 100%;
 }
 
+html {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-text-size-adjust: 100%;
+}
+
+button,
+a,
+[role="button"] {
+	touch-action: manipulation;
+}
+
 input::-webkit-search-cancel-button,
 input::-webkit-search-decoration {
 	-webkit-appearance: none;

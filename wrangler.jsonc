@@ -1,6 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "gymrat",
+	"account_id": "561f024b3ba2bbafa2a67ec9b911693c",
 	"compatibility_date": "2026-02-28",
 	"compatibility_flags": ["nodejs_compat"],
 	"main": "./src/server.ts",
@@ -16,6 +17,9 @@
 			"database_id": "1314a799-a59a-429b-81ff-0e4a4e7d3fb3",
 		},
 	],
+	"ai": {
+		"binding": "AI",
+	},
 	"routes": [{ "pattern": "www.gymrat.is", "custom_domain": true }],
 	"assets": {
 		"not_found_handling": "none",

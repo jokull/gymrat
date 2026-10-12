@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, getRequest } from "@tanstack/react-start/server";
 import { and, eq } from "drizzle-orm";
@@ -118,4 +119,63 @@ export const $updateWorkout = createServerFn({ method: "POST" })
 		}
 
 		return { ok: true as const };
+	});
+
+const decisionSchema = z.object({
+	answers: z.object({
+		workout: z.object({
+			choice: z.string(),
+			probabilities: z.record(z.string(), z.number()),
+		}),
+	}),
+});
+
+/**
+ * Matches shorthand to a logged workout ("dl" for "Deadlift 5x") with Clef, a
+ * decision model that answers a typed question with a probability per option.
+ */
+export const $matchWorkout = createServerFn({ method: "POST" })
+	.middleware([authMiddleware])
+	.inputValidator(
+		z.object({
+			text: z.string().trim().min(1).max(120),
+			// a choice question takes up to 255 options, and one is "none of these"
+			options: z.array(z.string().min(1).max(200)).min(1).max(254),
+		}),
+	)
+	.handler(async ({ data }) => {
+		const { text, options } = data;
+		const criteria: Record<string, string> = {
+			none: "A different workout or lift that is not one of the others",
+		};
+		options.forEach((option, index) => {
+			criteria[`w${index}`] = option;
+		});
+
+		try {
+			const output = await env.AI.run("@cf/cloudflare/clef-flash", {
+				model: "clef-flash",
+				state: text,
+				questions: {
+					workout: {
+						type: "choice",
+						instructions:
+							"An athlete typed this shorthand into their workout log. Which of their logged workouts or lifts do they mean?",
+						criteria,
+					},
+				},
+			});
+			const answer = decisionSchema.parse(output).answers.workout;
+			const match = /^w\d+$/.test(answer.choice)
+				? options[Number(answer.choice.slice(1))]
+				: null;
+			const confidence = answer.probabilities[answer.choice] ?? 0;
+			// Under this the model is guessing: "thrusters" is not a row.
+			if (!match || confidence < 0.4) return { match: null, confidence: 0 };
+			return { match, confidence };
+		} catch (error) {
+			// The words still decide when the model can't be asked.
+			console.error(error);
+			return { match: null, confidence: 0 };
+		}
 	});

@@ -4,21 +4,8 @@ import type { QueryWorkout } from "~/db/queries";
 import { useWorkouts } from "~/lib/use-workouts";
 
 import { CopyForClaude } from "./copy-for-claude";
-import { CreateWorkout } from "./create-workout";
+import { WorkoutDock } from "./workout-dock";
 import { Workouts } from "./workouts";
-
-function getItemsFromWorkouts(workouts: QueryWorkout[]) {
-	const choices: { id: string; description: string }[] = [];
-	workouts.forEach(({ description }) => {
-		if (!choices.find((name) => name.id === description.toLocaleLowerCase().trim())) {
-			choices.push({
-				id: description.toLocaleLowerCase().trim(),
-				description: description,
-			});
-		}
-	});
-	return choices.map(({ description }) => ({ description }));
-}
 
 function getHashId() {
 	if (typeof window === "undefined") return null;
@@ -31,7 +18,6 @@ export function Dashboard({ apiKey }: { apiKey: string }) {
 	// Start with no selection to match the server-rendered HTML; the URL
 	// hash is only readable in the browser, so apply it after mount
 	const [selectedId, setSelectedId] = useState<string | null>(null);
-	const [userTouched, setUserTouched] = useState(false);
 
 	const selected = workouts.find((w) => w.id === selectedId) ?? null;
 
@@ -57,20 +43,8 @@ export function Dashboard({ apiKey }: { apiKey: string }) {
 	}, []);
 
 	return (
-		<div className="flex h-full flex-col gap-4 pb-64">
+		<div className="flex h-full flex-col gap-4 pb-96">
 			<div className="flex grow flex-col gap-8">
-				<CreateWorkout
-					workoutDescriptions={getItemsFromWorkouts(workouts)}
-					suggestedDescription={
-						selected && !userTouched ? selected.description : undefined
-					}
-					onUserInput={() => {
-						setUserTouched(true);
-					}}
-					onReset={() => {
-						setUserTouched(false);
-					}}
-				/>
 				<Workouts workouts={workouts} selected={selected} onSelect={onSelect} />
 			</div>
 			<footer className="text-center text-xs leading-5 text-slate-600">
@@ -82,6 +56,7 @@ export function Dashboard({ apiKey }: { apiKey: string }) {
 				</p>
 				<p className="">{apiKey}</p>
 			</footer>
+			<WorkoutDock workouts={workouts} selected={selected} onSelect={onSelect} />
 		</div>
 	);
 }

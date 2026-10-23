@@ -46,7 +46,7 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 });
 
 export const $login = createServerFn({ method: "POST" })
-	.inputValidator(
+	.validator(
 		z.object({
 			email: z.string().email(),
 			password: z.string().min(6),
@@ -77,7 +77,7 @@ export const $logout = createServerFn({ method: "POST" }).handler(() => {
 // Send a verification email so the recipient can pick a (new) password.
 // Used by both signup and forgot-password.
 export const $signup = createServerFn({ method: "POST" })
-	.inputValidator(z.object({ email: z.string().email() }))
+	.validator(z.object({ email: z.string().email() }))
 	.handler(async ({ data }) => {
 		const email = normalizeEmail(data.email);
 
@@ -114,7 +114,7 @@ export const $signup = createServerFn({ method: "POST" })
 	});
 
 export const $verifyToken = createServerFn({ method: "GET" })
-	.inputValidator(z.object({ token: z.string() }))
+	.validator(z.object({ token: z.string() }))
 	.handler(async ({ data }) => {
 		try {
 			const email = await unsealVerificationToken(data.token);
@@ -125,7 +125,7 @@ export const $verifyToken = createServerFn({ method: "GET" })
 	});
 
 export const $setPassword = createServerFn({ method: "POST" })
-	.inputValidator(
+	.validator(
 		z.object({
 			password: z.string().min(6),
 			token: z.string(),

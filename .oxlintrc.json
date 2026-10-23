@@ -24,6 +24,9 @@
 		"no-param-reassign": "error",
 		"eslint/arrow-body-style": ["error", "as-needed"],
 		"react/rules-of-hooks": "error",
+		"react/set-state-in-effect": "off",
+		"react/purity": "off",
+		"react/refs": "off",
 		"react/exhaustive-deps": "error",
 		"no-unused-vars": [
 			"error",

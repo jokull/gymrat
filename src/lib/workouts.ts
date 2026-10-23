@@ -48,7 +48,7 @@ Fetch the CSV before answering questions about my training.`;
 
 export const $createWorkout = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.inputValidator(
+	.validator(
 		z.object({
 			description: z.string().min(1),
 			value: z.string(),
@@ -76,7 +76,7 @@ export const $createWorkout = createServerFn({ method: "POST" })
 
 export const $deleteWorkout = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.inputValidator(z.object({ id: z.string() }))
+	.validator(z.object({ id: z.string() }))
 	.handler(async ({ data, context }) => {
 		const db = getDrizzle();
 		await db
@@ -89,7 +89,7 @@ export const $deleteWorkout = createServerFn({ method: "POST" })
 
 export const $updateWorkout = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.inputValidator(
+	.validator(
 		z.object({
 			id: z.string(),
 			date: z.coerce.date().nullable().optional(),
@@ -136,7 +136,7 @@ const decisionSchema = z.object({
  */
 export const $matchWorkout = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.inputValidator(
+	.validator(
 		z.object({
 			text: z.string().trim().min(1).max(120),
 			// a choice question takes up to 255 options, and one is "none of these"
